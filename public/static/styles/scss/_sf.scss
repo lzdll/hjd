@@ -1,0 +1,77 @@
+@charset "utf-8";
+.cell{display:table-cell;*display:inline-block;width:2000px;*width:auto}
+/*Wrap */
+.sWrap {  width:100%; min-width:1200px; margin:0 auto;}
+.sMain {padding-left:172px; overflow:hidden; zoom:1;position: relative;}
+.sLeft{float:left;  display:inline; width:170px; background-color: #dbdbdb; margin-left:-172px; overflow: auto; padding-bottom:10020px; margin-bottom:-10000px; }
+.sRight{float:left; width:100%; padding-bottom:10060px; margin-bottom:-10000px;}
+/*header*/
+.sHeader{ background-color: #444444;  height: 64px; padding-left: 22px;border-bottom: solid 2px #b4b4b4;
+	.logo{float: left; width: 434px; height:46px;  @extend %sImg1; background-position: 0 0; margin-top: 10px; text-indent: -999%;}
+	.btnBox{float: right;
+		.user{float: left;padding: 24px 0; height: 16px; line-height: 16px;  color: #fff; margin-right: 40px;font-family:"\5b8b\4f53";
+			i{display: inline-block; width: 26px; height: 26px;  @extend %sImg1; margin-right: 10px; background-position: -435px 0px; vertical-align: top;margin-top: -4px;}
+			em{color: #ff8902;}
+		}
+		span{float: left; width: 0px; height: 64px;border-right: solid 1px #595959;border-left: solid 1px #222222;}
+		.exit{float: left; padding: 24px 20px 24px 20px; height: 16px; line-height: 16px;  text-align: center; color: #737373; font-size: 12px;text-shadow: 1px 1px 1px #000;font-family: "\5b8b\4f53";
+			i{display: inline-block; width: 15px; height: 16px;  @extend %sImg1; margin-right: 10px; background-position: -17px -34px; vertical-align: top; }
+		}
+	}
+}
+/*Left*/
+.sNav{border-right: 2px solid #e4e4e4; 
+	li{margin-right: -2px;
+		a{ position: relative; display: block; height: 16px; line-height: 16px; padding:16px 0 16px 48px;  font-size: 16px; color: #8a8795; border-left: 5px solid #dbdbdb;border-bottom: 1px #d5d5d5 solid;
+			u{ position: absolute; width: 10px; height: 6px; @extend %sImg1; background-position: -36px -34px; top: 19px; right: 18px;}
+		}
+		i{display: inline-block; width: 18px; height: 16px; @extend %sImg1; vertical-align: top; margin-right: 15px;
+			&.i01{background-position: -50px -34px;}
+			&.i02{background-position: -68px -34px;}
+			&.i03{background-position: -86px -34px;}
+			&.i04{background-position: -104px -34px;}
+			&.i05{background-position: -122px -34px;}
+			&.i06{background-position: -140px -34px;}
+		}
+		ul{ display: none;}
+		li{ margin-bottom: 0;border-bottom: solid 1px #dbdada;
+			a{height: 50px; line-height: 50px; color: #5b5b6a; background-image: none; font-size: 14px; border: 0; padding: 0; padding-left: 53px;background: #e5e5e5;}
+			&.subCur a{font-weight: bold;}
+			// &.noBor{border-bottom: 0;}
+		}
+		&.cur {
+			.one{ background-color: #eeeeee; border-left: 5px solid #febb66;
+				u{background-position: -36px -44px;}
+			}
+			ul{display: block;}
+		}
+	}
+}
+/*inputList*/
+.sImgBox{width: 150px; border: 1px solid #d1d8de; padding: 4px; background-color: #fff; border-radius: 3px; margin-bottom: 15px;
+	img{width: 150px; height: 117px; vertical-align: middle; border-radius: 3px; margin-bottom: 5px;}
+	p{height: 17px; line-height: 17px;
+		.del{float: right; width: 24px; border-left: 1px dotted #e0e0e0; height: 17px;
+			i{display: inline-block; vertical-align: top; @extend %l_icon; background-position:-35px 0 ; width: 14px; height: 15px; text-align: center; margin-left: 5px;}
+		}
+		.tit{float: left; width: 120px; height: 17px; line-height: 17px; overflow: hidden; font-size: 13px; color: #333333; font-style: normal;white-space: nowrap;text-overflow: ellipsis;}
+	}
+}
+.sCity{
+	i{float: left; width: auto; font-style: normal;}
+}
+/*form*/
+.sTextarea{ width: 650px; height: 90px; padding: 5px; border: 1px solid #d1d8de; background-color: #fff;color: #666; font-size: 14px; border-radius: 3px; font-family: "\5FAE\8F6F\96C5\9ED1";outline: none; resize:none;}
+.sRadio{ margin-right: 20px; white-space:nowrap;
+	input{margin-right: 5px;}
+}
+.sBtnBox{ padding-left: 134px; margin-top: 10px;}
+/*other*/
+.w74{width: 74px;}
+.mb10{margin-bottom: 10px;}
+.sColRed{color: #ff8484; margin: 0 20px; font-size: 14px;}
+.sColGreen{color: #528312; margin: 0 20px; font-style: normal; font-size: 14px;}
+.sColBlue{color: #35d9b7; font-size: 16px; margin-top: 20px;}
+.sColGray{color: #a3a3a3;  font-style: normal;}
+.sColOrange{color: #ff6600; text-decoration: underline;}
+

@@ -1,0 +1,121 @@
+.y_overlay{background: url(../images/y_popbg.png);top:0;bottom: 0;left: 0;right: 0;position: fixed;
+}
+.y_popover{background: #ffffff;border:solid 1px #ececec;border-radius: 3px;overflow: hidden;
+	.title{height: 42px;background: #34393d;font-size: 16px;line-height: 42px;color: #bfc2ce;padding:0 14px;margin:-1px -1px 0 -1px;position: relative;
+		.off{@extend %y_icon;background-position: 0 0;width: 12px;height: 12px;cursor: pointer;position: absolute;top:15px;right: 14px;}
+	}
+	.y_list{margin-top: 20px;
+		li{float: left;line-height: 34px;width: 100%;
+			label{color: #444f63;font-size: 14px;cursor: pointer;padding-left: 43px;overflow: hidden;display: block;position: relative;
+				input{margin:0;margin-right:10px;vertical-align: middle;	width: 13px;height: 13px;			
+				}
+				&.m1{
+					input{position: absolute;top:15px;}
+				}
+				
+				span{line-height: 24px;border-bottom: solid 1px #f0f0f0;padding:9px 0;overflow: hidden;margin-left:23px;display: block;
+					&.bd_none{border: none;}
+				}
+				&.mr001{padding-left:0px;margin-bottom:15px;border-bottom: solid 1px #f0f0f0;width: 435px;}
+			}
+		}
+		.size50{width: 50%;}
+	}
+	.mr43{margin-right: 43px;width: auto;}
+	.y_btnbox{clear: both;padding-top: 15px;text-align: center;
+		.l_button{margin:0 5px; }
+	}
+	.contant{padding:0px 40px 40px 40px;}
+}
+.size_01{width: 320px;height: 290px;}
+.size_02{width: 390px;height: 324px;}
+.size_03{width: 600px;height: 480px;}
+.size_04{width: 594px;height: 346px;
+	.t_list1{
+		b{width: 71px;}
+		span{width: 130px;
+			.t_input{width: 123px;}
+		}
+	}
+}
+
+.y_select{padding:12px 0 ;
+	dl{overflow: hidden;
+		dt,dd{float: left;font-size: 12px;line-height: 12px;height: 12px;}
+		dt{color: #999999;}
+		dd{color: #4f606a;border-right: solid 1px #e4e4e4;
+			a{margin:0 10px;color: #4f606a;cursor: pointer;}
+			&.on{
+				a{color: #ff8484;}
+			}
+			&.line_none{border:none;}
+		}
+	}
+	.y_text{font-size: 16px;color: #4f606a;line-height: 16px;
+		em{color: #ff8484;}
+	}
+	&.mr0{padding-top:0;}
+}
+.y_pagebox{overflow: hidden;
+	.y_tip{float: left;height: 22px;line-height: 22px;color: #666666;}
+	.y_page{height: 22px;float:right;
+		a{float: left;padding:0 14px;height: 22px;line-height: 22px;border-right:solid 1px #dddddd;
+			&.prev,&.next{padding:0 10px;}
+			&.next{border:none;}
+			&.on{font-weight: bold;}
+		}
+		
+	}
+}
+.l_button{
+	&.mr20{margin-left: 12px;margin-top: -1px;}
+}
+.w100{width:100px!important;}
+.w134{width: 129px!important;}
+.w001{width: 71px!important;}
+.mr002{margin: 10px 0;}
+.d-topmain.mr0{padding-bottom:1px;}
+.tc{text-align: center;
+	.y_page{display: inline-block;float: none;}
+}
+.y_search{display: inline-block;position: relative;height:48px;
+	.t_input1{padding-left: 10px!important;width: 355px!important;}
+	.y_sub{background: #fff;position: absolute;width: 365px;top:39px;border-bottom-left-radius: 3px; border-bottom-right-radius: 3px; overflow: hidden;border:1px solid #d1d8de;
+		dd{background: #fff;padding-left: 10px;cursor: pointer;height: 33px;line-height: 33px;border-bottom: solid 1px #ebebeb;
+			&:hover{background: #f9f9f9;}
+			&:last-child{border:none;}
+			em{color: #1c273b;font-weight: bold;}
+		}
+	}
+}
+.t_list1.y_mr{padding:30px 0;}
+.t_list1 .t_select{
+	&.y_wth{width: 234px;}
+}
+.y_ts{display: inline-block;
+	em{color: #91c925}
+}
+.l_button2{
+	&.y_vert{vertical-align:baseline;*vertical-align:middle;}
+}
+.y_load{height: 33px;display: inline-block;width:233px;vertical-align: middle;background: #dfdfdf;
+	em{display: block;height: 33px;background: #9be783;}
+}
+.y_loading,.y_loaded{height: 33px;display: inline-block;width:222px;vertical-align: middle;background: #dfdfdf;line-height: 33px;padding:0 5px;border: 1px solid #d1d8de;background: #fff;color: #666666;border-radius: 3px;
+	em{
+		color: #ff8484;
+	}
+}
+.y_loading{color: #91c925;}
+.l_button{
+	&.mr10{margin-right: 10px;}
+}
+.y_tishi{width: 250px;height: 120px;position: fixed;bottom: 90px;right: 0; background: #fff;border:solid 1px #ececec;
+	.y_tit{background: #ff8484;height: 26px;line-height: 26px;font-size:12px;color: #fff;padding-left:10px;
+		.off{@extend %y_icon;background-position: -14px 0;width: 10px;height: 10px;cursor: pointer;position: absolute;top:8px;right: 10px;}
+	}
+	.y_con{height: 62px;line-height: 62px;font-size: 14px;color: #444f63;text-align:center;}
+	.y_btn{height: 32px;line-height: 32px;font-size: 12px;color: #47a5d9;text-align: center;border-top: solid 1px #ececec;
+		a{color: #47a5d9;cursor: pointer;}
+	}
+}

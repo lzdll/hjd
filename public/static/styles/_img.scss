@@ -1,0 +1,18 @@
+// %img1 { background: url(../images/temp.png); }
+// @mixin img3 {  background: url(../images/temp.png);}
+
+
+/* tx.scss */
+// %t_icon{background:url(../images/t_icon.png) no-repeat;}
+%t_icon{background:url(../images/t_icon.png) no-repeat;}
+/* sf.scss */
+%sImg1 { background: url(../images/sImg01.png) no-repeat; }
+
+/* lj.scss*/
+%l_icon { background: url(../images/l_icon.png) no-repeat;}
+/* ycs.scss*/
+%y_icon { background: url(../images/y_icon.png) no-repeat;}
+
+/*dnx.scss*/
+%d-img1{background:url(../images/d_line_bg.png) bottom repeat-x;}
+%d-img2{background:url(../images/d_time_bg.png) no-repeat;}
