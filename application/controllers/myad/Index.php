@@ -14,7 +14,8 @@ class Index extends MY_Controller
         parent::__construct();
         $this->_initNav();
         $this->load->library('session');
-        //$this->load->model('plugin_building_model');
+        $this->load->library('/ucloud/proxy');
+        $this->load->model('slot_model');
     }
 
     /**
@@ -55,15 +56,15 @@ class Index extends MY_Controller
     public function lists()
     {
         ////error_reporting(E_ALL);
-        //$input = array_merge($this->input->get(), $this->input->post());
-        //$filter = array('date' => '', 'begin' => '', 'end' => '', 'operator_name' => '','city'=>'','type'=>'','place'=>'','status'=>'');
-        //$search = array_intersect_key($input, $filter);
-        //$pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
-        //$offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
-        //$where = $this->condition($search);
-        //$total = $this->ad_model->getCount($where);
-        //$list = $this->ad_model->findAlls($where,$pagesize,$offset);
-        ////var_dump($total);die;
+//         $input = array_merge($this->input->get(), $this->input->post());
+        $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
+        $offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
+        $data['owner'] = $this->user['uid'];
+        $total = $this->slot_model->getCount($data);
+//         $where['a.id'] = $this->user['uid'];
+        $where = 'a.id = '.$this->user['uid'];
+        $list = $this->slot_model->getDataByOwner($where,$pagesize,$offset);
+//         var_dump($list);die;
         //if ($total) {
             //foreach ($list as $key => $item) {
                 //$list[$key]['city'] = $this->_getCityName($item['city']);
@@ -71,7 +72,7 @@ class Index extends MY_Controller
             //}
         //}
         ////var_dump($search);die;
-        //$this->data['list'] = $list;
+        $this->data['list'] = $list;
         //$this->data['total'] = $total;
         //$this->data['search'] = $search;
         //$this->data['pagesize'] = $pagesize;
@@ -84,114 +85,39 @@ class Index extends MY_Controller
         //$from = $this->config->item('customer');
         //$this->data['from'] = $from['source'];
 
-        $this->layout->view('/ad/list', $this->data);
-    }
-    
-   
-    //组建where查询
-    public function condition($data)
-    {
-        //var_dump($data);die;
-        $where ='1 = 1 and a.status >=0 and b.aid IS NOT NULL  ';
-        $where1 = '1=1 ';
-        if (!empty($data))
-        {
-            if($data['date']){
-                $begin = strtotime("-{$data['date']} day");
-                $end = time();
-                $where.=" AND a.comment_time >=$begin and a.comment_time <=$end";
-            }else if($data['begin'] && $data['end']){
-                $begin = isset($data['begin']) && !empty($data['begin']) ? strtotime($data['begin']) : 0;
-                $end = isset($data['end']) && !empty($data['end']) ? strtotime($data['end'].'23:59:59') : time();
-                $where.=" AND a.create_time >=$begin and a.create_time <=$end";
-            }
-            if($data['city']){
-                $where1.=" AND city ='".$data['city']."'";
-            }else{
-                if (!empty($this->user['city_rights'])) {
-                    $citys = explode(',', $this->user['city_rights']);
-                    $citys = "'" . implode("','", $citys) . "'";
-                    //$where["zygw.city_en in ({$citys}) AND "] = "1";
-                    $where1.=" AND city in ({$citys}) ";
-                    // $where['city'] = "`city` in ('$citys')";
-                } 
-            }
-            if($data['type']){
-                $where.=" AND a.type =".$data['type'];
-            }
-            if($data['place']){
-                $where.=" AND a.place =".$data['place'];
-            }
-            if($data['operator_name']){
-                $where.=" AND a.operator_name REGEXP '".$data['operator_name']."'";
-            }
-            if(isset($data['status']) && $data['status']!=''){
-                $where.=" AND a.status =".$data['status'];
-            }
-            
-        }
-        return array('a'=>$where,'b'=>$where1);
+        $this->layout->view('/myad/list', $this->data);
     }
 
-    
     public function add()
     {
-        $method = strtolower($_SERVER['REQUEST_METHOD']);
-        if ($method == 'get')
+        //判断上传文件类型为png或jpg且大小不超过1024000B
+        if(($_FILES["file"]["type"]=="image/png"||$_FILES["file"]["type"]=="image/jpeg")&&$_FILES["file"]["size"]<1024000)
         {
-            $citys = $this->house_city_model->findAll();
-            $this->data['citys'] = $citys;
-            $this->layout->view('/ad/add', $this->data);
+            $filename =date('Y/m/d')."/img/".time().$_FILES["file"]["name"];
+            $filename =iconv("UTF-8","gb2312",$filename);
+//             $upload_file_url = $this->proxy->UploadFiles($filename,$_FILES["file"]["tmp_name"]);
+            $upload_file_url = '/2018/07/21/img/1532151910bg_lq.png';
         }
-        
-        if ($method == 'post')
+        //测试阶段可用
+        $upload_file_url = '/2018/07/21/img/1532151910bg_lq.png';
+        if ( $form = $this->input->post() )
         {
+            $data['platform'] = trim($form['platform']);
+            $data['code'] = md5($this->user['code'].rand(0,10000));
+            $data['owner'] = $this->user['code'];
+            $data['name'] = trim($form['title']);
+            $data['info'] = $form['desc'];
+            $data['icon'] = $upload_file_url;
+            $data['status'] = 1;
+            $data['callback'] = $form['callback'];
+            $data['callback_status'] = $form['callback_status'];
+            $data['secret'] = $form['secret'];
+            $data['created_time'] = date('Y-m-d H:i:s');
+            $data['updated_time'] = date('Y-m-d H:i:s');
             $res = array('status'=>false, 'msg'=>'');
-            $post = $this->input->post();
-            
-            if (isset($post['card']) && !empty($post['card']))
-            {
-                $post['pic_url'] = $post['card'];
-                unset($post['card']);
-            }
-            if (isset($post['logo']) && !empty($post['logo']))
-            {
-                $post['choice_pic'] = $post['logo'];
-                unset($post['logo']);
-            }
-            if (isset($post['openAd']) && !empty($post['openAd']))
-            {
-                $post['pic_url_x'] = $post['openAd'];
-                unset($post['openAd']);
-            }
-            $filter = array('link'=>'','title'=>'','type'=>'','place'=>'','valid_start'=>'','valid_end'=>'','citys'=>'','is_choice'=>'','pic_url'=>'','choice_pic'=>'','pic_url_x'=>'');
-            $data = array_intersect_key($post,$filter);
-            
-            $time = time();
-            $extra = array('create_time'=>$time,'update_time'=>0,'pub_time'=>0,'down_time'=>0,'status'=>1,'operator_id'=>$this->user['uid'],'operator_name'=>$this->user['truename']);
-            $data = array_merge($data,$extra);
-            $data['city'] = $data['citys'];
-            unset($data['citys']);
-            $data['valid_start'] = strtotime($data['valid_start']);
-            $data['valid_end'] = strtotime($data['valid_end'].' 23:59:59');
-            //var_dump($this->ad_model->insertData($data));die;
-            if ($insert_id = $this->ad_model->save($data))
-            {
-                //插入ad_city表
-                $temp_city = explode(',',$data['city']);
-                foreach ($temp_city as $v){
-                    $this->ad_city_model->insertData(array('aid'=>$insert_id,'city'=>$v));
-                }
-                $res['status'] = true;
-                $this->_outputJSON($res);
-            }
-            else
-            {
-                $res['msg'] = '添加失败';
-                $this->_outputJSON($res);
-            }
-            
+            $this->_save($data);
         }
+        $this->layout->view('/myad/add', $this->data);
     }
     
     public function edit()
@@ -271,20 +197,45 @@ class Index extends MY_Controller
         }
     }
     
-    public function detail()
+    public function details($begin_time='',$end_time='')
     {
         $id = (int)$this->input->get('id');
-        $info = $this->ad_model->findByPk($id);
-        //print_r($info);die;
+        $info = $this->slot_model->findByPk($id);
+        if(empty($begin_time)){
+            $begin_time = date('Y-m-d', strtotime('-7 days'));
+        }
+        if(empty($end_time)){
+            $end_time = date('Y-m-d', time());
+        }
         if ($info)
         {
-            $info['city'] = $this->_getCityName($info['city']);
-            //var_dump($info);die;
+            $stInfo = $this->slot_model->getExtensionStatices($this->user['code'],$begin_time,$end_time);
             $this->data['info'] = $info;
-            $this->layout->view('/ad/detail', $this->data);
+            $this->data['statices'] = $stInfo;
+            $datedata = $this->getDateSection($begin_time, $end_time);
+            $this->data['section'] = $datedata;
+            $this->layout->view('/myad/detail', $this->data);
         }
         else
             ci_redirect('/ad/', 3, 'ID错误或信息不存在');
+    }
+    
+    private function getDateSection($startdate, $enddate){
+        
+        $stimestamp = strtotime($startdate);
+        $etimestamp = strtotime($enddate);
+        
+        // 计算日期段内有多少天
+        $days = ($etimestamp-$stimestamp)/86400+1;
+        
+        // 保存每天日期
+        $str = '';
+        
+        for($i=0; $i<$days; $i++){
+            $str .= "'".date('n.j', $stimestamp+(86400*$i))."',";
+        }
+        
+        return mb_substr($str, 0,-1);
     }
     
    
@@ -416,6 +367,23 @@ class Index extends MY_Controller
             $res['status'] = true;
         }    
         $this->_outputJSON($res);
+    }
+    protected function _save($data){
+        $id = intval($data['id']);
+        if ( !$id )
+        {
+            var_dump($data);
+            if ( !$rs = $this->slot_model->add($data) )
+            {
+                return false;
+            }
+            return true;
+        }
+        if ( !$rs = $this->slot_model->edit($id, $data) )
+        {
+            return false;
+        }
+        return true;
     }
     
 }

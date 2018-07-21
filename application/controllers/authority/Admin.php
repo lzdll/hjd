@@ -164,7 +164,7 @@ protected function _save()
 				$data['status'] = $form['status'];	
 				$data['role_id'] = $form['role'];
 				$data['email'] = $form['email'];
-				$data['phone'] = $form['phone'];
+				
 				$data['created_time'] = time();
 				$rs = $this->user_model->add($data) ;
 			}

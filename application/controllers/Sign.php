@@ -43,18 +43,19 @@ class Sign extends CI_Controller {
              {
                  ci_redirect('/sign/login', 5, '参数错误');
              }
-             $where = array('name'=>$form['login_name']);
+
+             $where = array('login_name'=>$form['login_name']);
              if (!$info = $this->user_model->findByAttributes($where))
              {
                  ci_redirect('/sign/login', 5, '此用户不存在');
              }
-// 			 $getarr = array('id'=>$info['role_id'],'type'=>$info['type']);
-// 			 $role_list = $this->role_model->getInfo($getarr);
-             if( gen_pwd(trim($form['password'])) != $info['pasw'] )
+			 $getarr = array('id'=>$info['role_id'],'type'=>$info['type']);
+			 $role_list = $this->role_model->getInfo($getarr);
+             if( gen_pwd(trim($form['password'])) != $info['password'] )
              {
                  ci_redirect('/sign/login', 5, '密码错误');
              }
-// 			 $info['operate_rights'] = $role_list['operate_rights'];//赋值权限
+			 $info['operate_rights'] = $role_list['operate_rights'];//赋值权限
              $this->session->uid = $info['id'];
              $this->session->username = $info['login_name'];
              foreach ($info as $k=>$v)

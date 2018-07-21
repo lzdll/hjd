@@ -12,12 +12,8 @@ class Index extends MY_Controller {
         parent::__construct();
         $this->_initNav();
         $this->load->library('session');
-        $this->load->library('plugin/zygw');
-        $this->load->model('Reward_model');
-        $this->load->model('reward_record_model');
-        $this->load->model('zygw_model');
-        $this->load->model('plugin_building_model');
-        // $this->load->model('work_order_model');
+        //$this->load->library('plugin/zygw');
+       
     }
 
     /**
@@ -45,7 +41,8 @@ class Index extends MY_Controller {
 
 	public function lists()
 	{
-	    
+	    echo 123;
+		exit;
         $data  = $this->input->get();
         $valid      = array();
         $validData  = $this->_getValidParam($data, $valid);

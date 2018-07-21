@@ -10,7 +10,7 @@ class Signin_model extends MY_Model
     /**
      * @var string $tableName 表名
      */
-    public $tableName = 'user';
+    public $tableName = 'signin';
     public $primaryKey = 'id';
 
     /**

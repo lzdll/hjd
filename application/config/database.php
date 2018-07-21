@@ -72,12 +72,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $active_group = 'default';
 $query_builder = TRUE;
-
 $db['default'] = array(
-        'dsn'	=> "mysql:host=127.0.0.1;port=3306;dbname=money_ex",
-        'hostname' => '127.0.0.1',
-        'username' => 'root',
-        'password' => '',
+        'dsn'	=> "mysql:host=47.95.233.47;port=3306;dbname=money_ex",
+        'hostname' => '47.95.233.47',
+        'username' => 'liuliming',
+        'password' => 'liuliming!@#',
         'database' => 'money_ex',
         'port'     => '3306',
         'dbdriver' => 'pdo',
@@ -96,10 +95,10 @@ $db['default'] = array(
         'save_queries' => TRUE
     );
     $db['slave'] = array(
-        'dsn'	=> "mysql:host=127.0.0.1;port=3306;dbname=money_ex",
-        'hostname' => '127.0.0.1',
-        'username' => 'root',
-        'password' => '',
+        'dsn'	=> "mysql:host=47.95.233.47;port=3306;dbname=money_ex",
+        'hostname' => '47.95.233.47',
+        'username' => 'liuliming',
+        'password' => 'liuliming!@#',
         'database' => 'money_ex',
         'port'     => '3306',
         'dbdriver' => 'pdo',

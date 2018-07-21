@@ -21,6 +21,9 @@
 <script type="text/javascript" src="/public/money_ex/js/moment.min.js"></script>
 <script type="text/javascript" src="/public/money_ex/js/detect-report.js"></script>
 <script type="text/javascript" src="/public/money_ex/js/echarts.common.min.js"></script>
+<script type="text/javascript" src="/public/money_ex/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="/public/money_ex/layui/layui.js"></script>
+<script type="text/javascript" src="/public/money_ex/js/global.js"></script>
 </head>
 <body>
 <div class="layui-layout layui-layout-admin">
@@ -61,7 +64,7 @@
                        
 
 						<li class="layui-nav-item <?php if ($c_url == $v['url'] || (isset($v['folder']) && $c_url_d == $v['folder'])) { ?>layui-this layui-nav-itemed<?php } ?>">
-			<a href="#">
+			<a href="<?=$v['url']?>">
 				<i class="iconfont icon-06"></i>
 				<span><?=$v['name']?></span>
 			</a>

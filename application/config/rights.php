@@ -52,47 +52,48 @@ $config['rights'] = array(
     '3' => array(
         'is_menu'   => 1,               // 是否是菜单(是否显示为菜单)
         'type'      => 'folder',          // 类型 item菜单  folder目录
-        'folder'    => '/zygw/',         // 类型 item菜单  folder目录
+        'folder'    => '/flow/',         // 类型 item菜单  folder目录
         'name'      => '流量主',
-        'url'       => '/zygw/index/lists',
+        'url'       => '/flow/index/lists',
         'class'     => '',
         'icon'      => 'menu-icon fa fa-cog',
         'child' => array(
-            '3_1' => array('is_menu'=>1, 'name'=>'置业顾问列表', 'url'=>'/zygw/index/lists'),
-            '3_2' => array('is_menu'=>0, 'name'=>'楼盘变更通过', 'url'=>'/zygw/index/adopt'),
+            '3_1' => array('is_menu'=>0, 'name'=>'添加流量主', 'url'=>'/flow/index/add'),
+            '3_2' => array('is_menu'=>0, 'name'=>'查看详情', 'url'=>'/flow/index/details'),
         ),
     ), 
     '4' => array(
         'is_menu'   => 1,               // 是否是菜单(是否显示为菜单)
         'type'      => 'folder',          // 类型 item菜单  folder目录
-        'folder'    => '/reward/',         // 类型 item菜单  folder目录
+        'folder'    => '/advertiser/',         // 类型 item菜单  folder目录
         'name'      => '广告主',
-        'url'       => '/reward/index/lists',
+        'url'       => '/advertiser/index/lists',
         'class'     => '',
         'icon'      => 'menu-icon fa fa-cog',
         'child' => array(
-            '4_1' => array('is_menu'=>1, 'name'=>'专车奖励分配管理', 'url'=>'/reward/index/lists'),
-            '4_2' => array('is_menu'=>1, 'name'=>'专车奖励分配单数', 'url'=>'/reward/index/record'),
+		 '4_1' => array('is_menu'=>0, 'name'=>'添加广告主', 'url'=>'/advertiser/index/add'),
+		 '4_2' => array('is_menu'=>0, 'name'=>'查看详情', 'url'=>'/advertiser/index/details'),
         ),
     ),
     '5' => array(
         'is_menu'   => 1,               // 是否是菜单(是否显示为菜单)
         'type'      => 'folder',
-        'folder'    => '/qamanage/',         // 类型 item菜单  folder目录
+        'folder'    => '/advert/',         // 类型 item菜单  folder目录
         'name'      => '广告管理',
-        'url'       => '/ad/index/lists',
+        'url'       => '/advert/index/lists',
         'class'     => '',
         'icon'      => 'menu-icon fa fa-cog',
         'child' => array(
-          
+           '5_1' => array('is_menu'=>0, 'name'=>'待审核', 'url'=>'/advert/index/adopt'),
+		   '5_2' => array('is_menu'=>0, 'name'=>'添加小程序', 'url'=>'/advert/index/adopt'),
         
         ),
     ), 
     '6' => array(
         'is_menu'   => 1,               // 是否是菜单(是否显示为菜单)
-        'type'      => 'item',          // 类型 item菜单  folder目录
+        'type'      => 'folder',          // 类型 item菜单  folder目录
         'name'      => 'SDK管理',
-        'url'       => '/SDK/index/lists',
+        'url'       => '/sdk/index/lists',
         'class'     => '',
         'icon'      => 'menu-icon fa fa-cog',
         'child' => array(
@@ -101,15 +102,12 @@ $config['rights'] = array(
  
     ), 
  
-
-
-
     '7' => array(
         'is_menu'   => 1,               // 是否是菜单(是否显示为菜单)
         'type'      => 'folder',
-        'folder'    => '/taskmanage/',         // 类型 item菜单  folder目录
+        'folder'    => '/finance/',         // 类型 item菜单  folder目录
         'name'      => '财务',
-        'url'       => '/taskmanage/index/lists',
+        'url'       => '/finance/index/lists',
         'class'     => 'dropdown-toggle',
         'icon'      => 'menu-icon fa fa-lock',
         'child' => array(
@@ -117,32 +115,91 @@ $config['rights'] = array(
                 'is_menu'=>1,
                 'type'      => 'item',
                 'name'      => '充值',
-                'url'       =>'/taskmanage/index/lists',
+                'url'       =>'/finance/index/lists',
                 'child'     => array(
-                    '7_1_1' => array('is_menu'=>0, 'name'=>'修改任务管理列表', 'url'=>'/taskmanage/index/updates'),
+                    '7_1_1' => array('is_menu'=>0, 'name'=>'充值', 'url'=>'/finance/index/add'),
                 ),
             ),
             '7_2' => array(
                 'is_menu'=>1,
                 'type'      => 'item',
                 'name'      => '开具发票',
-                'url'       =>'/taskmanage/index/galalist',
+                'url'       =>'/finance/index/invoice',
                 'child'     => array(
-                    '7_2_1' => array('is_menu'=>0, 'name'=>'新增节日管理', 'url'=>'/taskmanage/index/addtask'),
-                    '7_2_2' => array('is_menu'=>0, 'name'=>'编辑节日管理', 'url'=>'/taskmanage/index/addtask'),
+                    '7_2_1' => array('is_menu'=>0, 'name'=>'开票', 'url'=>'/finance/index/add_invoice'),
+                    '7_2_2' => array('is_menu'=>0, 'name'=>'查看发票', 'url'=>'/finance/index/seeinv'),
                 ),
             ),
             '7_3' => array(
                 'is_menu'=>1,
                 'type'      => 'item',
                 'name'      => '提现管理',
-                'url'       =>'/taskmanage/index/signinlist',
+                'url'       =>'/finance/index/present',
                 'child'     => array(
-                    '7_3_1' => array('is_menu'=>0, 'name'=>'新增签到文本', 'url'=>'/taskmanage/index/addsignin'),
-                    '7_3_2' => array('is_menu'=>0, 'name'=>'下载模板', 'url'=>'/taskmanage/index/downtpl'),
-                    '7_3_3' => array('is_menu'=>0, 'name'=>'导入签到文本', 'url'=>'/taskmanage/index/import'),
+                    '7_3_1' => array('is_menu'=>0, 'name'=>'标记', 'url'=>'/finance/index/unexecuted'),
                 ),
             ),
+        ),
+    ),
+
+
+	'8' => array(
+        'is_menu'   => 1,               // 是否是菜单(是否显示为菜单)
+        'type'      => 'folder',          // 类型 item菜单  folder目录
+        'folder'    => '/ad/',         // 类型 item菜单  folder目录
+        'name'      => '广告',
+        'url'       => '/ad/index/lists',
+        'class'     => '',
+        'icon'      => 'menu-icon fa fa-cog',
+        'child' => array(
+            '8_1' => array('is_menu'=>0, 'name'=>'添加广告', 'url'=>'/ad/index/add'),
+            '8_2' => array('is_menu'=>0, 'name'=>'查看详情', 'url'=>'/ad/index/details'),
+        ),
+    ),
+	
+	'9' => array(
+        'is_menu'   => 1,               // 是否是菜单(是否显示为菜单)
+        'type'      => 'folder',
+        'folder'    => '/member/',         // 类型 item菜单  folder目录
+        'name'      => '个人中心',
+        'url'       => '/member/index/lists',
+        'class'     => 'dropdown-toggle',
+        'icon'      => 'menu-icon fa fa-lock',
+        'child' => array(
+            '9_1' => array(
+                'is_menu'=>1,
+                'type'      => 'item',
+                'name'      => '用户资料',
+                'url'       =>'/member/index/lists',
+                'child'     => array(
+                 
+                ),
+            ),
+            '9_2' => array(
+                'is_menu'=>1,
+                'type'      => 'item',
+                'name'      => '修改密码',
+                'url'       =>'/member/index/edit',
+                'child'     => array(
+                 
+                ),
+            ),
+            
+        ),
+    ),
+
+	'10' => array(
+        'is_menu'   => 1,               // 是否是菜单(是否显示为菜单)
+        'type'      => 'folder',          // 类型 item菜单  folder目录
+        'folder'    => '/myad/',         // 类型 item菜单  folder目录
+        'name'      => '我的广告位',
+        'url'       => '/myad/index/lists',
+        'class'     => '',
+        'icon'      => 'menu-icon fa fa-cog',
+        'child' => array(
+            '10_1' => array('is_menu'=>0, 'name'=>'添加广告', 'url'=>'/myad/index/add'),
+            '10_2' => array('is_menu'=>0, 'name'=>'查看详情', 'url'=>'/myad/index/details'),
+			'10_3' => array('is_menu'=>0, 'name'=>'设置', 'url'=>'/myad/index/intercalate'),
         ),
     ),
 );
