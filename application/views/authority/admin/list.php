@@ -1,40 +1,10 @@
-<style>
-.l_tableBox2 .l_table1{width:100%;}
-.d-formbox li label{ width:120px}
-</style>
 
-<div class="l_p30">
-    <div class="l_tit d_tit">
-        <div class="clearfix">
-            <?php $this->load->view('common/menu.php') ?>
-        </div>
-    </div>
-   
+ <div class="postnav"><?php $this->load->view('common/menu.php') ?></div>
+	<div class="layuibodycont">
 
-<link rel="stylesheet" href="/public/static/styles/styles.css">
-<script type="text/javascript" src="/public/static/js/jquery-3.2.0.min.js"></script>
-    <div class="d-topmain">
-    	<form method="get" id="myform">
-        <ul class="d-formbox d-mt20">
-            <li class="clearfix">
-                <div class="d-box">
-                    <label>ID：</label>
-                    <input class="d-inp" type="text" name="id" value="<?=$filters['default']['id']?>" >
-                </div>
-				<div class="d-box">
-                    <label>邮箱：</label>
-                    <input class="d-inp" type="text" name="email" value="<?=$filters['default']['email']?>">
-                </div>
-              
-				
-				<div class="d-box">
-                    &nbsp;&nbsp;<button class="layui-btn addbtn" type="button" id="submitBtn">查 询</button>
-					<a href="/authority/admin/add" class="addads" style="margin-left:900px;">添加</a>
-                </div>
-            </li>
-        </ul>
-        </form>
-    </div>
+<div class="clearfix sdktop">
+			<a href="/authority/admin/add"><span class="addads">添加</span></a>
+		</div>
     <div class="d_tableBox">
         
         <div class="l_tableBox2">

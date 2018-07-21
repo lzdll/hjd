@@ -14,37 +14,36 @@
 				</tr> 
 			  </thead>
 			  <tbody>
+			  <?php foreach ($list as $v){ ?>
 				<tr>
-				  <td>2018-06-27</td>
-				  <td>北京银行</td>
-				  <td>9214563245852632</td>
-				  <td>￥3000.00</td>
-				  <td>1862330256</td>
-				  <td>6月23号充值</td>
-				  <td><span class="opearbtn opearbtnjs active">未打款</span></td>
+				  <td><?php { echo date('Y-m-d H:i', strtotime($v['created_time']));}?></td>
+				  <td><?=$v['bank']?></td>
+				  <td><?=$v['cardid']?></td>
+				  <td><?php echo "￥".$v['money']/100;?></td>
+				  <td><?=$v['owner']?></td>
+				  <td><?=$v['comment']?></td>
+				  <td>
+					  <?php if($v['status'] == 0 ){?> 
+					  <span class="opearbtn" >已打款</span>
+					  <?php   }else{ ?> 
+					  <span class="opearbtn opearbtnjs active" onclick="viewimgs('<?=$v['id']?>')">未打款</span>
+					  <?php } ?>
+				  </td>
 				</tr>
-				<tr>
-				  <td>2018-06-27</td>
-				  <td>北京银行</td>
-				  <td>9214563245852632</td>
-				  <td>￥3000.00</td>
-				  <td>1862330256</td>
-				  <td>6月23号充值</td>
-				  <td><span class="opearbtn">已打款</span></td>
-				</tr>
-				<tr>
-				  <td>2018-06-27</td>
-				  <td>北京银行</td>
-				  <td>9214563245852632</td>
-				  <td>￥3000.00</td>
-				  <td>1862330256</td>
-				  <td>6月23号充值</td>
-				  <td><span class="opearbtn">已打款</span></td>
-				</tr>
+				<?php } ?>
 			  </tbody>
 			</table>
 			
-			<div id="demo0" class="pages"></div>
+			<div id="demo0" class="pages">  
+			
+			<div class="y_tip">共 <?php echo $pager['count'];?> 条 每页 <?php echo $pagesize;?> 条	</div>
+                    <div class="y_page">
+                       <?php echo $pager['links'];?>
+                    </div>
+					
+					
+					</div>
+		</div>
 		</div>
     </div>
   </div>
@@ -73,15 +72,7 @@
 <script type="text/javascript" src="/public/money_ex/layui/layui.js"></script>
 <script type="text/javascript" src="/public/money_ex/js/global.js"></script>
 <script>
-layui.use(['laypage', 'layer'], function(){
-  var laypage = layui.laypage
-  ,layer = layui.layer;
-  //总页数低于页码总数
-  laypage.render({
-    elem: 'demo0'
-    ,count: 50 //数据总数
-  });
-  });
+
  layui.use('layer', function(){ //独立版的layer无需执行这一句
   var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
 	$(document).on("click",".opearbtnjs",function(){

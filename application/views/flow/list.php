@@ -4,7 +4,7 @@
 		<div class="topblock clearfix">
 			<dl class="topitemdl topitemdl25">
 				<dd>流量主数量</dd>
-				<dt>130个</dt>
+				<dt><?php echo $total; ?>个</dt>
 			</dl>
 			<dl class="topitemdl topitemdl25">
 				<dd>充值总额(元)</dd>
@@ -15,7 +15,7 @@
 				<dt>￥60040.30</dt>
 			</dl>
 			<dl class="topitemdl topitemdl25 noborder">
-				<dd><a href="/flow/index/add"><span class="addads">添加流量主</span></a></dd>
+				<dd><a href="/authority/admin/add?type=1"><span class="addads">添加流量主</span></a></dd>
 			</dl>
 		</div>
 		
@@ -35,50 +35,40 @@
 				</tr> 
 			  </thead>
 			  <tbody>
+			   <?php foreach ($list as $v){ ?>
 				<tr>
-				  <td>24</td>
-				  <td>18600643256</td>
-				  <td>hello@e7124.com</td>
-				  <td>15</td>
+				  <td><?=$v['id']?></td>
+				  <td><?=$v['phone']?></td>
+				  <td><?=$v['email']?></td>
+				  <td><?=$v['ad_total']?></td>
 				  <td>￥2345140.00</td>
 				  <td>￥2330.00</td>
-				  <td><span class="tdstat active">已封号</span></td>
-				  <td><a href="重置密码.html" class="tdfont01">重置</a></td>
-				  <td><a href="/flow/index/details"><span class="tdfont01">查看详情</span></a></td>
+				  <td>
+				  <?php if($v['status'] == 1 ){?><span class="tdstat active">已封号</span><?php   }else{ ?><span class="tdstat">正常</span><?php } ?>
+				  </td>
+				  <td><a href="/flow/index/resetpwd?code=<?=$v['code']?>&id=<?=$v['id']?>&type=<?=$v['type']?>" class="tdfont01">重置</a></td>
+				  <td><a href="/flow/index/details?code=<?=$v['code']?>&id=<?=$v['id']?>&type=<?=$v['type']?>"><span class="tdfont01">查看详情</span></a></td>
 				</tr>
-				<tr>
-				  <td>24</td>
-				  <td>18600643256</td>
-				  <td>hello@e7124.com</td>
-				  <td>15</td>
-				  <td>￥2345140.00</td>
-				  <td>￥2330.00</td>
-				  <td><span class="tdstat">正常</span></td>
-				  <td><a href="#" class="tdfont01">重置</a></td>
-				  <td><a href="/flow/index/details"><span class="tdfont01">查看详情</span></a></td>
-				</tr>
+				<?php } ?>
+				
 			  </tbody>
 			</table>
-			<div id="demo0" class="pages"></div>
+			<div id="demo0" class="pages"><div class="y_tip">共 <?php echo $pager['count'];?> 条 每页 <?php echo $pagesize;?> 条	</div><div class="y_page"><?php echo $pager['links'];?></div></div>
 		</div>
     </div>
   </div>
-  <!--<div class="site-tree-mobile layui-hide">
-	  <i class="layui-icon layui-icon01"></i>
-  </div>-->
-
 </div>
 <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="layui/layui.js"></script>
 <script type="text/javascript" src="js/global.js"></script>
 <script>
-layui.use(['laypage', 'layer'], function(){
-  var laypage = layui.laypage
-  ,layer = layui.layer;
-  //总页数低于页码总数
-  laypage.render({
-    elem: 'demo0'
-    ,count: 50 //数据总数
-  });
-  });
+//layui.use(['laypage', 'layer'], function(){
+  //var laypage = layui.laypage
+  //,layer = layui.layer;
+  ////总页数低于页码总数
+  //laypage.render({
+    //elem: 'demo0'
+    //,count: 50 //数据总数
+  //});
+  //});
 </script>

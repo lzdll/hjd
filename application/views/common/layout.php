@@ -24,6 +24,14 @@
 <script type="text/javascript" src="/public/money_ex/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="/public/money_ex/layui/layui.js"></script>
 <script type="text/javascript" src="/public/money_ex/js/global.js"></script>
+<script type="text/javascript" src="/public/static/js/jquery-3.2.0.min.js"></script>
+<?php  if($user['type'] == 0){ ?>
+<link rel="stylesheet" type="text/css" href="/public/money_ex/css/globalforAd.css" media="all"/>
+<?php }else if($user['type'] == 1){ ?>
+<link rel="stylesheet" type="text/css" href="/public/money_ex/css/globalfortraffic.css" media="all"/>
+<?php  }else if($user['type'] == 2){ ?>
+<link rel="stylesheet" type="text/css" href="/public/money_ex/css/globalforplatform.css" media="all"/>
+<?php } ?>
 </head>
 <body>
 <div class="layui-layout layui-layout-admin">

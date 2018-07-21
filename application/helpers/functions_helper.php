@@ -470,6 +470,14 @@ function gen_pwd($pwd)
 }
 
 /**
+ * 生成code
+ */
+function get_code($string)
+{
+    return substr(strtoupper(md5($string)),0,8);  
+}
+
+/**
  * 时间转换
  * @param  string|integer|float  $num  时间日期
  * @return string

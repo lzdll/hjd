@@ -15,7 +15,6 @@ class Sign extends CI_Controller {
     {
         parent::__construct();
         $this->load->library('session');
-        $this->load->model('admins_model');
         $this->load->model('user_model');
 		$this->load->model('role_model');
     }
@@ -49,7 +48,7 @@ class Sign extends CI_Controller {
              {
                  ci_redirect('/sign/login', 5, '此用户不存在');
              }
-			 $getarr = array('id'=>$info['role_id'],'type'=>$info['type']);
+			 $getarr = array('id'=>$info['role_id']);
 			 $role_list = $this->role_model->getInfo($getarr);
              if( gen_pwd(trim($form['password'])) != $info['password'] )
              {

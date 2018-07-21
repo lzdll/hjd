@@ -60,6 +60,7 @@ $config['rights'] = array(
         'child' => array(
             '3_1' => array('is_menu'=>0, 'name'=>'添加流量主', 'url'=>'/flow/index/add'),
             '3_2' => array('is_menu'=>0, 'name'=>'查看详情', 'url'=>'/flow/index/details'),
+			'3_3' => array('is_menu'=>0, 'name'=>'重置密码', 'url'=>'/flow/index/resetpwd'),
         ),
     ), 
     '4' => array(
@@ -73,6 +74,7 @@ $config['rights'] = array(
         'child' => array(
 		 '4_1' => array('is_menu'=>0, 'name'=>'添加广告主', 'url'=>'/advertiser/index/add'),
 		 '4_2' => array('is_menu'=>0, 'name'=>'查看详情', 'url'=>'/advertiser/index/details'),
+		 '4_3' => array('is_menu'=>0, 'name'=>'重置密码', 'url'=>'/flow/index/resetpwd'),
         ),
     ),
     '5' => array(
@@ -97,7 +99,8 @@ $config['rights'] = array(
         'class'     => '',
         'icon'      => 'menu-icon fa fa-cog',
         'child' => array(
-            
+            '6_1' => array('is_menu'=>0, 'name'=>'添加SDK', 'url'=>'/sdk/index/add'),
+			'6_2' => array('is_menu'=>0, 'name'=>'操作SDK', 'url'=>'/sdk/index/cancel'),
         ),
  
     ), 
@@ -139,6 +142,22 @@ $config['rights'] = array(
                     '7_3_1' => array('is_menu'=>0, 'name'=>'标记', 'url'=>'/finance/index/unexecuted'),
                 ),
             ),
+			'7_4' => array(
+                'is_menu'=>1,
+                'type'      => 'item',
+                'name'      => '开具发票',
+                'url'       =>'/finance/index/adinvoice',
+                'child'     => array(
+                    '7_4_1' => array('is_menu'=>0, 'name'=>'开票', 'url'=>'/finance/index/add_adinvoice'),
+                ),
+            ),
+			'7_5' => array(
+                'is_menu'=>1,
+                'type'      => 'item',
+                'name'      => '充值',
+                'url'       =>'/finance/index/listrecord',
+            ),
+
         ),
     ),
 

@@ -4,7 +4,7 @@
 		<div class="topblock clearfix">
 			<dl class="topitemdl topitemdl25">
 				<dd>广告数量</dd>
-				<dt>130个</dt>
+				<dt><?php echo $total; ?>个</dt>
 			</dl>
 			<dl class="topitemdl topitemdl25">
 				<dd>充值总额(元)</dd>
@@ -15,7 +15,7 @@
 				<dt>￥60040.30</dt>
 			</dl>
 			<dl class="topitemdl topitemdl25 noborder">
-				<dd><a href="/advertiser/index/add" class="addads">添加广告主</a></dd>
+				<dd><a href="/authority/admin/add?type=0" class="addads">添加广告主</a></dd>
 			</dl>
 		</div>
 		
@@ -36,34 +36,25 @@
 				</tr> 
 			  </thead>
 			  <tbody>
+			   <?php foreach ($list as $v){ ?>
 				<tr>
-				  <td>24</td>
-				  <td>18600643256</td>
-				  <td>hello@e7124.com</td>
-				  <td>15</td>
+				  <td><?=$v['id']?></td>
+				  <td><?=$v['phone']?></td>
+				  <td><?=$v['email']?></td>
+				  <td><?=$v['ad_total']?></td>
 				  <td>5</td>
-				  <td>￥2345140.00</td>
-				  <td>￥2330.00</td>
+				  <td>￥140.00</td>
+				  <td>￥30.00</td>
 				  <td><span class="tdfont01 editjs">￥<input type="text" value="0" class="editput" disabled=""></span></td>
-				  <td><a href="重置密码.html" class="tdfont01">重置</a></td>
-				  <td><a class="tdfont01" href="/advertiser/index/details">查看详情</a></td>
+				  <td><a href="/advertiser/index/resetpwd?code=<?=$v['code']?>&id=<?=$v['id']?>&type=<?=$v['type']?>" class="tdfont01">重置</a></td>
+				  <td><a class="tdfont01" href="/advertiser/index/details?code=<?=$v['code']?>&id=<?=$v['id']?>&type=<?=$v['type']?>">查看详情</a></td>
 				</tr>
-				<tr>
-				  <td>24</td>
-				  <td>18600643256</td>
-				  <td>hello@e7124.com</td>
-				  <td>15</td>
-				  <td>5</td>
-				  <td>￥2345140.00</td>
-				  <td>￥2330.00</td>
-				  <td><span class="tdfont01 editjs">￥<input type="text" value="0" class="editput" disabled=""></span></td>
-				  <td><a href="重置密码.html" class="tdfont01">重置</a></td>
-				  <td><a class="tdfont01" href="/advertiser/index/details">查看详情</a></td>
-				</tr>
+				<?php } ?>
 			  </tbody>
 			</table>
 			
-			<div id="demo0" class="pages"></div>
+			<div id="demo0" class="pages"><div class="y_tip">共 <?php echo $pager['count'];?> 条 每页 <?php echo $pagesize;?> 条	</div><div class="y_page"><?php echo $pager['links'];?></div></div>
+		</div>
 		</div>
     </div>
   </div>
@@ -93,15 +84,15 @@
 <script type="text/javascript" src="layui/layui.js"></script>
 <script type="text/javascript" src="js/global.js"></script>
 <script>
-layui.use(['laypage', 'layer'], function(){
-  var laypage = layui.laypage
-  ,layer = layui.layer;
-  //总页数低于页码总数
-  laypage.render({
-    elem: 'demo0'
-    ,count: 50 //数据总数
-  });
-  });
+//layui.use(['laypage', 'layer'], function(){
+  //var laypage = layui.laypage
+  //,layer = layui.layer;
+  ////总页数低于页码总数
+  //laypage.render({
+    //elem: 'demo0'
+    //,count: 50 //数据总数
+  //});
+  //});
   
 layui.use('layer', function(){ //独立版的layer无需执行这一句
   var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句

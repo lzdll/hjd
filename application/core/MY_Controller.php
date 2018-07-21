@@ -324,5 +324,8 @@ class MY_Controller extends CI_Controller
         return false;
     }
 
-
+     public function check_code($code){
+	 
+	 
+	 }
 }

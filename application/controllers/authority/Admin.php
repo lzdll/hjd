@@ -158,14 +158,13 @@ protected function _save()
 					$type = 1;
 				}
 				$data['type'] = $type;
-				$data['code'] = strtoupper(uniqid());
+				$data['code'] = substr(strtoupper(md5($form['login_name'])),0,8);
 				$data['login_name'] = $form['login_name'];
 				$data['password'] = gen_pwd($form['password']);
 				$data['status'] = $form['status'];	
 				$data['role_id'] = $form['role'];
 				$data['email'] = $form['email'];
-				
-				$data['created_time'] = time();
+				$data['created_time'] = date("Y-m-d H:i:s");
 				$rs = $this->user_model->add($data) ;
 			}
             return true;

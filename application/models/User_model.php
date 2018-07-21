@@ -97,7 +97,7 @@ class User_model extends MY_Model
      */
     function deleteAdmin($id)
     {
-    	$this->deleteByPk($id,array('type'=>1));
+    	$this->deleteByPk($id);
     }
 
 }

@@ -6,7 +6,6 @@ require_once("digest.php");
 class Proxy{
     function UploadFiles($key,$file){
         $bucket = 'osv';
-        $httpurl = "http://osv.ufile.ucloud.com.cn";
         //初始化分片上传,获取本地上传的uploadId和分片大小
         list($data, $err) = $this->UCloud_MInit($bucket, $key);
         $uploadId = $data['UploadId'];
@@ -16,7 +15,7 @@ class Proxy{
         //完成上传
         list($data, $err) = $this->UCloud_MFinish($bucket, $key, $uploadId, $etagList);
         $upload_file_url = $data['Key'];
-        return $httpurl.$upload_file_url;
+        return $upload_file_url;
     }
     //------------------------------普通上传------------------------------
     function UCloud_PutFile($bucket, $key, $file)

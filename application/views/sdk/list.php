@@ -17,36 +17,22 @@
 				</tr> 
 			  </thead>
 			  <tbody>
+			  <?php foreach ($list as $v){ ?>
 				<tr>
-				  <td>name</td>
-				  <td>https://www.baidu.com/</td>
-				  <td>xiaochegnxuid</td>
-				  <td>appid</td>
-				  <td>AppSecret</td>
-				  <td><div class="iconpic"><img src="/public/money_ex/images/dot003.png" /></div></td>
-				  <td><span class="opearbtn opearbtnjs2 active">禁用</span></td>
+				  <td><?=$v['name']?></td>
+				  <td><?=$v['url']?></td>
+				  <td><?=$v['sappid']?></td>
+				  <td><?=$v['appid']?></td>
+				  <td><?=$v['app_secret']?></td>
+				  <td><div class="iconpic"><img src="<?=$v['icon']?>" /></div></td>
+				  <td><?php if($v['status'] == 0 ){?> <span class="opearbtn opearbtnjs" data-id="<?=$v['id']?>">禁用</span><?php   }else{ ?> <span class="opearbtn  opearbtnjs2 active" data-id="<?=$v['id']?>">启用</span><?php } ?>
+				  
+				  </td>
 				</tr>
-				<tr>
-				  <td>name</td>
-				  <td>https://www.baidu.com/</td>
-				  <td>xiaochegnxuid</td>
-				  <td>appid</td>
-				  <td>AppSecret</td>
-				  <td><div class="iconpic"><img src="/public/money_ex/images/dot003.png" /></div></td>
-				  <td><span class="opearbtn opearbtnjs2 active">禁用</span></td>
-				</tr>
-				<tr>
-				  <td>name</td>
-				  <td>https://www.baidu.com/</td>
-				  <td>xiaochegnxuid</td>
-				  <td>appid</td>
-				  <td>AppSecret</td>
-				  <td><div class="iconpic"><img src="/public/money_ex/images/dot003.png" /></div></td>
-				  <td><span class="opearbtn opearbtnjs">启用</span></td>
-				</tr>
+				<?php } ?>
 			  </tbody>
 			</table>
-			<div id="demo0" class="pages"></div>
+			<div id="demo0" class="pages"><div class="y_tip">共 <?php echo $pager['count'];?> 条 每页 <?php echo $pagesize;?> 条	</div><div class="y_page"><?php echo $pager['links'];?></div></div>
 		</div>
     </div>
   </div>
@@ -65,62 +51,79 @@
 <script type="text/javascript" src="/public/money_ex/layui/layui.js"></script>
 <script type="text/javascript" src="/public/money_ex/js/global.js"></script>
 <script>
-/**
-$(document).on("click",".opearbtn",function(){
-	if($(this).hasClass("active")){
-		$(this).removeClass("active");
-		$(this).html("启用");
-	}else{
-		$(this).addClass("active");
-		$(this).html("禁用");
-	}
-});**/
 layui.use('layer', function(){ //独立版的layer无需执行这一句
   var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
 	$(document).on("click",".opearbtnjs",function(){
+		var id=$(this).data("id");
 		layer.open({
-			type: 1
+			 type: 1
 			,title: false //不显示标题栏
 			,closeBtn: false
 			,area: ['400px', '130px']
 			,shade: 0.8
-			,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+			,id: id //设定一个id，防止重复弹出
 			,btn: ['确定','取消']
 			,moveType: 1 //拖拽模式，0或者1
 			,content: $('#layer03')
-			,success: function(layero){
+			, yes: function (index, layero) {
 			  //成功输出内容
-			  console.log(11);
+			  $.ajax({
+					url: '/sdk/index/cancel',
+					dataType: 'json',  
+					type: 'post', 
+					data: {id:id, status:1},
+					success: function(data , textStatus){
+						
+						if (data.status === false)
+					{
+						alert(data.msg);
+						return false;
+					}
+					location.reload()
+					},
+					error: function(jqXHR , textStatus , errorThrown){
+					  //console.log("error");
+					}
+			 });
+
 			}
 		});
 	});
 	$(document).on("click",".opearbtnjs2",function(){
+		var id=$(this).data("id");
 		layer.open({
 			type: 1
 			,title: false //不显示标题栏
 			,closeBtn: false
 			,area: ['400px', '130px']
 			,shade: 0.8
-			,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+			,id: id//设定一个id，防止重复弹出
 			,btn: ['确定','取消']
 			,moveType: 1 //拖拽模式，0或者1
 			,content: $('#layer04')
-			,success: function(layero){
+			,yes: function (index, layero) {
 			  //成功输出内容
-			  console.log(11);
+			  $.ajax({
+					url: '/sdk/index/cancel',
+					dataType: 'json',  
+					type: 'post', 
+					data: {id:id, status:0},
+					success: function(data , textStatus){
+						
+							if (data.status === false)
+					{
+						alert(data.msg);
+						return false;
+					}
+					location.reload()
+					},
+					error: function(jqXHR , textStatus , errorThrown){
+					  //console.log("error");
+					}
+			 });
 			}
 		});
 	});
 });
 
-
-layui.use(['laypage', 'layer'], function(){
-  var laypage = layui.laypage
-  ,layer = layui.layer;
-  //总页数低于页码总数
-  laypage.render({
-    elem: 'demo0'
-    ,count: 50 //数据总数
-  });
-  });
 </script>

@@ -48,7 +48,7 @@
 				</div>
 			</div>
 			<div class="countitem fr">
-				<div class="countnav"><p class="fl countleft"><i><img src="/public/money_ex/images/icon02.png"></i><span>充消</span></p>
+				<div class="countnav"><p class="fl countleft"><i><img src="/public/money_ex/images/icon02.png"></i><span>流量池</span></p>
 				<span class="fr countright"><i class="">+5%</i></span></div>
 				<div class="">
 					<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
