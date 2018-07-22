@@ -12,8 +12,7 @@ class Index extends MY_Controller {
         parent::__construct();
         $this->_initNav();
         $this->load->library('session');
-       
-        //$this->load->model('plugin_building_model');
+        $this->load->model('advert_model');
     }
 
     /**
@@ -23,47 +22,70 @@ class Index extends MY_Controller {
     {
         $method = $this->router->method;
         $nav = array();
-        if ( $method == 'lists' ) 
-        {
-            $nav[] = array('name' => '专车奖励分配管理', 'url' => '');
-        }
-        else if ( $method == 'record' ) 
-        {
-            $nav[] = array('name' => '专车奖励单数分配', 'url' => '');
-        }
-        else if ( $method == 'recorddetail' ) 
-        {
-            $nav[] = array('name' => '系统奖励明细', 'url' => '');
-        }
-      
         $this->data['nav'] = array_merge($this->data['nav'], $nav);
     }
 
 	public function lists()
 	{
-        //$data  = $this->input->get();
-        //$valid      = array();
-        //$validData  = $this->_getValidParam($data, $valid);
-        //$urlParam   = $this->_generalUrl($validData);
-        //$page = intval($data['page']) > 0 ? intval($data['page']) : 1;
-        //$data['page'] = $page;
-        //$offset = ($page-1) * $this->limit;
-        //$rs = $this->Reward_model->getList(array(),$this->limit, $offset);
-       //// var_dump($rs);die;
-        //if ($data['_debug'] == '1')
-        //{
-            //var_dump($this->db->last_query());
-        //}
-
-        //$filters['config'] = $this->config->item('reward');
-        
-        //$this->data = array_merge($this->data,array(
-            //'list'      => $rs['list'],
-            //'page'      => page($urlParam,$rs['cnt'],$this->limit),
-            //'filters'   => $filters,
-        //));
+        $input = array_merge($this->input->get(), $this->input->post());
+		$filter = array();
+        $search = array_intersect_key($input, $filter);
+        $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
+		$offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
+		//获取广告数量总数
+		$advert_num = $this->advert_model->getAdCount($where);
+		//获取消耗金额
+		$consume = $this->advert_model->getConsume($where);
+        $where = $this->advert_model->conditions($where);
+        $total = $this->advert_model->getCount($where);
+        $list = $this->advert_model->findAlls($where,$pagesize,$offset);
+		foreach($list as $key=>$val){
+			//获取CPM
+			$cpm = $this->advert_model->getCpm($val);
+			$list[$key]['cmp_price'] = $cpm['cmp_price']?$cpm['cmp_price']/100:0;
+		}
+        $this->data['list'] = $list;
+        $this->data['total'] = $total;
+        $this->data['advert_num'] = $advert_num;
+		$this->data['consume'] = $consume;
+        $this->data['pagesize'] = $pagesize;
+        //分页
+        if ($total > 0) {
+            $query_str = http_build_query($search);
+            $this->data['pager'] = page($query_str, $total, $pagesize);
+        }
 		$this->layout->view('/advert/list', $this->data);
 	} 
 	
+	/**
+     * 修改千人展示价
+     */
+	public function editcmp(){
+		$data = $this->input->post();
+        $res = array('status' => false, 'msg' => '');
+        $update = array();
+		$cpm = $this->advert_model->getCpm($data);
+        if ($cpm) {//存在更新
+            $update['price']=$data['cmp_price']*100;
+			$update['status']=0;
+			$update['created_time']=date("Y-m-d H:i:s");
+			$rUp =$this->db->where(array('user_code'=>$data['owner'],'ad_code'=>$data['code'],'type'=>1))->update('wy_ad_price', $update);
+        }else{//不存在 插入
+			$update['user_code']=$data['owner'];
+			$update['ad_code']=$data['code'];
+			$update['type']=1;
+			$update['code']=get_code($data['owner']);
+			$update['price']=$data['cmp_price']*100;
+			$update['status']=0;
+			$update['created_time']=date("Y-m-d H:i:s");
+			$rUp =$this->db->insert_batch('wy_ad_price', $update);
+		}
+        if ($rUp === false) {
+            $res['msg'] = "更改失败";
+            $this->_outputJSON($res);
+        }
+        $res['status'] = true;
+        $this->_outputJSON($res);
+	}
 
 }

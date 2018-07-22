@@ -1,4 +1,6 @@
 <div class="postnav">SDK管理 - <span class="">添加SDK</span></div>
+<script src="/public/money_ex/js/jquery-1.4.4.min.js" type="text/javascript"></script>
+<script src="/public/money_ex/js/ajaxfileupload.js" type="text/javascript"></script>
 	<div class="layuibodycont">
 		<div class="clearfix formblock">
 			<p class="formtitle">添加SDK</p>
@@ -36,17 +38,27 @@
 				  
 				  <div class="layui-form-item">
 					<label class="layui-form-label">icon：</label>
-					<div class="layui-input-block">
-					  <!--<div class="addfiles">
-						<div class="addfilesbtn"><span class=""></span></div>
-						<input type="file" class="putfiles" />
-					  </div>-->
+					<!---上传前效果-->
+					<div class="layui-input-block" id='uploadfirst'>
 					  <div class="file-input-wrapper">
 							<input type="button" class="file_btn" value="">
-							<input type="file" class="file-input" value="" name='file' id="file">
+							<input type="file" class="file-input" value="" name='file' id="file" onchange="return fileupload();" >
 						</div>
 					  <span class="addfilespro">尺寸：100*100像素</span>
 					</div>
+					<!---上传后效果-->
+					<div class="layui-input-block" id='uploadlast' style="display:none">
+					      <img src="/public/money_ex/images/main_01.gif" id="loading" style="display: none" />
+							 <span id="imgk">
+                             <img src="" id="photoImg" style="display:none;width:100px;height:100px;"/>
+							 </span>
+							 <b class="close" id='close' style="display: none" onclick="del_img();"></b>
+
+							<input type="hidden" value="" id="imgsrc" name="imgsrc">
+							<span class="addfilespro">尺寸：100*100像素</span>
+
+					</div>
+
 				  </div>
 				  <div class="layui-form-item">
 					<div class="layui-input-block formopearbtn">
@@ -61,6 +73,38 @@
     </div>
   </div>
  <script type="text/javascript">
+ //ajax 上传图片
+ function fileupload(){
+		$("#loading").show();
+		$("#uploadlast").show();
+		$("#uploadfirst").hide();
+		$.ajaxFileUpload({
+			url: "/sdk/index/setimg",
+			secureuri:false,
+			fileElementId:"file",
+			dataType:"json",
+			success:function(data,status) {
+				if(data.status==0) {
+					$("#loading").hide();
+					$("#uploadlast").hide();
+					$("#uploadfirst").show();
+					alert(data.msg);
+					return false;
+				}else {
+					$("#loading").hide();
+					$("#photoImg").show();
+					$("#photoImg").attr("src", data.url);
+					$("#imgsrc").val(data.url);
+					$("#close").show();
+				}
+			},
+			error:function (data,status,e) {
+				alert(e);
+			}
+		})
+		return false;
+  }
+
 $(document).ready(function(){
 	$("#submitBtn").click(function(){
 		var name = $('#name').val();

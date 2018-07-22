@@ -22,18 +22,12 @@ class Index extends MY_Controller {
     {
         $method = $this->router->method;
         $nav = array();
-        if ( $method == 'lists' ) 
-        {
-            $nav[] = array('name' => '流量主', 'url' => '');
-        }
         $this->data['nav'] = array_merge($this->data['nav'], $nav);
     }
 
 	public function lists()
 	{
-        $this->data['nav'] = array_merge($this->data['nav'], array(
-            array('name' => '意见反馈', 'url' => '')
-        ));
+
         $input = array_merge($this->input->get(), $this->input->post());
 		$filter = array();
         $search = array_intersect_key($input, $filter);
@@ -62,9 +56,7 @@ class Index extends MY_Controller {
 	} 
 	public function details()
 	{
-        $this->data['nav'] = array_merge($this->data['nav'], array(
-            array('name' => '意见反馈', 'url' => '')
-        ));
+
         $input = array_merge($this->input->get(), $this->input->post());
 		$filter = array();
         $search = array_intersect_key($input, $filter);

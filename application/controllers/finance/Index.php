@@ -14,6 +14,7 @@ class Index extends MY_Controller {
         $this->load->library('session');
         $this->load->model('audit_model');
 		$this->load->model('invoice_model');
+		$this->load->library('/ucloud/proxy');
     }
 
     /**
@@ -75,13 +76,36 @@ class Index extends MY_Controller {
         }
 		$this->layout->view('/finance/invoice', $this->data);
 	} 
+
+	public function add_invoice(){
+		$input = array_merge($this->input->get(), $this->input->post());
+		if($input){
+			$targetFolder = date('Y/m/d')."/img/"; // Relative to the root
+			$newname =$this->user['code']."_".time();//图片名字
+			$fileParts = pathinfo($_FILES['file']['name']);
+			$filename = rtrim($targetFolder). $newname.'.'.$fileParts['extension'];//图片路径
+			$filename =iconv("UTF-8","gb2312",$filename);
+			$upload_file_url = $this->proxy->UploadFiles($filename,$_FILES["file"]["tmp_name"]);
+			$upload_file_url = 'http://osv.ufile.ucloud.com.cn/'.$upload_file_url;
+			$id=$input['id'];
+			$update['status'] = 1;
+			$update['img'] = $upload_file_url;
+			$rUp =$this->db->where(array('id'=>$id))->update($this->db->dbprefix.'invoice', $update);
+			if($rUp){
+				 ci_redirect('/finance/index/invoice', 3, '添加成功');
+			}else{
+				 ci_redirect('/finance/index/invoice', 3, '添加失败');
+			}
+		}
+	
+	}
 	public function present()
 	{
-       $data  = $this->input->get();
+        $data  = $this->input->get();
         $valid      = array();
         $validData  = $this->_getValidParam($data, $valid);
         $urlParam   = $this->_generalUrl($validData);
-       $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
+        $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
 		$offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
 		$where ='1 = 1 ANd id>0 AND subject=0';
         $total = $this->audit_model->getCount($where);
@@ -126,7 +150,7 @@ class Index extends MY_Controller {
 		$this->data['list'] = $list;
 		$this->layout->view('/finance/add', $this->data);
     }
-public function listrecord(){
+	public function listrecord(){
         $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
         $offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
         $info = $this->audit_model->getList(
@@ -164,7 +188,7 @@ public function listrecord(){
         $info = $this->invoice_model-> getList($where = array('owner'=>$this->user['code']),$limit = $pagesize, $offset = $offset, $sort = 'created_time');
         foreach ( $info['list']as &$item) {
             $item['created_time'] = date('Y-m-d',strtotime($item['created_time']));
-            $item['money'] =number_format((floor($item['money']/100)).".".($item['money']%100),2,'.','');
+            $item['money'] = number_format($item['money'],2,'.','');
         }
         $total = $info['cnt'];
         $this->data['list'] = $info['list'];
@@ -187,7 +211,7 @@ public function listrecord(){
             $arr['owner'] = $this->user['code'];
             $arr['title'] = $post['title'];
             $arr['taxid'] = $post['invoiceid'];
-            $arr['money'] = $post['amount']* 100;//转为分
+            $arr['money'] = $post['amount'];
             $arr['comment'] = $post['contact'];
             $arr['status'] = 0;
             $arr['created_time'] = date('Y-m-d H:i:s',time());
@@ -195,8 +219,6 @@ public function listrecord(){
             $res = $this->invoice_model->add($arr);
             if($res){
                 ci_redirect('/finance/index/adinvoice', 3, '添加成功');
-            }else{
-                ci_redirect('/finance/index/adinvoice', 2, '添加失败');
             }
 
         }else{
@@ -241,7 +263,6 @@ public function listrecord(){
             $data['date_end'] = date('Y-m-d', time());
             $where['zygw.create_time <='] = strtotime($data['date_end']) + 3600*24;
         }
-
         if (isset($data['city_en']) && $data['city_en']) {
             $where['zygw.city_en ='] = $data['city_en'];
         } else {

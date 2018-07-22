@@ -41,25 +41,7 @@
 <script src="/public/libs/jstree/jstree.min.js"></script>
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
-$(function() {
-	
-	/* demo
-	$('#jstree2').jstree({'plugins':["wholerow","checkbox"], 'core' : {
-		'data' : [
-			{
-				"text" : "Same but with checkboxes",
-				"children" : [
-					{ "text" : "initially selected", "state" : { "selected" : true } },
-					{ "text" : "custom icon URL", "icon" : "//jstree.com/tree-icon.png" },
-					{ "text" : "initially open", "state" : { "opened" : true }, "children" : [ "Another node" ] },
-					{ "text" : "custom icon class", "icon" : "glyphicon glyphicon-leaf" }
-				]
-			},
-			"And wholerow selection"
-		]
-	}});
-	
-	*/	
+$(function() {	
 	$('#container').jstree({'plugins':["wholerow","checkbox"], 'core' : {
 		'data' : [
 			<?php foreach($rights as $k=>$v){ ?>
@@ -106,10 +88,9 @@ $(function() {
 		]
 	}});
 	$("#btnSubmit").click(function(){
-		
 		var selectKey = $('#container').jstree().get_checked();
-		alert(<?=$info['id']?>);
-		alert(selectKey);
+		//alert(<?=$info['id']?>);
+		//alert(selectKey);
 		$.ajax({
 			url: '/authority/role/rights',
 			dataType: 'json',  

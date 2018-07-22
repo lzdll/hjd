@@ -3,22 +3,24 @@
 		<div class="topblock clearfix">
 			<dl class="topitemdl topitemdl25">
 				<dd>广告数量</dd>
-				<dt>130个</dt>
+				<dt><?php echo $advert_num;  ?>个</dt>
 			</dl>
 			<dl class="topitemdl topitemdl25">
 				<dd>消耗金额(元)</dd>
-				<dt>￥33040.10</dt>
+				<dt><?php echo "￥".$consume['st_price']/100;  ?></dt>
 			</dl>
 			<dl class="topitemdl topitemdl25">
 				<dd>点击率</dd>
-				<dt>73%</dt>
+				<dt>
+				<?php 
+				$click = round($consume['cpc']/($consume['cpc']+$consume['cpm']), 2)*100;
+				echo  $click."%" ?></dt>
 			</dl>
 			<dl class="topitemdl topitemdl25" style="border:none">
 				<dd>曝光量</dd>
-				<dt>123649</dt>
+				<dt><?php echo $consume['cpc']+$consume['cpm'];  ?></dt>
 			</dl>
 		</div>
-		
 		<div class="clearfix mt10">
 			<table class="layui-table">
 			  <thead>
@@ -37,55 +39,57 @@
 				</tr> 
 			  </thead>
 			  <tbody>
+			  <?php foreach ($list as $v){ ?>
 				<tr>
-				  <td><a href="广告位详情.html" class="tdviewbtn">米加小程序</a></td>
-				  <td>32654</td>
-				  <td>1354</td>
-				  <td>35%</td>
-				  <td>￥4.5</td>
-				  <td><span class="tdfont01 editjs">￥<input type="text" value="70" class="editput" disabled=""></span></td>
-				  <td>186****3625</td>
-				  <td>￥0.00</td>
-				  <td><a href="绑定SDK.html"><span class="tdobtn01 active">绑定</span></a></td>
-				  <td><a href="/advert/index/adopt"><span class="tdstatus active">待审核</span></a></td>
-				  <td><span class="tdoper02">未投放</span></td>
+				  <td><a href="/advert/index/details" class="tdviewbtn"><?=$v['name']?></a></td>
+				  <td><?php echo $v['cpc']+$v['cpm'];  ?></td>
+				  <td><?php echo $v['cpc'];  ?></td>
+				  <td>
+				  <?php 
+					$click = round($v['cpc']/($v['cpc']+$v['cpm']), 2)*100;
+					echo  $click."%" ?>
+					</td>
+				  <td>
+					<?php 
+						$totol=$v['cpc']*100;
+						if($v['ad_price']){
+							echo "￥".$v['ad_price']/$totol; 
+						}else{
+							echo "￥0"; 
+						}
+					?>
+					</td>
+
+				  <td><span class="tdfont01 editjs" onclick="editjs('<?=$v['code']?>','<?=$v['owner']?>')">￥<input type="text" value="<?php echo $v['cmp_price'];  ?>" class="editput" disabled="" id="editput_<?php echo $v['id']; ?>"></span></td>
+
+				  <td><?php echo $v['owner'];  ?></td>
+				  <td><?php echo "￥".$v['ad_price']/100;  ?></td>
+				  <td><a href="/advert/index/binding"><span class="tdobtn01 active">绑定</span></a></td>
+				  <td>
+					  <?php if($v['audit_status'] == 0 ){?> 
+						<a href="/advert/index/adopt"><span class="tdstatus active">待审核</span></a>
+					  <?php   }else if($v['audit_status'] == 1){ ?> 
+						<a href="javascript:void(0)"><span class="tdstatus">通过审核</span></a>
+					  <?php }else if($v['audit_status'] == 3){ ?>
+						<a href="/advert/index/adopt"><span class="tdstatus active">未过审核</span></a>	
+					  <?php } ?>
+				  </td>
+				  <td>
+					  <?php if($v['status'] == 0 ){?> 
+					   <span class="tdoper02 active aduseroper">撤下</span>
+					  
+					  <?php   }else{ ?> 
+					 <span class="tdoper02">未投放</span>
+					  <?php } ?>
+				 </td>
 				</tr>
-				<tr>
-				  <td><a href="/advert/index/add" class="tdviewbtn">米加小程序</a></td>
-				  <td>32654</td>
-				  <td>1354</td>
-				  <td>35%</td>
-				  <td>￥4.5</td>
-				  <td><span class="tdfont01 editjs">￥<input type="text" value="70" class="editput" disabled=""></span></td>
-				  <td>186****3625</td>
-				  <td>￥0.00</td>
-				  <td><span class="tdobtn01">小玩家</span></td>
-				  <td><a href="page-1-运营平台2广告主_4广告审核2.html"><span class="tdstatus">通过审核</span></a></td>
-				  <td><span class="tdoper02 active aduseroper">撤下</span></td>
-				</tr>
-				<tr>
-				  <td><a href="广告位详情.html" class="tdviewbtn">米加小程序</a></td>
-				  <td>32654</td>
-				  <td>1354</td>
-				  <td>35%</td>
-				  <td>￥4.5</td>
-				  <td><span class="tdfont01 editjs">￥<input type="text" value="70" class="editput" disabled=""></span></td>
-				  <td>186****3625</td>
-				  <td>￥0.00</td>
-				  <td><span class="tdobtn01">小玩家</span></td>
-				  <td><a href="page-1-运营平台2广告主_4广告审核2.html"><span class="tdstatus">通过审核</span></a></td>
-				  <td><span class="tdoper02">未投放</span></td>
-				</tr>
+				<?php } ?>
 			  </tbody>
 			</table>
-			<div id="demo0" class="pages"></div>
+			<div id="demo0" class="pages"><div class="y_tip">共 <?php echo $pager['count'];?> 条 每页 <?php echo $pagesize;?> 条</div><div class="y_page"><?php echo $pager['links'];?></div></div>
 		</div>
     </div>
   </div>
-  <!--<div class="site-tree-mobile layui-hide">
-	  <i class="layui-icon layui-icon01"></i>
-  </div>-->
-
 </div>
  <div class="selectgoodsbox tx" id="layer03">
 	<div class="adopearbox">您确定要撤下此广告吗？</div>
@@ -98,7 +102,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">价格：</label>
 					<div class="layui-input-block" >
-					  <span>￥</span><input type="text" name="title" placeholder="请输入新的价格" class="layui-input">
+					  <span>￥</span><input type="text" name="title" placeholder="请输入新的价格" class="layui-input" id="cmp_price">
 					</div>
 				  </div>
 			 </form>
@@ -110,15 +114,45 @@
 <script type="text/javascript" src="layui/layui.js"></script>
 <script type="text/javascript" src="js/global.js"></script>
 <script>
-layui.use(['laypage', 'layer'], function(){
-  var laypage = layui.laypage
-  ,layer = layui.layer;
-  //总页数低于页码总数
-  laypage.render({
-    elem: 'demo0'
-    ,count: 50 //数据总数
-  });
-  });
+function editjs(code,owner){
+alert(code);
+alert(owner);
+layer.open({
+			 type: 1
+			,title: false //不显示标题栏
+			,closeBtn: false
+			,area: ['400px', '230px']
+			,shade: 0.8
+			,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+			,btn: ['确定','取消']
+			,moveType: 1 //拖拽模式，0或者1
+			,content: $('#layer04')
+			,yes: function (index, layero) {
+				 var cmp_price = $("#cmp_price").val();
+				//成功输出内容
+				$.ajax({
+					url: '/advert/index/editcmp',
+					dataType: 'json',  
+					type: 'post', 
+					data: {code:code, owner:owner,cmp_price,cmp_price},
+					success: function(data , textStatus){
+						
+						if (data.status === false)
+					{
+						alert(data.msg);
+						return false;
+					}
+					location.reload()
+					},
+					error: function(jqXHR , textStatus , errorThrown){
+					  //console.log("error");
+					}
+				});
+			}
+		});
+
+}
+
   layui.use('layer', function(){ //独立版的layer无需执行这一句
   var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
 	$(document).on("click",".aduseroper",function(){
@@ -138,24 +172,7 @@ layui.use(['laypage', 'layer'], function(){
 			}
 		});
 	});
-		$(document).on("click",".editjs",function(){
-		layer.open({
-			type: 1
-			,title: false //不显示标题栏
-			,closeBtn: false
-			,area: ['400px', '230px']
-			,shade: 0.8
-			,id: 'LAY_layuipro' //设定一个id，防止重复弹出
-			,btn: ['确定','取消']
-			,moveType: 1 //拖拽模式，0或者1
-			,content: $('#layer04')
-			,success: function(layero){
-			  //成功输出内容
-			  console.log(11);
-			}
-		});
-	});
-
+	
 	
 });
 </script>

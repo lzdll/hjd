@@ -157,7 +157,6 @@ class Role extends MY_Controller
         {
             ci_redirect('/authority/role/index', 3, '数据错误');
         }
-		print_r($info);
         $info['operate_rights_arr'] = explode(',', $info['operate_rights']);
         $this->data['info'] = $info;
         $this->data['rights'] = $this->config->item('rights');

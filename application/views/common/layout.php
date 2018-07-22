@@ -24,6 +24,8 @@
 <script type="text/javascript" src="/public/money_ex/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="/public/money_ex/layui/layui.js"></script>
 <script type="text/javascript" src="/public/money_ex/js/global.js"></script>
+<script type="text/javascript" src="/public/money_ex/js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="/public/money_ex/js/ajaxfileupload.js"></script>
 <script type="text/javascript" src="/public/static/js/jquery-3.2.0.min.js"></script>
 <?php  if($user['type'] == 0){ ?>
 <link rel="stylesheet" type="text/css" href="/public/money_ex/css/globalforAd.css" media="all"/>
