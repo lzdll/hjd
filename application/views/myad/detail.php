@@ -19,27 +19,27 @@
 			<div class="clearfix topblock">
 				<dl class="topitemdl4">
 					<dd>展示广告数量</dd>
-					<dt>3</dt>
+					<dt><?php if(bccomp($ad_total, 0)===1){echo $ad_total;}else{echo 0;}?></dt>
 				</dl>
 				<dl class="topitemdl4">
 					<dd>点击均价</dd>
-					<dt>￥0.30</dt>
+					<dt>￥<?php if(bccomp($avgamount, 0)===1){echo $avgamount;}else{ echo 0;}?></dt>
 				</dl>
 				<dl class="topitemdl4">
 					<dd>点击量</dd>
-					<dt>600400</dt>
+					<dt><?php if(bccomp($total_cpc, 0)===1){echo $total_cpc;}else { echo 0;}?></dt>
 				</dl>
 				<dl class="topitemdl4 noborder">
 					<dd>收益</dd>
-					<dt>￥60040.30</dt>
+					<dt>￥<?php if(bccomp($st_price, 0)===1){echo $st_price;}else{echo 0;}?></dt>
 				</dl>
 			</div>
 		</div>
 		<div class="clearfix navtabs">
-			<span class="navpan">今日</span>
-			<span class="navpan">昨日</span>
-			<span class="navpan active">近7天</span>
-			<span class="navpan">本月</span>
+			<span class="navpan"><a href="/myad/index/details?id=3&begin_time=<?php echo $date['today']['begin_date'];?>&end_time=<?php echo $date['today']['end_date'];?>" >今日</a></span>
+			<span class="navpan"><a href="/myad/index/details?id=3&begin_time=<?php echo $date['yesterday']['begin_date'];?>&end_time=<?php echo $date['yesterday']['end_date'];?>">昨日</a></span>
+			<span class="navpan active"><a href="/myad/index/details?id=3&begin_time=<?php echo $date['week']['begin_date'];?>&end_time=<?php echo $date['week']['end_date'];?>">近7天</a></span>
+			<span class="navpan"><a href="/myad/index/details?id=3&begin_time=<?php echo $date['month']['begin_date'];?>&end_time=<?php echo $date['month']['end_date'];?>">本月</a></span>
 			<div class="layui-inline" style="margin-top:4px;">
 			  <label class="layui-form-label">时间</label>
 			  <div class="layui-input-inline">
@@ -51,7 +51,7 @@
 			
 			<div class="countitem countitemone">
 				<div class="countnav"><p class="fl countleft"><i><img src="images/icon04.png"></i><span>广告推广量</span></p>
-				<span class="fr countright">均价<i class="">￥0.3</i></span></div>
+				<span class="fr countright">均价<i class="">￥<?php echo $avgamount;?></i></span></div>
 				<div class="">
 					<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 				<div id="report-chart" class="report-chart" style="height:400px" data-action="week"></div>
@@ -64,7 +64,6 @@
 	  <i class="layui-icon layui-icon01"></i>
   </div>-->
 
-</div>
  <div class="selectgoodsbox tx" id="layer03">
 	<div class="adopearbox">您确定要撤下吗？</div>
 </div>
@@ -191,7 +190,7 @@ var option = {
 								}])
 							},
 							color:'#2cc6ad'}},
-            data:[10, 12, 21, 54, 260, 830, 710]
+            data:[<?php echo $staticesCpm;?>]
         },
         {
             name:'点击',
@@ -213,7 +212,7 @@ var option = {
 								}])
 							},color:'#ffc400'
 			}},
-            data:[30, 182, 434, 791, 390, 30, 10]
+            data:[<?php echo $staticesCpm;?>]
         }
     ]
 };

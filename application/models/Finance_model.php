@@ -5,7 +5,7 @@
  * @package models.audit
  * @since 1.0
  */
-class Audit_model extends MY_Model
+class Finance_model extends MY_Model
 {
     /**
      * @var string $tableName 表名
@@ -66,19 +66,6 @@ class Audit_model extends MY_Model
         $row = $this->db->query($sql)->row();
         return (int)$row->total;
     }
-	//组建where查询
-    public function conditions($data)
-    {
-		$where ='1 = 1 ANd id>0';
-        if (!empty($data))
-        {
-		    //用户申请手机号
-		   if($data['audit_name']){
-				$where.=" AND proposer ='".$data['audit_name']."'";
-		   }
-        }
-        return $where;
-    }
 	/**
      * 发票列表
      *
@@ -117,7 +104,32 @@ class Audit_model extends MY_Model
     {
         return $this->updateByPk($id,$data);
     }
-	
+    /**
+     * @desc 获取列表数据
+     * @param array $where
+     * @param int $limit
+     * @param int $offset
+     * @param null $sort
+     * @return mixed
+     */
+    public function getLists($where = array(),$limit = 0, $offset = 0, $sort = NULL)
+    {
+        $this->db->where($where);
+        $this->db->from($this->tableName);
+        //在order、group或limit前查询总数
+        $db = clone($this->db);
+        $count = $db->count_all_results();
+        $this->db->order_by('updated_time','DESC');
+        if($sort !== NULL) {
+            $this->db->order_by($sort);
+        }
+        if($limit > 0) {
+            $this->db->limit($limit, $offset);
+        }
+        $query = $this->db->get();
+        
+        return array('list'=>$query->result_array(),'cnt'=>$count);
+    }
 }
 
  

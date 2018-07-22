@@ -239,10 +239,6 @@ public function listrecord(){
             $data['date_end'] = date('Y-m-d', time());
             $where['zygw.create_time <='] = strtotime($data['date_end']) + 3600*24;
         }
-        // var_dump($data['date_end']);
-        // var_dump(date("Y-m-d H:i:s", strtotime($data['date_end'])));
-        // var_dump(date("Y-m-d H:i:s", strtotime($data['date_end']) +3600*24));
-        // echo 'data:' . var_export($data, true);
 
         if (isset($data['city_en']) && $data['city_en']) {
             $where['zygw.city_en ='] = $data['city_en'];

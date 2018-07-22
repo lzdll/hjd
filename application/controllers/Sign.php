@@ -61,7 +61,7 @@ class Sign extends CI_Controller {
              {
                  $this->session->$k = $v; 
              }
-             ci_redirect('/home/');
+             ci_redirect('/home/index');
          }
  		$this->load->view('/sign/login');
 

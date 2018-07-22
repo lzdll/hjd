@@ -79,6 +79,7 @@ class MY_Model extends CI_Model
                 unset($attributes[$key]);
             }
         }
+        var_dump($attributes);die;
         return $this->db->where($where)->update($this->tableName(), $attributes);
     }
     

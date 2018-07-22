@@ -3,10 +3,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  
 // 操作权限、菜单权限
 $config['rights'] = array(
+     //运营平台权限
     '1' => array(
         'is_menu'   => 1,               // 是否是菜单(是否显示为菜单)
         'type'      => 'item',          // 类型 item菜单  folder目录
-        'name'      => '首页',
+        'name'      => '首页',            //运营平台
         'url'       => '/home/index',
         'class'     => '',
         'icon'      => 'menu-icon fa fa-cog',
@@ -87,8 +88,10 @@ $config['rights'] = array(
         'icon'      => 'menu-icon fa fa-cog',
         'child' => array(
            '5_1' => array('is_menu'=>0, 'name'=>'待审核', 'url'=>'/advert/index/adopt'),
-		   '5_2' => array('is_menu'=>0, 'name'=>'添加小程序', 'url'=>'/advert/index/adopt'),
-        
+		   '5_2' => array('is_menu'=>0, 'name'=>'绑定', 'url'=>'/advert/index/binding'),
+		   '5_3' => array('is_menu'=>0, 'name'=>'修改cmp', 'url'=>'/advert/index/editcmp'),
+		   '5_4' => array('is_menu'=>0, 'name'=>'上线', 'url'=>'/advert/index/online'),
+		   '5_5' => array('is_menu'=>0, 'name'=>'广告详情', 'url'=>'/advert/index/details'),
         ),
     ), 
     '6' => array(
@@ -101,10 +104,10 @@ $config['rights'] = array(
         'child' => array(
             '6_1' => array('is_menu'=>0, 'name'=>'添加SDK', 'url'=>'/sdk/index/add'),
 			'6_2' => array('is_menu'=>0, 'name'=>'操作SDK', 'url'=>'/sdk/index/cancel'),
+			'6_3' => array('is_menu'=>0, 'name'=>'上传图片', 'url'=>'/sdk/index/setimg'),
         ),
  
     ), 
- 
     '7' => array(
         'is_menu'   => 1,               // 是否是菜单(是否显示为菜单)
         'type'      => 'folder',
@@ -142,27 +145,22 @@ $config['rights'] = array(
                     '7_3_1' => array('is_menu'=>0, 'name'=>'标记', 'url'=>'/finance/index/unexecuted'),
                 ),
             ),
-			'7_4' => array(
-                'is_menu'=>1,
-                'type'      => 'item',
-                'name'      => '开具发票',
-                'url'       =>'/finance/index/adinvoice',
-                'child'     => array(
-                    '7_4_1' => array('is_menu'=>0, 'name'=>'开票', 'url'=>'/finance/index/add_adinvoice'),
-                ),
-            ),
-			'7_5' => array(
-                'is_menu'=>1,
-                'type'      => 'item',
-                'name'      => '充值',
-                'url'       =>'/finance/index/listrecord',
-            ),
+		
 
         ),
     ),
-
-
-	'8' => array(
+	//11-19广告主权限
+	'11' => array(
+        'is_menu'   => 1,               // 是否是菜单(是否显示为菜单)
+        'type'      => 'item',          // 类型 item菜单  folder目录
+        'name'      => '首页',            //广告主
+        'url'       => '/ad/index/index',
+        'class'     => '',
+        'icon'      => 'menu-icon fa fa-cog',
+        'child' => array(
+        ),
+    ),
+	'12' => array(
         'is_menu'   => 1,               // 是否是菜单(是否显示为菜单)
         'type'      => 'folder',          // 类型 item菜单  folder目录
         'folder'    => '/ad/',         // 类型 item菜单  folder目录
@@ -171,12 +169,38 @@ $config['rights'] = array(
         'class'     => '',
         'icon'      => 'menu-icon fa fa-cog',
         'child' => array(
-            '8_1' => array('is_menu'=>0, 'name'=>'添加广告', 'url'=>'/ad/index/add'),
-            '8_2' => array('is_menu'=>0, 'name'=>'查看详情', 'url'=>'/ad/index/details'),
+            '12_1' => array('is_menu'=>0, 'name'=>'添加广告', 'url'=>'/ad/index/add'),
+            '12_2' => array('is_menu'=>0, 'name'=>'查看详情', 'url'=>'/ad/index/details'),
         ),
     ),
-	
-	'9' => array(
+	//广告主
+	'13' => array(
+        'is_menu'   => 1,               // 是否是菜单(是否显示为菜单)
+        'type'      => 'folder',
+        'folder'    => '/finance/',         // 类型 item菜单  folder目录
+        'name'      => '财务',
+        'url'       => '/finance/index/lists',
+        'class'     => 'dropdown-toggle',
+        'icon'      => 'menu-icon fa fa-lock',
+        'child' => array(
+			'13_1' => array(
+                'is_menu'=>1,
+                'type'      => 'item',
+                'name'      => '开具发票',
+                'url'       =>'/finance/index/adinvoice',
+                'child'     => array(
+                    '13_1_1' => array('is_menu'=>0, 'name'=>'开票', 'url'=>'/finance/index/add_adinvoice'),
+                ),
+            ),
+			'13_2' => array(
+                'is_menu'=>1,
+                'type'      => 'item',
+                'name'      => '充值',
+                'url'       =>'/finance/index/listrecord',
+            ),
+        ),
+    ),
+	'14' => array(
         'is_menu'   => 1,               // 是否是菜单(是否显示为菜单)
         'type'      => 'folder',
         'folder'    => '/member/',         // 类型 item菜单  folder目录
@@ -185,7 +209,7 @@ $config['rights'] = array(
         'class'     => 'dropdown-toggle',
         'icon'      => 'menu-icon fa fa-lock',
         'child' => array(
-            '9_1' => array(
+            '14_1' => array(
                 'is_menu'=>1,
                 'type'      => 'item',
                 'name'      => '用户资料',
@@ -194,7 +218,7 @@ $config['rights'] = array(
                  
                 ),
             ),
-            '9_2' => array(
+            '14_2' => array(
                 'is_menu'=>1,
                 'type'      => 'item',
                 'name'      => '修改密码',
@@ -207,18 +231,76 @@ $config['rights'] = array(
         ),
     ),
 
-	'10' => array(
-        'is_menu'   => 1,               // 是否是菜单(是否显示为菜单)
-        'type'      => 'folder',          // 类型 item菜单  folder目录
-        'folder'    => '/myad/',         // 类型 item菜单  folder目录
-        'name'      => '我的广告位',
-        'url'       => '/myad/index/lists',
-        'class'     => '',
-        'icon'      => 'menu-icon fa fa-cog',
-        'child' => array(
-            '10_1' => array('is_menu'=>0, 'name'=>'添加广告', 'url'=>'/myad/index/add'),
-            '10_2' => array('is_menu'=>0, 'name'=>'查看详情', 'url'=>'/myad/index/details'),
-			'10_3' => array('is_menu'=>0, 'name'=>'设置', 'url'=>'/myad/index/intercalate'),
-        ),
-    ),
+  //以下全是流量主权限
+	'20' => array(
+		'is_menu'   => 1,               // 是否是菜单(是否显示为菜单)
+		'type'      => 'item',          // 类型 item菜单  folder目录
+		'name'      => '首页',            //流量主
+		'url'       => '/slot/index/index',
+		'class'     => '',
+		'icon'      => 'menu-icon fa fa-cog',
+		'child' => array(
+		),
+	),
+	'21' => array(
+		'is_menu'   => 1,               // 是否是菜单(是否显示为菜单)
+		'type'      => 'folder',          // 类型 item菜单  folder目录
+		'folder'    => '/myad/',         // 类型 item菜单  folder目录
+		'name'      => '我的广告位',
+		'url'       => '/myad/index/lists',
+		'class'     => '',
+		'icon'      => 'menu-icon fa fa-cog',
+		'child' => array(
+			'21_1' => array('is_menu'=>0, 'name'=>'添加广告', 'url'=>'/myad/index/add'),
+			'21_2' => array('is_menu'=>0, 'name'=>'查看详情', 'url'=>'/myad/index/details'),
+			'21_3' => array('is_menu'=>0, 'name'=>'设置', 'url'=>'/myad/index/intercalate'),
+		),
+	),
+	'22' => array(
+			'is_menu'   => 1,               // 是否是菜单(是否显示为菜单)
+			'type'      => 'folder',
+			'folder'    => '/withdraw/',         // 类型 item菜单  folder目录
+			'name'      => '提现管理',
+			'url'       => '/withdraw/index/lists',
+			'class'     => 'dropdown-toggle',
+			'icon'      => 'menu-icon fa fa-lock',
+			'child' => array(
+				'22_1' => array(
+					'is_menu'=>0,
+					'type'      => 'item',
+					'name'      => '提现申请',
+					'url'       =>'/withdraw/index/apply',
+				),
+				
+			),
+		),
+	'23' => array(
+		'is_menu'   => 1,               // 是否是菜单(是否显示为菜单)
+		'type'      => 'folder',
+		'folder'    => '/member/',         // 类型 item菜单  folder目录
+		'name'      => '个人中心',
+		'url'       => '/member/index/lists',
+		'class'     => 'dropdown-toggle',
+		'icon'      => 'menu-icon fa fa-lock',
+		'child' => array(
+			'23_1' => array(
+				'is_menu'=>1,
+				'type'      => 'item',
+				'name'      => '用户资料',
+				'url'       =>'/member/index/lists',
+				'child'     => array(
+				),
+			),
+			'23_2' => array(
+				'is_menu'=>1,
+				'type'      => 'item',
+				'name'      => '修改密码',
+				'url'       =>'/member/index/edit',
+				'child'     => array(
+				 
+				),
+			),
+			
+		),
+	),
 );
