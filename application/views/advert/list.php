@@ -115,8 +115,6 @@
 <script type="text/javascript" src="js/global.js"></script>
 <script>
 function editjs(code,owner){
-alert(code);
-alert(owner);
 layer.open({
 			 type: 1
 			,title: false //不显示标题栏

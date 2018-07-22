@@ -78,7 +78,7 @@ class Index extends MY_Controller {
 			$update['price']=$data['cmp_price']*100;
 			$update['status']=0;
 			$update['created_time']=date("Y-m-d H:i:s");
-			$rUp =$this->db->insert_batch('wy_ad_price', $update);
+			$rUp =$this->db->insert('wy_ad_price', $update);
 		}
         if ($rUp === false) {
             $res['msg'] = "更改失败";
