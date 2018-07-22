@@ -61,7 +61,17 @@ class Sign extends CI_Controller {
              {
                  $this->session->$k = $v; 
              }
-             ci_redirect('/home/index');
+             //0:广告主 1: 流量主 2:运营
+             if($info['type'] == 0){
+//                 ci_redirect('/home/index');
+                 ci_redirect('/ad/index/index');
+             }
+             if($info['type'] == 1){
+                 ci_redirect('/slot/index');
+             }
+             if($info['type'] == 2){
+                 ci_redirect('/home/index');
+             }
          }
  		$this->load->view('/sign/login');
 

@@ -164,7 +164,7 @@ public function listrecord(){
         $info = $this->invoice_model-> getList($where = array('owner'=>$this->user['code']),$limit = $pagesize, $offset = $offset, $sort = 'created_time');
         foreach ( $info['list']as &$item) {
             $item['created_time'] = date('Y-m-d',strtotime($item['created_time']));
-            $item['money'] = number_format($item['money'],2,'.','');
+            $item['money'] =number_format((floor($item['money']/100)).".".($item['money']%100),2,'.','');
         }
         $total = $info['cnt'];
         $this->data['list'] = $info['list'];
@@ -187,7 +187,7 @@ public function listrecord(){
             $arr['owner'] = $this->user['code'];
             $arr['title'] = $post['title'];
             $arr['taxid'] = $post['invoiceid'];
-            $arr['money'] = $post['amount'];
+            $arr['money'] = $post['amount']* 100;//转为分
             $arr['comment'] = $post['contact'];
             $arr['status'] = 0;
             $arr['created_time'] = date('Y-m-d H:i:s',time());
@@ -195,6 +195,8 @@ public function listrecord(){
             $res = $this->invoice_model->add($arr);
             if($res){
                 ci_redirect('/finance/index/adinvoice', 3, '添加成功');
+            }else{
+                ci_redirect('/finance/index/adinvoice', 2, '添加失败');
             }
 
         }else{

@@ -14,6 +14,9 @@ class Index extends MY_Controller
         parent::__construct();
         $this->_initNav();
         $this->load->library('session');
+        $this->load->library('/ucloud/proxy');
+        $this->load->model('adprice_model');
+        $this->load->model('advertiser_model');
         //$this->load->model('plugin_building_model');
     }
 
@@ -46,7 +49,7 @@ class Index extends MY_Controller
      */
     public function index()
     {
-        $this->lists();
+        $this->layout->view('/ad/ad_index', $this->data);
     }
 
     /**
@@ -54,146 +57,111 @@ class Index extends MY_Controller
      */
     public function lists()
     {
-        ////error_reporting(E_ALL);
-        //$input = array_merge($this->input->get(), $this->input->post());
-        //$filter = array('date' => '', 'begin' => '', 'end' => '', 'operator_name' => '','city'=>'','type'=>'','place'=>'','status'=>'');
-        //$search = array_intersect_key($input, $filter);
-        //$pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
-        //$offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
-        //$where = $this->condition($search);
-        //$total = $this->ad_model->getCount($where);
-        //$list = $this->ad_model->findAlls($where,$pagesize,$offset);
-        ////var_dump($total);die;
-        //if ($total) {
-            //foreach ($list as $key => $item) {
-                //$list[$key]['city'] = $this->_getCityName($item['city']);
-                //$list[$key]['operate_time'] = ($item['pub_time']>$item['down_time'])?$item['pub_time']:$item['down_time'];
-            //}
-        //}
-        ////var_dump($search);die;
-        //$this->data['list'] = $list;
-        //$this->data['total'] = $total;
-        //$this->data['search'] = $search;
-        //$this->data['pagesize'] = $pagesize;
 
-        ////分页
-        //if ($total > 0) {
-            //$query_str = http_build_query($search);
-            //$this->data['pager'] = page($query_str, $total, $pagesize);
-        //}
-        //$from = $this->config->item('customer');
-        //$this->data['from'] = $from['source'];
+        $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
+        $offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
+        $info = $this->advertiser_model-> adlist($this->user['code'],$limit = 0, $offset = 0);
+        foreach ( $info['list']as &$item) {
+            $item['money'] =number_format((floor($item['money']/100)).".".($item['money']%100),2,'.','');
+        }
+//        var_dump($info);die;
+        $total = $info['cnt'];
+        $this->data['list'] = $info['list'];
+
+        //分页
+        if ($total > 0) {
+            $query_str = http_build_query($search);
+            $this->data['pager'] = page($query_str, $total, $pagesize);
+        }
 
         $this->layout->view('/ad/list', $this->data);
     }
-    
-   
-    //组建where查询
-    public function condition($data)
-    {
-        //var_dump($data);die;
-        $where ='1 = 1 and a.status >=0 and b.aid IS NOT NULL  ';
-        $where1 = '1=1 ';
-        if (!empty($data))
-        {
-            if($data['date']){
-                $begin = strtotime("-{$data['date']} day");
-                $end = time();
-                $where.=" AND a.comment_time >=$begin and a.comment_time <=$end";
-            }else if($data['begin'] && $data['end']){
-                $begin = isset($data['begin']) && !empty($data['begin']) ? strtotime($data['begin']) : 0;
-                $end = isset($data['end']) && !empty($data['end']) ? strtotime($data['end'].'23:59:59') : time();
-                $where.=" AND a.create_time >=$begin and a.create_time <=$end";
-            }
-            if($data['city']){
-                $where1.=" AND city ='".$data['city']."'";
-            }else{
-                if (!empty($this->user['city_rights'])) {
-                    $citys = explode(',', $this->user['city_rights']);
-                    $citys = "'" . implode("','", $citys) . "'";
-                    //$where["zygw.city_en in ({$citys}) AND "] = "1";
-                    $where1.=" AND city in ({$citys}) ";
-                    // $where['city'] = "`city` in ('$citys')";
-                } 
-            }
-            if($data['type']){
-                $where.=" AND a.type =".$data['type'];
-            }
-            if($data['place']){
-                $where.=" AND a.place =".$data['place'];
-            }
-            if($data['operator_name']){
-                $where.=" AND a.operator_name REGEXP '".$data['operator_name']."'";
-            }
-            if(isset($data['status']) && $data['status']!=''){
-                $where.=" AND a.status =".$data['status'];
-            }
-            
-        }
-        return array('a'=>$where,'b'=>$where1);
-    }
 
-    
+
     public function add()
     {
         $method = strtolower($_SERVER['REQUEST_METHOD']);
         if ($method == 'get')
         {
-            $citys = $this->house_city_model->findAll();
-            $this->data['citys'] = $citys;
             $this->layout->view('/ad/add', $this->data);
         }
-        
-        if ($method == 'post')
-        {
-            $res = array('status'=>false, 'msg'=>'');
-            $post = $this->input->post();
-            
-            if (isset($post['card']) && !empty($post['card']))
-            {
-                $post['pic_url'] = $post['card'];
-                unset($post['card']);
-            }
-            if (isset($post['logo']) && !empty($post['logo']))
-            {
-                $post['choice_pic'] = $post['logo'];
-                unset($post['logo']);
-            }
-            if (isset($post['openAd']) && !empty($post['openAd']))
-            {
-                $post['pic_url_x'] = $post['openAd'];
-                unset($post['openAd']);
-            }
-            $filter = array('link'=>'','title'=>'','type'=>'','place'=>'','valid_start'=>'','valid_end'=>'','citys'=>'','is_choice'=>'','pic_url'=>'','choice_pic'=>'','pic_url_x'=>'');
-            $data = array_intersect_key($post,$filter);
-            
-            $time = time();
-            $extra = array('create_time'=>$time,'update_time'=>0,'pub_time'=>0,'down_time'=>0,'status'=>1,'operator_id'=>$this->user['uid'],'operator_name'=>$this->user['truename']);
-            $data = array_merge($data,$extra);
-            $data['city'] = $data['citys'];
-            unset($data['citys']);
-            $data['valid_start'] = strtotime($data['valid_start']);
-            $data['valid_end'] = strtotime($data['valid_end'].' 23:59:59');
-            //var_dump($this->ad_model->insertData($data));die;
-            if ($insert_id = $this->ad_model->save($data))
-            {
-                //插入ad_city表
-                $temp_city = explode(',',$data['city']);
-                foreach ($temp_city as $v){
-                    $this->ad_city_model->insertData(array('aid'=>$insert_id,'city'=>$v));
+        if($method == 'post'){
+//            var_dump($_REQUEST);die;
+            if(count($_FILES )>1){
+                foreach($_FILES as $fileinfo){
+                    if($fileinfo['size'] < 1024000 || ($fileinfo['type'] =="image/png" ||$fileinfo['type']=="image/jpeg" ) ){
+                        $status = true;
+                    }else{
+                        ci_redirect('/ad/index/add', 1, '图片格式或大小不对');
+                    }
                 }
-                $res['status'] = true;
-                $this->_outputJSON($res);
             }
-            else
+            //判断上传文件类型为png或jpg且大小不超过1024000B
+            if($status)
             {
-                $res['msg'] = '添加失败';
-                $this->_outputJSON($res);
+
+                $filename1 =date('Y/m/d')."/img/".time().$_FILES["file1"]["name"];
+                $filename1 =iconv("UTF-8","gb2312",$filename1);
+                $filename2 =date('Y/m/d')."/img/".time().$_FILES["file2"]["name"];
+                $filename2 =iconv("UTF-8","gb2312",$filename2);
+                $filename3 =date('Y/m/d')."/img/".time().$_FILES["file3"]["name"];
+                $filename3 =iconv("UTF-8","gb2312",$filename3);
+             $upload_file_url1 = $this->proxy->UploadFiles($filename1,$_FILES["file1"]["tmp_name"]);
+             $upload_file_url2 = $this->proxy->UploadFiles($filename2,$_FILES["file2"]["tmp_name"]);
+             $upload_file_url3 = $this->proxy->UploadFiles($filename3,$_FILES["file3"]["tmp_name"]);
             }
-            
+            //测试阶段可用
+            $upload_file_url = '/2018/07/21/img/1532151910bg_lq.png';
+
+            if ( $form = $this->input->post() )
+            {
+                if($form['platform'] == '01'){
+                    $platform = "H5";
+                    $link = $form['link1'];
+                }
+                elseif($form['platform'] == '02'){
+                    $platform = "android";
+                    $link = $form['link2'];
+                }
+                else{
+                  $platform = "wechat";
+                    $link = $form['link3'];
+            }
+                $data['code'] = md5($this->user['code'].rand(0,10000));
+                $data['owner'] = $this->user['code'];
+                $data['name'] = trim($form['title']);
+                $data['info'] = $form['contact'];
+                $data['icon'] = "http://osv.ufile.ucloud.com.cn/".$upload_file_url1;
+                $data['image'] = "http://osv.ufile.ucloud.com.cn/".$upload_file_url2;
+                $data['banner'] ="http://osv.ufile.ucloud.com.cn/".$upload_file_url3;
+                $data['platform'] = $platform;
+                $data['link'] = $link;
+                $data['status'] = 1;
+                $data['audit_status'] = 0;
+                $data['created_time'] = date('Y-m-d H:i:s');
+                $data['updated_time'] = date('Y-m-d H:i:s');
+                $price['user_code'] = $this->user['code'];
+                $price['ad_code'] = $data['code'];
+                $price['type'] = 0;
+                $price['code'] = md5($this->user['code'].rand(0,10000));
+                $price['price'] = $form['price'] * 100;
+                $price['status'] = 0;
+                $price['created_time'] = date('Y-m-d H:i:s');
+                $res1 = $this->advertiser_model->add($data);
+                $res2 = $this->adprice_model->add($price);
+                if($res1 && $res2){
+                    ci_redirect('/ad/index/lists', 3, '添加成功');
+                }else{
+                    ci_redirect('/ad/index/add', 3, '添加失败');
+                }
+            }
         }
+
+
     }
-    
+    public function details(){
+        $this->layout->view('/ad/detail', $this->data);
+    }
     public function edit()
     {
         $method = strtolower($_SERVER['REQUEST_METHOD']);

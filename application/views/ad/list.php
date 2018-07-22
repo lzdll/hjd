@@ -1,6 +1,6 @@
 <div class="layuibodycont">
 		<div class="clearfix sdktop">
-			<a href="page-1-广告主2广告_2添加广告.html"><span class="addads">添加广告</span></a>
+			<a href="add"><span class="addads">添加广告</span></a>
 		</div>
 		<div class="clearfix mt10">
 			<table class="layui-table">
@@ -29,7 +29,7 @@
 				  <td>￥0.00</td>
 				  <td><span class="tdstatus active">待审核</span></td>
 				  <td><span class="tdoper02 aduseroper active">撤下</span></td>
-				  <td><a class="tdfont01" href="查看广告详情.html">查看</a></td>
+				  <td><a class="tdfont01" href="details">查看</a></td>
 				</tr>
 				<tr>
 				  <td>米加小程序</td>
