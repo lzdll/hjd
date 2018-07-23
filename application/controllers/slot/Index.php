@@ -14,7 +14,6 @@ class Index extends MY_Controller
         parent::__construct();
         $this->_initNav();
         $this->load->library('session');
-        $this->load->library('ucloud/Proxy');
         $this->load->model('slot_model');
     }
 
