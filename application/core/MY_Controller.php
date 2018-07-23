@@ -41,7 +41,6 @@ class MY_Controller extends CI_Controller
         $this->init();
         if ( !$this->isLogin() )
         {
-		
             ci_redirect('/sign/login');
         }
 
@@ -53,6 +52,8 @@ class MY_Controller extends CI_Controller
     public function init()
     {
         $this->user = $this->session->get_userdata();
+        //print_r( $this->session->get_userdata() );
+        //exit;
 
         $this->data['user'] = $this->user;      // 用户信息
         $this->data['nav'] = array(             // 面包屑导航

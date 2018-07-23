@@ -35,7 +35,6 @@ class Sign extends CI_Controller {
     public function login()
     {
        
-
          if ( $form = $this->input->post() )
          {
              if ( empty($form['login_name']) || empty($form['password']) )
@@ -61,6 +60,7 @@ class Sign extends CI_Controller {
              {
                  $this->session->$k = $v; 
              }
+
              //0:广告主 1: 流量主 2:运营
              if($info['type'] == 0){
 //                 ci_redirect('/home/index');
