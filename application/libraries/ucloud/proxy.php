@@ -3,7 +3,7 @@ require_once("conf.php");
 require_once("http.php");
 require_once("utils.php");
 require_once("digest.php");
-class Proxy{
+class proxy{
     function UploadFiles($key,$file){
         $bucket = 'osv';
         //初始化分片上传,获取本地上传的uploadId和分片大小

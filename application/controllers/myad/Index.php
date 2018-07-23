@@ -117,11 +117,9 @@ class Index extends MY_Controller
         {
             $filename =date('Y/m/d')."/img/".time().$_FILES["file"]["name"];
             $filename =iconv("UTF-8","gb2312",$filename);
-//             $upload_file_url = $this->proxy->UploadFiles($filename,$_FILES["file"]["tmp_name"]);
-            $upload_file_url = '/2018/07/21/img/1532151910bg_lq.png';
+            $upload_file_url = $this->proxy->UploadFiles($filename,$_FILES["file"]["tmp_name"]);
         }
         //测试阶段可用
-        $upload_file_url = '/2018/07/21/img/1532151910bg_lq.png';
         if ( $form = $this->input->post() )
         {
             $data['platform'] = trim($form['platform']);
