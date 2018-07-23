@@ -14,7 +14,7 @@ class Index extends MY_Controller {
         $this->load->library('session');
         $this->load->model('audit_model');
 		$this->load->model('invoice_model');
-		$this->load->library('/ucloud/Proxy');
+		$this->load->library('ucloud/Proxy');
     }
 
     /**
