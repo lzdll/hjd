@@ -14,7 +14,7 @@ class Index extends MY_Controller
         parent::__construct();
         $this->_initNav();
         $this->load->library('session');
-        $this->load->library('ucloud/Proxy');
+        $this->load->library('Ucloud/Proxy');
         $this->load->model('adprice_model');
         $this->load->model('advertiser_model');
         //$this->load->model('plugin_building_model');
