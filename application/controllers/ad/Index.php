@@ -31,7 +31,7 @@ class Index extends MY_Controller
     }
 
     /**
-     * 客户数据首页
+     * 广告主数据首页
      */
     public function index()
     {
@@ -380,36 +380,6 @@ class Index extends MY_Controller
         
         $this->_outputJSON($result);
     }
-    
-    /**
-     * 置业顾问排序操作
-     */
-    public function upsort() {
-        $data = $this->input->post();
-        $res = array('status' => false, 'msg' => '');
-        $id = (int) $data['id'];
-        $sort = $data['new_sort'];
-        if (!$zygwInfo = $this->ad_model->findByPk($id)) {
-            $res['msg'] = '广告不存在';
-            $this->_outputJSON($res);
-        }
-
-        if ($sort >= 1000 || $sort < 0) {
-            $res['msg'] = '请输入0-999之间的排序';
-            $this->_outputJSON($res);
-        }
         
-        if ($zygwInfo['sort'] == $sort) {
-            $res['status'] = true;
-            $this->_outputJSON($res);
-            exit;
-        }
-        $r = $this->ad_model->updateByPk($id, array('sort' => $sort));
-        if($r){
-            $res['status'] = true;
-        }    
-        $this->_outputJSON($res);
-    }
-    
 }
 
