@@ -13,6 +13,7 @@ class Index extends MY_Controller {
         $this->_initNav();
         $this->load->library('session');
         $this->load->model('advert_model');
+		$this->load->model('wsdk_model');
     }
 
     /**
@@ -87,5 +88,45 @@ class Index extends MY_Controller {
         $res['status'] = true;
         $this->_outputJSON($res);
 	}
+
+	public function binding()
+	{
+        if ($post = $this->input->post()){
+            $sdk_code_arr = explode(',',$post['sdk_code']);
+			foreach($post['sdk_code'] as $val){
+				$update['ad_code']=$post['ad_code'];
+				$update['type']=1;
+				$update['sdk_code']=trim($val);
+				$update['status']=1;
+				$update['create_time']=date("Y-m-d H:i:s");
+				$rUp =$this->db->insert('wy_ad_record', $update);
+			}
+            if($rUp){
+                ci_redirect('/advert/index/lists', 3, '添加成功');
+            }
+			exit;
+        }
+        $data  = $this->input->get();
+        $valid      = array();
+        $validData  = $this->_getValidParam($data, $valid);
+        $urlParam   = $this->_generalUrl($validData);
+        $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
+		$offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
+		$where ='1 = 1 ANd id>0';
+        $total = $this->wsdk_model->getCount($where);
+        $list = $this->wsdk_model->findAlls($where,$pagesize,$offset);
+		$this->data['list'] = $list;
+        $this->data['total'] = $total;
+        $this->data['search'] = $search;
+        $this->data['pagesize'] = $pagesize;
+		$this->data['ad_code'] = $data['code'];
+		//分页
+        if ($total > 0) {
+            $query_str = http_build_query($search);
+            $this->data['pager'] = page($query_str, $total, $pagesize);
+        }
+		$this->layout->view('/advert/binding', $this->data);
+	} 
+	
 
 }

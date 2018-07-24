@@ -225,61 +225,26 @@ class Index extends MY_Controller {
             $this->layout->view('/finance/add_adinvoice', $this->data);
         }
     }
-    
-    
-    
-  
-   
-
-    protected function _getConditions(& $data)
-    {
-        $where = array();
-        $filters = array('time_type', 'city_en', 'date_start', 'date_end'); // 跳过
-        foreach ($data as $k=>$v)
-        {
-            if ( $k == 'username' ) {
-                $where['zygw.username like'] = "%{$v}%";
-            } else if ( $k == 'role' ) {
-                $v && $where['zygw.role ='] = $v;
-            } else if ( $k == 'status' ) {
-                $v && $where['zygw.status ='] = $v;
-            } else if ( in_array($k, $filters) ) {
-                continue;
-            } else {
-                $where["zygw.{$k} ="] = $v;
-            }
+	/**
+     * 财务备注
+     */
+	public function unexecuted(){
+		$data = $this->input->post();
+        $res = array('status' => false, 'msg' => '');
+        $update = array();
+        if ($data) {//存在更新
+			$update['operator']=$this->user['code'];
+			$update['comment']=$data['opearea'];
+			$update['status']=0;
+			$update['updated_time']=date("Y-m-d H:i:s");
+			$rUp =$this->db->where(array('id'=>$data['id']))->update('wy_finance', $update);
         }
-        // echo 'data:' . var_export($data, true);
-        if (isset($data['date_start']) && $data['date_start']) {
-            $where['zygw.create_time >'] = strtotime($data['date_start']);
-        } else {
-            $data['date_start'] = date('Y-m-d', strtotime('-30 day'));// 默认前一天
-            $where['zygw.create_time >'] = strtotime($data['date_start']);
+        if ($rUp === false) {
+            $res['msg'] = "更改失败";
+            $this->_outputJSON($res);
         }
-
-        if (isset($data['date_end']) && $data['date_end']) {
-            $where['zygw.create_time <='] = strtotime($data['date_end']) +3600*24;
-        } else {
-            $data['date_end'] = date('Y-m-d', time());
-            $where['zygw.create_time <='] = strtotime($data['date_end']) + 3600*24;
-        }
-        if (isset($data['city_en']) && $data['city_en']) {
-            $where['zygw.city_en ='] = $data['city_en'];
-        } else {
-            if (!empty($this->user['city_rights'])) {
-                $citys = explode(',', $this->user['city_rights']);
-                $citys = "'" . implode("','", $citys) . "'";
-                $where["zygw.city_en in ({$citys}) AND "] = "1";
-                // $where['city'] = "`city` in ('$citys')";
-            } else {
-                $where['zygw.city_en ='] = '-1';// 无城市权限
-            }
-        }
-        //不展示删除的数据
-        $where['zygw.status != '] = '6';
-        return $where;
-    }
-
-
+        $res['status'] = true;
+        $this->_outputJSON($res);
+	}
 
 }
