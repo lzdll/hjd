@@ -19,45 +19,27 @@
 				</tr> 
 			  </thead>
 			  <tbody>
+              <?php foreach($list as $item):?>
 				<tr>
-				  <td>米加小程序</td>
-				  <td>32654</td>
-				  <td>1354</td>
-				  <td>35%</td>
-				  <td><span class="tdfont01 editjs">￥<input type="text" value="70" class="editput" disabled /></span></td>
+				  <td><?php echo $item['name'];?></td>
+				  <td><?php echo $item['pv'];?></td>
+				  <td><?php echo $item['cpc'];?></td>
+				  <td><?php echo $item['rate'];?>%</td>
+				  <td><span class="tdfont01 editjs">￥<input type="text" value=<?php echo $item['price'];?> class="editput" disabled /></span></td>
 				  <td>￥0.00</td>
-				  <td>￥0.00</td>
-				  <td><span class="tdstatus active">待审核</span></td>
+				  <td>￥<?php echo $item['ad_sumprice'];?></td>
+				  <td><span class="tdstatus <?php echo $item['active'];?>"><?php echo $item['audit_status'];?></span></td>
 				  <td><span class="tdoper02 aduseroper active">撤下</span></td>
 				  <td><a class="tdfont01" href="details">查看</a></td>
 				</tr>
-				<tr>
-				  <td>米加小程序</td>
-				  <td>32654</td>
-				  <td>1354</td>
-				  <td>35%</td>
-				  <td><span class="tdfont01 editjs">￥<input type="text" value="70" class="editput" disabled /></span></td>
-				  <td>￥0.00</td>
-				  <td>￥0.00</td>
-				  <td><span class="tdstatus">通过审核</span></td>
-				  <td><span class="tdoper02">投放</span></td>
-				  <td><a class="tdfont01" href="查看广告详情.html">查看</a></td>
-				</tr>
-				<tr>
-				  <td>米加小程序</td>
-				  <td>32654</td>
-				  <td>1354</td>
-				  <td>35%</td>
-				  <td><span class="tdfont01 editjs">￥<input type="text" value="70" class="editput" disabled /></span></td>
-				  <td>￥0.00</td>
-				  <td>￥0.00</td>
-				  <td><span class="tdstatus">通过审核</span></td>
-				  <td><span class="tdoper02">投放</span></td>
-				  <td><a class="tdfont01" href="查看广告详情.html">查看</a></td>
-				</tr>
+              <?php endforeach;?>
 			  </tbody>
 			</table>
-			<div id="demo0" class="pages"></div>
+			<div id="" class="pages">
+                <?php foreach($page as $row): ?>
+                    <?php echo $row; ?>
+                <?php endforeach;?>
+            </div>
 		</div>
 	 </div>
   </div>

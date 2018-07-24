@@ -61,14 +61,15 @@
 					<!--上传图片之前的样式-->
 					  <div class="file-input-wrapper">
 						<input type="button" name="file1" class="file_btn" value="" />
-						<input type="file"  lay-verify="required" name="file1" class="file-input" value="" />
+						<input type="file"  lay-verify="required" onchange="return fileupload();" name="file1" class="file-input" value="" />
 					  </div>
-					  <!--上传图片之后的样式
+					  <!--上传图片之后的样式-->
 					  <div class="file-input-wrapper">
 						<input type="button" class="file_btn" value="" />
 						<input type="file" class="file-input" value="" />
-						<img src="images/dot003.png" class="" />
-					  </div>-->
+						<img src="/public/money_ex/images/dot003.png" class="" />
+					  </div>
+
 					  <span class="addfilespro grayfont">建议上传100*100像素的图片</span>
 					</div>
 				  </div>
@@ -108,7 +109,7 @@
 				  </div>
 				  <div class="layui-form-item">
 					<div class="layui-input-block formopearbtn">
-					  <button class="layui-btn layui-btn-primary resetbtn">取消</button>
+					  <button class="layui-btn layui-btn-primary resetbtn" type="reset" onclick="location.href='/ad/index/lists'">取消</button>
 					  <button class="layui-btn addbtn" lay-submit="" lay-filter="demo1">提交</button>
 					</div>
 				  </div>
@@ -151,6 +152,38 @@ layui.use(['form', 'layedit', 'laydate'], function(){
 		}
 	});
   });
+
+//ajax 上传图片
+function fileupload(){
+    $("#loading").show();
+    $("#uploadlast").show();
+    $("#uploadfirst").hide();
+    $.ajaxFileUpload({
+        url: "/sdk/index/setimg",
+        secureuri:false,
+        fileElementId:"file",
+        dataType:"json",
+        success:function(data,status) {
+            if(data.status==0) {
+                $("#loading").hide();
+                $("#uploadlast").hide();
+                $("#uploadfirst").show();
+                alert(data.msg);
+                return false;
+            }else {
+                $("#loading").hide();
+                $("#photoImg").show();
+                $("#photoImg").attr("src", data.url);
+                $("#imgsrc").val(data.url);
+                $("#close").show();
+            }
+        },
+        error:function (data,status,e) {
+            alert(e);
+        }
+    })
+    return false;
+}
 
 </script>
 </body>

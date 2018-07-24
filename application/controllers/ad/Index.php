@@ -27,20 +27,6 @@ class Index extends MY_Controller
     {
         $method = $this->router->method;
         $nav = array();
-        if ($method == 'index') // 列表
-        {
-            $nav[] = array('name' => '系统消息管理', 'url' => '');
-        } else if ($method == 'lists') // 添加
-        {
-            $nav[] = array('name' => '广告列表', 'url' => '');
-        } else if ($method == 'add') // 添加
-        {
-            $nav[] = array('name' => '添加广告', 'url' => '');
-        }
-        else if ( $method == 'edit' ) // 添加
-        {
-            $nav[] = array('name' => '编辑广告', 'url' => '');
-        }
         $this->data['nav'] = array_merge($this->data['nav'], $nav);
     }
 
@@ -53,20 +39,25 @@ class Index extends MY_Controller
     }
 
     /**
-     * 客户数据列表
+     * 数据列表
      */
     public function lists()
     {
 
         $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
         $offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
-        $info = $this->advertiser_model-> adlist($this->user['code'],$limit = 0, $offset = 0);
-        foreach ( $info['list']as &$item) {
-            $item['money'] =number_format((floor($item['money']/100)).".".($item['money']%100),2,'.','');
+        $info = $this->advertiser_model-> adlist($this->user['code'],$limit = $pagesize, $offset = $offset);
+        foreach ( $info as $key => &$item) {
+            $item['price'] = number_format((floor($item['price']/100)).".".($item['price']%100),2,'.','');
+            $item['ad_sumprice'] = number_format((floor($item['ad_sumprice']/100)).".".($item['ad_sumprice']%100),2,'.','');
+            $item['cpccpm'] = $item['cpc'] + $item['cpm'];
+            $item['pv'] = $item['totalcpc'] + $item['totalcpm'];
+           $item['active'] = $item['audit_status'] == 0?"active":"";
+           $item['audit_status'] = $item['audit_status'] == 0?"未审核":($item['audit_status'] == 1?"通过审核":"未过审核");
         }
-//        var_dump($info);die;
-        $total = $info['cnt'];
-        $this->data['list'] = $info['list'];
+//      var_dump($info); die;
+        $total = count($info);
+        $this->data['list'] = $info;
 
         //分页
         if ($total > 0) {
@@ -156,8 +147,42 @@ class Index extends MY_Controller
                 }
             }
         }
-
-
+    }
+    /**
+     * 图片上传
+     */
+    public function  setimg(){
+        $targetFolder = date('Y/m/d')."/img/"; // Relative to the root
+        if (!empty($_FILES)) {
+            $tempFile = $_FILES['file']['tmp_name'];
+            $newname =$this->user['code']."_".time();//图片名字
+            $fileTypes = array('jpg','jpeg','gif','png','pdf'); // 文件类型
+            $fileParts = pathinfo($_FILES['file']['name']);
+            $size = getimagesize($tempFile);
+            $width = $size[0];
+            $height = $size[1];
+            if($width>100 || $height>100){
+                unlink($tempFile);
+                $arr = array('status' => 0,'type' => $type,'msg' => "图片的宽高不符要求!" );
+                echo json_encode($arr);
+                exit;
+            }
+            $filename = rtrim($targetFolder). $newname.'.'.$fileParts['extension'];//图片路径
+            sleep(2);
+            if (in_array($fileParts['extension'],$fileTypes)) {
+                $filename =iconv("UTF-8","gb2312",$filename);
+                $upload_file_url = $this->proxy->UploadFiles($filename,$_FILES["file"]["tmp_name"]);
+                $upload_file_url = 'http://osv.ufile.ucloud.com.cn/'.$upload_file_url;
+                $imgInfo['name']=$filename;
+                $imgInfo['url'] =$upload_file_url;
+                $imgInfo['status'] = 1;
+                echo json_encode($imgInfo,true);
+            }else{
+                $arr = array('status' =>0,'type' => $type,'msg' => "上传文件不符合要求!" );
+                echo json_encode($arr);
+                exit;
+            }
+        }
     }
     public function details(){
         $this->layout->view('/ad/detail', $this->data);
