@@ -44,7 +44,7 @@ class Index extends MY_Controller
     public function lists()
     {
 
-        $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
+        $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 10;
         $offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
         $info = $this->advertiser_model-> adlist($this->user['code'],$limit = $pagesize, $offset = $offset);
         foreach ( $info as $key => &$item) {
@@ -52,12 +52,27 @@ class Index extends MY_Controller
             $item['ad_sumprice'] = number_format((floor($item['ad_sumprice']/100)).".".($item['ad_sumprice']%100),2,'.','');
             $item['cpccpm'] = $item['cpc'] + $item['cpm'];
             $item['pv'] = $item['totalcpc'] + $item['totalcpm'];
-           $item['active'] = $item['audit_status'] == 0?"active":"";
+            $item['pv'] = $item['totalcpc'] + $item['totalcpm'];
+            if( ($item['audit_status'] == 0 ||  $item['audit_status'] == 3) ){
+                $item['status'] = "撤下";
+                $item['statusac'] = "aduseroper active";
+            }else{
+                if($item['status'] == 0){
+                    $item['status'] = "已上线";
+                    $item['statusac'] = "";
+                }else{
+                    $item['statusac'] = "aduseroper2 active";
+                    $item['status'] = "发布";
+                }
+            }
+            if($item['audit_status'] == 0) $item['active'] = "active";
            $item['audit_status'] = $item['audit_status'] == 0?"未审核":($item['audit_status'] == 1?"通过审核":"未过审核");
         }
 //      var_dump($info); die;
+
         $total = count($info);
         $this->data['list'] = $info;
+        $this->data['count'] = $total;
 
         //分页
         if ($total > 0) {
@@ -189,79 +204,22 @@ class Index extends MY_Controller
     }
     public function edit()
     {
-        $method = strtolower($_SERVER['REQUEST_METHOD']);
-        if ($method == 'get')
-        {
-            if (!$id = $this->input->get('id')) {
-                ci_redirect('/ad/index/lists', 3, '参数错误');
-            }
-            if (!$info = $this->ad_model->findByPk($id)) {
-                ci_redirect('/ad/index/lists', 3, '数据错误');
-            }
-            //var_dump($info);die;
-            $citys = $this->house_city_model->findAll();
-            $this->data['citys'] = $citys;
-            $this->data['info'] = $info;
-            $this->data['user_citys'] = explode(',', $info['city']);
-            $this->layout->view('/ad/edit', $this->data);
-        }
-        
-        if ($method == 'post')
-        {
-            $res = array('status'=>false, 'msg'=>'');
-            $post = $this->input->post();
-            if(!$post['id']){
-                $res['msg'] = '参数错误';
-                $this->_outputJSON($res);
-            }
-            if(!$info = $this->ad_model->findByPk($post['id'])){
-                $res['msg'] = '数据错误';
-                $this->_outputJSON($res);
-            }
-            if (isset($post['card']) && !empty($post['card']))
+            $type = $_POST['type'];
+            $id = $_POST['id'];
+            if ($type == "delete")
             {
-                $post['pic_url'] = $post['card'];
-                unset($post['card']);
-            }
-            if (isset($post['logo']) && !empty($post['logo']))
-            {
-                $post['choice_pic'] = $post['logo'];
-                unset($post['logo']);
-            }
-            if (isset($post['openAd']) && !empty($post['openAd']))
-            {
-                $post['pic_url_x'] = $post['openAd'];
-                unset($post['openAd']);
-            }
-            $filter = array('link'=>'','title'=>'','type'=>'','place'=>'','valid_start'=>'','valid_end'=>'','citys'=>'','is_choice'=>'','pic_url'=>'','choice_pic'=>'','pic_url_x'=>'');
-            $data = array_intersect_key($post,$filter);
-            
-            $time = time();
-            $extra = array('update_time'=>$time,'operator_id'=>$this->user['uid'],'operator_name'=>$this->user['truename']);
-            $data = array_merge($data,$extra);
-            $data['city'] = $data['citys'];
-            unset($data['citys']);
-            $data['valid_start'] = strtotime($data['valid_start']);
-            $data['valid_end'] = strtotime($data['valid_end'].' 23:59:59');
-            //var_dump($this->ad_model->insertData($data));die;
-            if ($this->ad_model->edit($post['id'],$data))
-            {
-                //插入ad_city表
-                $this->ad_city_model->deleteAll(array('aid'=>$post['id']));
-                $temp_city = explode(',',$data['city']);
-                foreach ($temp_city as $v){
-                    $this->ad_city_model->insertData(array('aid'=>$post['id'],'city'=>$v));
-                }
-                $res['status'] = true;
-                $this->_outputJSON($res);
+                //删除广告
+               $res = $this->advertiser_model->deleteById($id);
+                return json_encode($res);exit;
+
             }
             else
             {
                 $res['msg'] = '编辑失败';
-                $this->_outputJSON($res);
+                echo json_encode($res);exit;
             }
             
-        }
+
     }
     
     public function detail()

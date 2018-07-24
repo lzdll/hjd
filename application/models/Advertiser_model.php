@@ -49,9 +49,11 @@ class Advertiser_model extends MY_Model
     /**
      * 删除
      */
-    function deleteAdmin($id)
+    function deleteById($id)
     {
-        $this->deleteByPk($id,array('type'=>1));
+//        $sql = "delete from wy_ad where id = $id";
+//        return $res = $this->query($sql);
+        return $res = $this->deleteAll($where=array('id'=>$id));
     }
 
     /**
@@ -65,11 +67,11 @@ class Advertiser_model extends MY_Model
         if(isset($limit)){
             $sql =
                 "SELECT
-                        id,CODE,cpc,cpm,(totalcpc + totalcpm) / (cpc + cpm) rate,totalcpc,totalcpm,ad_sumprice,audit_status,`name`,price
+                        id,CODE,cpc,cpm,(totalcpc + totalcpm) / (cpc + cpm) rate,totalcpc,totalcpm,ad_sumprice,status,audit_status,`name`,price
                     FROM
                         (
                             SELECT
-                                c.id,c.`code`,c.`name`,c.`audit_status`,d.price,
+                                c.id,c.`code`,c.`name`,c.`status`,c.`audit_status`,d.price,
                             IF (
                                 b.type = 0,
 
@@ -100,6 +102,7 @@ class Advertiser_model extends MY_Model
                         `c`.`owner` = '".$ucode."'
                     GROUP BY
                         `c`.`code`
+                    ORDER BY c.created_time desc
                         ) t
                     LIMIT $offset,
                      $limit";

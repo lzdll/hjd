@@ -171,6 +171,7 @@ $config['rights'] = array(
         'child' => array(
             '12_1' => array('is_menu'=>0, 'name'=>'添加广告', 'url'=>'/ad/index/add'),
             '12_2' => array('is_menu'=>0, 'name'=>'查看详情', 'url'=>'/ad/index/details'),
+            '12_3' => array('is_menu'=>0, 'name'=>'广告编辑', 'url'=>'/ad/index/edit'),
         ),
     ),
 	//广告主
@@ -179,11 +180,17 @@ $config['rights'] = array(
         'type'      => 'folder',
         'folder'    => '/finance/',         // 类型 item菜单  folder目录
         'name'      => '财务',
-        'url'       => '/finance/index/lists',
+        'url'       => '/finance/index/listrecord',
         'class'     => 'dropdown-toggle',
         'icon'      => 'menu-icon fa fa-lock',
         'child' => array(
 			'13_1' => array(
+                'is_menu'=>1,
+                'type'      => 'item',
+                'name'      => '充值',
+                'url'       =>'/finance/index/listrecord',
+            ),
+            '13_2' => array(
                 'is_menu'=>1,
                 'type'      => 'item',
                 'name'      => '开具发票',
@@ -191,12 +198,6 @@ $config['rights'] = array(
                 'child'     => array(
                     '13_1_1' => array('is_menu'=>0, 'name'=>'开票', 'url'=>'/finance/index/add_adinvoice'),
                 ),
-            ),
-			'13_2' => array(
-                'is_menu'=>1,
-                'type'      => 'item',
-                'name'      => '充值',
-                'url'       =>'/finance/index/listrecord',
             ),
         ),
     ),
