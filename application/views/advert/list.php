@@ -41,7 +41,7 @@
 			  <tbody>
 			  <?php foreach ($list as $v){ ?>
 				<tr>
-				  <td><a href="/advert/index/details" class="tdviewbtn"><?=$v['name']?></a></td>
+				  <td><a href="/advert/index/details?id=<?php echo $v['id']; ?>&code=<?=$v['code']?>" class="tdviewbtn"><?=$v['name']?></a></td>
 				  <td><?php echo $v['cpc']+$v['cpm'];  ?></td>
 				  <td><?php echo $v['cpc'];  ?></td>
 				  <td>
@@ -64,7 +64,7 @@
 
 				  <td><?php echo $v['owner'];  ?></td>
 				  <td><?php echo "￥".$v['ad_price']/100;  ?></td>
-				  <td><a href="/advert/index/binding"><span class="tdobtn01 active">绑定</span></a></td>
+				  <td><a href="/advert/index/binding?code=<?php echo $v['code']; ?>"><span class="tdobtn01 active">绑定</span></a></td>
 				  <td>
 					  <?php if($v['audit_status'] == 0 ){?> 
 						<a href="/advert/index/adopt"><span class="tdstatus active">待审核</span></a>
@@ -76,10 +76,9 @@
 				  </td>
 				  <td>
 					  <?php if($v['status'] == 0 ){?> 
-					   <span class="tdoper02 active aduseroper">撤下</span>
-					  
+					   <span class="tdoper02 active aduseroper" onclick="upstatus('<?=$v['id']?>')">撤下</span>
 					  <?php   }else{ ?> 
-					 <span class="tdoper02">未投放</span>
+						<span class="tdoper02">未投放</span>
 					  <?php } ?>
 				 </td>
 				</tr>
@@ -127,6 +126,10 @@ layer.open({
 			,content: $('#layer04')
 			,yes: function (index, layero) {
 				 var cmp_price = $("#cmp_price").val();
+				 if(cmp_price == ''){
+					alert('价格不能为空');
+					return false;
+				 }
 				//成功输出内容
 				$.ajax({
 					url: '/advert/index/editcmp',
@@ -134,8 +137,7 @@ layer.open({
 					type: 'post', 
 					data: {code:code, owner:owner,cmp_price,cmp_price},
 					success: function(data , textStatus){
-						
-						if (data.status === false)
+					if (data.status === false)
 					{
 						alert(data.msg);
 						return false;
@@ -148,14 +150,11 @@ layer.open({
 				});
 			}
 		});
-
 }
-
-  layui.use('layer', function(){ //独立版的layer无需执行这一句
-  var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
-	$(document).on("click",".aduseroper",function(){
-		layer.open({
-			type: 1
+//更新广告状态
+function upstatus(obj){
+	layer.open({
+			 type: 1
 			,title: false //不显示标题栏
 			,closeBtn: false
 			,area: ['400px', '130px']
@@ -164,13 +163,29 @@ layer.open({
 			,btn: ['确定','取消']
 			,moveType: 1 //拖拽模式，0或者1
 			,content: $('#layer03')
-			,success: function(layero){
-			  //成功输出内容
-			  console.log(11);
+			,yes: function (index, layero) {
+				//成功输出内容
+				$.ajax({
+					url: '/advert/index/online',
+					dataType: 'json',  
+					type: 'post', 
+					data: {id:obj},
+					success: function(data , textStatus){
+						
+						if (data.status === false)
+					{
+						alert(data.msg);
+						return false;
+					}
+					location.reload()
+					},
+					error: function(jqXHR , textStatus , errorThrown){
+					 alert("error");
+					}
+				});
 			}
 		});
-	});
-	
-	
-});
+}
+
+ 
 </script>

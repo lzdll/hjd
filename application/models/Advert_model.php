@@ -98,6 +98,15 @@ class Advert_model extends MY_Model
     {
         return $this->updateByPk($id,$data);
     }
+	//获取广告详情
+	public function findOne($where = array())
+    {
+	   $id = $where['id'];
+	   $code = $where['code'];
+	   $sql = "SELECT c.id, c.`code`,c.`name`,c.`image`,c.`link`,c.owner,c.ws_code,c.appid,c.info,c.status ,c.audit_status ,IF(b.type=0,IF(b.st_price>0,COUNT(1),0),0) cpc,IF(b.type=1,IF(b.st_price>0,COUNT(1),0),0) cpm,IF(b.type=0,COUNT(1),0) totalcpc,IF(b.st_price>0,SUM(b.st_price),0) st_price,IF(b.ad_price>0,SUM(b.ad_price),0) ad_price FROM `wy_ad` AS `c` LEFT JOIN `wy_ad_order` AS `b` ON `c`.`code` = `b`.`ad_code` WHERE 1 = 1 AND c.id > 0 AND c.id=$id AND  c.code='".$code."' limit 1";
+       $row = $this->db->query($sql)->result_array();
+	   return $row;
+    }
 	
 }
 
