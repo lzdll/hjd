@@ -79,7 +79,6 @@ class MY_Model extends CI_Model
                 unset($attributes[$key]);
             }
         }
-        var_dump($attributes);die;
         return $this->db->where($where)->update($this->tableName(), $attributes);
     }
     
@@ -130,7 +129,7 @@ class MY_Model extends CI_Model
         $query = $this->db->from($this->tableName())->where($where)->get();
         return $query->row_array();
     }
-    
+
     /**
      * Find Record By Attributes
      *
@@ -149,7 +148,7 @@ class MY_Model extends CI_Model
         }
         return $query->row_array();
     }
-    
+
     /**
      * Find Record
      *
@@ -169,10 +168,10 @@ class MY_Model extends CI_Model
             $this->db->limit($limit, $offset);
         }
         $query = $this->db->get();
-    
+
         return $query->result_array();
     }
-    
+
     /**
      * Count
      *
@@ -196,7 +195,7 @@ class MY_Model extends CI_Model
         $query = $this->db->query($sql, $param);
         return $query->result_array();
     }
-    
+
     /**
      * execute SQL
      *

@@ -172,6 +172,7 @@ $config['rights'] = array(
             '12_1' => array('is_menu'=>0, 'name'=>'添加广告', 'url'=>'/ad/index/add'),
             '12_2' => array('is_menu'=>0, 'name'=>'查看详情', 'url'=>'/ad/index/details'),
             '12_3' => array('is_menu'=>0, 'name'=>'广告编辑', 'url'=>'/ad/index/edit'),
+            '12_4' => array('is_menu'=>0, 'name'=>'图片上传', 'url'=>'/ad/index/setimg'),
         ),
     ),
 	//广告主

@@ -200,6 +200,38 @@ class Index extends MY_Controller
         }
     }
     public function details(){
+        $info = $this->advertiser_model->getInfoIds($_REQUEST['id'],$this->user['code']);
+        $info['price'] = number_format((floor( $info['price']/100)).".".( $info['price']%100),2,'.','');
+
+        switch($info['platform']){
+            case "H5":
+                $info['cheack1'] = "checked";
+                $info['cheack2'] = "";
+                $info['cheack3'] = "";
+                $info['linkname'] = "推广链接：";
+                break;
+            case "ios":
+                $info['cheack1'] = "";
+                $info['cheack3'] = "checked";
+                $info['cheack3'] = "";
+                $info['linkname'] = "下载推广地址：";
+                break;
+            case "android":
+                $info['cheack1'] = "";
+                $info['cheack2'] = "checked";
+                $info['cheack3'] = "";
+                $info['linkname'] = "下载推广地址：";
+                break;
+            case "wechat":
+                $info['cheack1'] = "";
+                $info['cheack2'] = "";
+                $info['cheack3'] = "checked";
+                $info['linkname'] = "小程序路径：";
+                break;
+            default;
+
+        }
+        $this->data['info'] = $info;
         $this->layout->view('/ad/detail', $this->data);
     }
     public function edit()
@@ -210,8 +242,12 @@ class Index extends MY_Controller
             {
                 //删除广告
                $res = $this->advertiser_model->deleteById($id);
-                return json_encode($res);exit;
-
+                echo json_encode($res);exit;
+            }
+            if($type == 'publish'){
+                //发布广告
+                $res = $this->advertiser_model->edit($id,0);
+                echo json_encode($res);exit;
             }
             else
             {

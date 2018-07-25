@@ -32,18 +32,23 @@ class Advertiser_model extends MY_Model
     /**
      * 编辑
      */
-    function edit($id,$data)
+    function edit($id,$status)
     {
+        $data=array(
+        'status'=> $status,
+        'updated_time'=>date("Y-m-d H:i:s",time()),
+    );
+        $this->db->where('id',$id);
         return $this->updateByPk($id,$data);
 
     }
     /**
      * 获取信息 in 列表展示
      */
-    function getInfoIds($where)
+    function getInfoIds($id,$ucode)
     {
-        $this->db->from($this->tableName)->where_in('id',$where);
-        $result = $this->db->get()->result_array();
+        $sql = "select a.platform,a.`name`,a.info,a.image,a.banner,a.icon,a.link,a.appid,a.ws_code,a.`status`,a.audit_status,b.type,b.price from wy_ad AS a LEFT JOIN wy_ad_price AS b ON a.code = b.ad_code WHERE a.id={$id} AND b.type=0 AND a.owner='{$ucode}'";
+        $result = $this->db->query($sql)->row_array();
         return $result;
     }
     /**

@@ -1,5 +1,6 @@
-    <!-- 内容主体区域 -->
+<!-- 内容主体区域 -->
 	<div class="layuibodycont">
+<!--		<link rel="stylesheet" href="/public/money_ex/css/dropify.min.css">-->
 		<div class="clearfix formblock">
 			<form class="layui-form autolayblock " id="addsubmit" action="add" enctype="multipart/form-data" method="post">
 				<div class="layui-form-item">
@@ -59,15 +60,15 @@
 					<label class="layui-form-label">icon：</label>
 					<div class="layui-input-block">
 					<!--上传图片之前的样式-->
-					  <div class="file-input-wrapper">
+					  <div class="file-input-wrapper" id="beforeup3">
 						<input type="button" name="file1" class="file_btn" value="" />
-						<input type="file"  lay-verify="required" onchange="return fileupload();" name="file1" class="file-input" value="" />
+						<input type="file"  lay-verify="required"  onchange="xmTanUploadImg3(this)" name="file1" class="file-input" value="" />
 					  </div>
 					  <!--上传图片之后的样式-->
-					  <div class="file-input-wrapper">
+					  <div class="file-input-wrapper" id="uplater3">
 						<input type="button" class="file_btn" value="" />
-						<input type="file" class="file-input" value="" />
-						<img src="/public/money_ex/images/dot003.png" class="" />
+						<input type="file" class="file-input" value=""  onchange="xmTanUploadImg3(this)" />
+						<img  id="xmTanImg3" src="" class="" />
 					  </div>
 
 					  <span class="addfilespro grayfont">建议上传100*100像素的图片</span>
@@ -77,16 +78,16 @@
 					<label class="layui-form-label">广告图：</label>
 					<div class="layui-input-block">
 					  <!--上传图片之前的样式-->
-					  <div class="file-input-wrapper3">
+					  <div class="file-input-wrapper3" id="beforeup2">
 						<input type="button" class="file_btn3" value="" />
-						<input type="file" lay-verify="required" name="file2" class="file-input3" value="" />
+						<input type="file" lay-verify="required" name="file2" onchange="xmTanUploadImg2(this)" class="file-input3" value="" />
 					  </div>
-					  <!--上传图片之后的样式
-					  <div class="file-input-wrapper3 adbanner">
+					  <!--上传图片之后的样式-->
+					  <div class="file-input-wrapper3 " id="uplater2">
 						<input type="button" class="file_btn3" value="" />
-						<input type="file" class="file-input3" value="" />
-						<img src="images/m.jpg" class="" />
-					  </div>-->
+						<input type="file" class="file-input3" value=""   onchange="xmTanUploadImg2(this)"/>
+						  <img src="" id="xmTanImg2" class="" />
+					  </div>
 					  <span class="addfilespro grayfont">建议上传470*360像素的图片</span>
 					</div>
 				  </div>
@@ -94,16 +95,16 @@
 					<label class="layui-form-label">banner图：</label>
 					<div class="layui-input-block banerwrap">
 					  <!--上传图片之前的样式-->
-					  <div class="file-input-wrapper5 ">
-						<input type="button" class="file_btn5" value="" />
-						<input type="file" lay-verify="required" name="file3"  class="file-input5" value="" />
+					  <div class="file-input-wrapper5 " id="beforeup">
+						<input type="button" class="file_btn5"  value=""  />
+						  <input type="file" lay-verify="required" name="file3" class="file-input5" value="" onchange="xmTanUploadImg(this)" />
 					  </div>
 					  <!--上传图片之后的样式-->
-					 <!-- <div class="file-input-wrapper4 adbanner">
-						<input type="button" class="file_btn4" value="" />
-						<input type="file" class="file-input4" value="" />
-						<img src="images/m.jpg" class="" />
-					  </div>-->
+					  <div class="file-input-wrapper5 " id="uplater">
+						  <input type="button" class="file_btn5"  value=""  />
+						  <input type="file" class="file-input5" value="" onchange="xmTanUploadImg(this)" />
+						<img src="" id="xmTanImg" class="" />
+					  </div>
 					  <span class="addfilespro grayfont">建议上传750*180像素的图片</span>
 					</div>
 				  </div>
@@ -126,6 +127,9 @@
 <script type="text/javascript" src="/public/money_ex/layui/layui.js"></script>
 <script type="text/javascript" src="/public/money_ex/js/global.js"></script>
 <script>
+	$("#uplater").hide();
+	$("#uplater2").hide();
+	$("#uplater3").hide();
 layui.use(['form', 'layedit', 'laydate'], function(){
   var form = layui.form;
 	form.on("radio(idtype)",function(data){
@@ -153,38 +157,88 @@ layui.use(['form', 'layedit', 'laydate'], function(){
 	});
   });
 
-//ajax 上传图片
-function fileupload(){
-    $("#loading").show();
-    $("#uploadlast").show();
-    $("#uploadfirst").hide();
-    $.ajaxFileUpload({
-        url: "/sdk/index/setimg",
-        secureuri:false,
-        fileElementId:"file",
-        dataType:"json",
-        success:function(data,status) {
-            if(data.status==0) {
-                $("#loading").hide();
-                $("#uploadlast").hide();
-                $("#uploadfirst").show();
-                alert(data.msg);
-                return false;
-            }else {
-                $("#loading").hide();
-                $("#photoImg").show();
-                $("#photoImg").attr("src", data.url);
-                $("#imgsrc").val(data.url);
-                $("#close").show();
-            }
-        },
-        error:function (data,status,e) {
-            alert(e);
-        }
-    })
-    return false;
-}
 
+</script>
+<script type="text/javascript">
+	//判断浏览器是否支持FileReader接口
+	if (typeof FileReader == 'undefined') {
+//		document.getElementById("xmTanDiv").InnerHTML = "<h1>当前浏览器不支持FileReader接口</h1>";
+		document.getElementById("xmTanDiv").InnerHTML = "<h1>当前浏览器不支持图片预览</h1>";
+		//使选择控件不可操作
+		document.getElementById("xdaTanFileImg").setAttribute("disabled", "disabled");
+	}
+
+	//选择图片，马上预览
+	function xmTanUploadImg3(obj) {
+		var file = obj.files[0];
+		var reader = new FileReader();
+
+		//读取文件过程方法
+		reader.onloadstart = function (e) {
+		}
+		reader.onprogress = function (e) {
+		}
+		reader.onabort = function (e) {
+		}
+		reader.onerror = function (e) {
+		}
+		reader.onload = function (e) {
+			$("#beforeup3").hide();
+			$("#uplater3").show();
+			var img = document.getElementById("xmTanImg3");
+			img.src = e.target.result;
+			//或者 img.src = this.result;  //e.target == this
+		}
+
+		reader.readAsDataURL(file)
+	}
+	function xmTanUploadImg2(obj) {
+		var file = obj.files[0];
+		var reader = new FileReader();
+
+		//读取文件过程方法
+		reader.onloadstart = function (e) {
+		}
+		reader.onprogress = function (e) {
+		}
+		reader.onabort = function (e) {
+		}
+		reader.onerror = function (e) {
+		}
+		reader.onload = function (e) {
+			$("#beforeup2").hide();
+			$("#uplater2").show();
+			var img = document.getElementById("xmTanImg2");
+			img.src = e.target.result;
+			//或者 img.src = this.result;  //e.target == this
+		}
+
+		reader.readAsDataURL(file)
+	}
+
+	function xmTanUploadImg(obj) {
+		var file = obj.files[0];
+		var reader = new FileReader();
+
+		//读取文件过程方法
+		reader.onloadstart = function (e) {
+		}
+		reader.onprogress = function (e) {
+		}
+		reader.onabort = function (e) {
+		}
+		reader.onerror = function (e) {
+		}
+		reader.onload = function (e) {
+			$("#beforeup").hide();
+			$("#uplater").show();
+			var img = document.getElementById("xmTanImg");
+			img.src = e.target.result;
+			//或者 img.src = this.result;  //e.target == this
+		}
+
+		reader.readAsDataURL(file)
+	}
 </script>
 </body>
 </html>

@@ -30,7 +30,7 @@
 				  <td>￥<?php echo $item['ad_sumprice'];?></td>
 				  <td><span class="tdstatus <?php echo $item['active'];?>"><?php echo $item['audit_status'];?></span></td>
 				  <td><span class="tdoper02 <?php echo $item['statusac'];?>" value="<?php echo $item['id'];?>" onclick="edit(<?php echo $item['id'];?>)"><?php echo $item['status'];?></span></td>
-				  <td><a class="tdfont01" href="details">查看</a></td>
+				  <td><a class="tdfont01" href="details?id=<?php echo $item['id'];?>">查看</a></td>
 				</tr>
               <?php endforeach;?>
 			  </tbody>
@@ -86,7 +86,7 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
             ,closeBtn: false
             ,area: ['400px', '130px']
             ,shade: 0.8
-            ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+            ,id: 'LAY_layuipro0' //设定一个id，防止重复弹出
             ,btn: ['确定','取消']
             ,moveType: 1 //拖拽模式，0或者1
             ,content: $('#layer03')
@@ -98,10 +98,9 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
                     dataType: "json",
                     success: function(data){
                         location.reload();
-                        layer.close();
+                        layer.closeAll();
                     }
                 });
-                location.reload();
             }
         });
     });
@@ -112,14 +111,22 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
             ,closeBtn: false
             ,area: ['400px', '130px']
             ,shade: 0.8
-            ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+            ,id: 'LAY_layuipro2' //设定一个id，防止重复弹出
             ,btn: ['确定','取消']
             ,moveType: 1 //拖拽模式，0或者1
             ,content: $('#layer04')
             ,yes: function(layero){
-                //成功输出内容
-                window.parent.location.reload();
-                layer.close();
+                $.ajax({
+                    type: "POST",
+                    url: '/ad/index/edit',
+                    data:{type:"publish",id:adid},
+                    dataType: "json",
+                    success: function(data){
+                        location.reload();
+                        layer.closeAll();
+                    }
+                });
+//                location.reload();
             }
         });
     });
@@ -131,7 +138,7 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
             ,closeBtn: false
             ,area: ['400px', '230px']
             ,shade: 0.8
-            ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+            ,id: 'LAY_layuipro4' //设定一个id，防止重复弹出
             ,btn: ['确定','取消']
             ,moveType: 1 //拖拽模式，0或者1
             ,content: $('#layer04')
