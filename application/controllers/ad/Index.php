@@ -17,6 +17,7 @@ class Index extends MY_Controller
         $this->load->library('Ucloud/Proxy');
         $this->load->model('adprice_model');
         $this->load->model('advertiser_model');
+        $this->load->model('company_model');
         //$this->load->model('plugin_building_model');
     }
 
@@ -87,6 +88,15 @@ class Index extends MY_Controller
     public function add()
     {
         $method = strtolower($_SERVER['REQUEST_METHOD']);
+        $company = $this->company_model->getInfo($where = array("owner"=>$this->user['code']));
+        if($company['status'] ==1){
+            ci_redirect('/ad/index/lists', 3, '已封号,请联系平台');
+        }
+        if($company['audit_status'] == 1 || empty($company)){
+            ci_redirect('/ad/index/lists', 3, '资质审核未过');
+        }else if($company['audit_status'] == 0){
+            ci_redirect('/ad/index/lists', 3, '资质未审核');
+        }
         if ($method == 'get')
         {
             $this->layout->view('/ad/add', $this->data);
@@ -95,7 +105,7 @@ class Index extends MY_Controller
 //            var_dump($_REQUEST);die;
             if(count($_FILES )>1){
                 foreach($_FILES as $fileinfo){
-                    if($fileinfo['size'] < 1024000 || ($fileinfo['type'] =="image/png" ||$fileinfo['type']=="image/jpeg" ) ){
+                    if($fileinfo['size'] < 1024000 && ($fileinfo['type'] =="image/png" || $fileinfo['type']=="image/jpeg" ) ){
                         $status = true;
                     }else{
                         ci_redirect('/ad/index/add', 1, '图片格式或大小不对');
@@ -106,11 +116,11 @@ class Index extends MY_Controller
             if($status)
             {
 
-                $filename1 =date('Y/m/d')."/img/".time().$_FILES["file1"]["name"];
+                $filename1 =date('Y/m/d')."/img/".time().rand(0,1000).$_FILES["file1"]["name"];
                 $filename1 =iconv("UTF-8","gb2312",$filename1);
-                $filename2 =date('Y/m/d')."/img/".time().$_FILES["file2"]["name"];
+                $filename2 =date('Y/m/d')."/img/".time().rand(0,1000).$_FILES["file2"]["name"];
                 $filename2 =iconv("UTF-8","gb2312",$filename2);
-                $filename3 =date('Y/m/d')."/img/".time().$_FILES["file3"]["name"];
+                $filename3 =date('Y/m/d')."/img/".time().rand(0,1000).$_FILES["file3"]["name"];
                 $filename3 =iconv("UTF-8","gb2312",$filename3);
              $upload_file_url1 = $this->proxy->UploadFiles($filename1,$_FILES["file1"]["tmp_name"]);
              $upload_file_url2 = $this->proxy->UploadFiles($filename2,$_FILES["file2"]["tmp_name"]);

@@ -66,8 +66,6 @@
 					  </div>
 					  <!--上传图片之后的样式-->
 					  <div class="file-input-wrapper" id="uplater3">
-						<input type="button" class="file_btn" value="" />
-						<input type="file" class="file-input" value=""  onchange="xmTanUploadImg3(this)" />
 						<img  id="xmTanImg3" src="" class="" />
 					  </div>
 
@@ -84,8 +82,6 @@
 					  </div>
 					  <!--上传图片之后的样式-->
 					  <div class="file-input-wrapper3 " id="uplater2">
-						<input type="button" class="file_btn3" value="" />
-						<input type="file" class="file-input3" value=""   onchange="xmTanUploadImg2(this)"/>
 						  <img src="" id="xmTanImg2" class="" />
 					  </div>
 					  <span class="addfilespro grayfont">建议上传470*360像素的图片</span>
@@ -101,8 +97,6 @@
 					  </div>
 					  <!--上传图片之后的样式-->
 					  <div class="file-input-wrapper5 " id="uplater">
-						  <input type="button" class="file_btn5"  value=""  />
-						  <input type="file" class="file-input5" value="" onchange="xmTanUploadImg(this)" />
 						<img src="" id="xmTanImg" class="" />
 					  </div>
 					  <span class="addfilespro grayfont">建议上传750*180像素的图片</span>
