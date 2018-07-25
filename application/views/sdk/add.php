@@ -71,7 +71,6 @@
 			</form>
 		</div>
     </div>
-  </div>
  <script type="text/javascript">
  //ajax 上传图片
  function fileupload(){

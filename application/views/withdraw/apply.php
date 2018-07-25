@@ -38,9 +38,9 @@
    
     </div>
 
-<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="layui/layui.js"></script>
-<script type="text/javascript" src="js/global.js"></script>
+<script type="text/javascript" src="/public/money_ex/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="/public/money_ex/layui/layui.js"></script>
+<script type="text/javascript" src="/public/money_ex/js/global.js"></script>
 <script>
 layui.use(['form', 'layedit', 'laydate'], function () {
     var form = layui.form

@@ -138,12 +138,12 @@
 	<div class="adopearbox">确定后将开启，您确定要开启吗？</div>
 </div>
 
-<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="layui/layui.js"></script>
-<script type="text/javascript" src="js/global.js"></script>
-<script type="text/javascript" src="js/moment.min.js"></script>
-<script type="text/javascript" src="js/detect-report.js"></script>
-<script type="text/javascript" src="js/echarts.common.min.js"></script>
+<script type="text/javascript" src="/public/money_ex/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="/public/money_ex/layui/layui.js"></script>
+<script type="text/javascript" src="/public/money_ex/js/global.js"></script>
+<script type="text/javascript" src="/public/money_ex/js/moment.min.js"></script>
+<script type="text/javascript" src="/public/money_ex/js/detect-report.js"></script>
+<script type="text/javascript" src="/public/money_ex/js/echarts.common.min.js"></script>
 
 <script>
 layui.use('layer', function(){ //独立版的layer无需执行这一句

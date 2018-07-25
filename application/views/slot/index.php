@@ -44,12 +44,12 @@
 			</div>
 		</div>
     </div>
-<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="layui/layui.js"></script>
-<script type="text/javascript" src="js/global.js"></script>
-<script type="text/javascript" src="js/moment.min.js"></script>
-<script type="text/javascript" src="js/detect-report.js"></script>
-<script type="text/javascript" src="js/echarts.common.min.js"></script>
+<script type="text/javascript" src="/public/money_ex/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="/public/money_ex/layui/layui.js"></script>
+<script type="text/javascript" src="/public/money_ex/js/global.js"></script>
+<script type="text/javascript" src="/public/money_ex/js/moment.min.js"></script>
+<script type="text/javascript" src="/public/money_ex/js/detect-report.js"></script>
+<script type="text/javascript" src="/public/money_ex/js/echarts.common.min.js"></script>
 <script>
 layui.use('laydate', function(){
   var laydate = layui.laydate;

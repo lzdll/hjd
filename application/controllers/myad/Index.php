@@ -16,6 +16,7 @@ class Index extends MY_Controller
         $this->load->library('session');
         $this->load->library('Ucloud/Proxy');
         $this->load->model('slot_model');
+        $this->load->model('company_model');
     }
 
     /**
@@ -318,136 +319,6 @@ class Index extends MY_Controller
         
         return $date; 
     }
-   
-    /**
-     * 发布消息
-     */
-    public function pub()
-    {
-        $id = $this->input->get_post('id');
-        $result = array('status'=>false,'msg'=>'操作失败');
-        if ($info = $this->ad_model->findByPk($id))
-        {
-            $time = time();
-            if($time>$info['valid_end']){
-                $result['msg'] = '有效期过期，请修改后发布';
-                $this->_outputJSON($result);
-            }
-            if($time<$info['valid_start']){
-                $msg= "广告将于".date("Y年m月d日",$info['valid_start'])."展示";
-                $status = 5;
-            }else{
-                $msg= '广告发布成功';
-                $status = 2;
-            }
-            $this->ad_model->updateByPk($id,array('status'=>$status,'pub_time'=>$time,'operator_id'=>$this->user['uid'],'operator_name'=>$this->user['truename']));
-            $result['status'] = true; 
-            $result['msg'] = $msg;
-        }
-        $this->_outputJSON($result);
-    }
-
-    public function del()
-    {
-        $id = (int)$this->input->get_post('id');
-        $result = array('status'=>false,'msg'=>'操作失败');
-        if ($info = $this->ad_model->findByPk($id))
-        {
-            if ($info['status'] != 1)
-            {
-                $result['msg'] = '只有未发布状态才可以删除';
-            }
-            else
-            {
-                $data['status'] = -1;
-                $data['operator_id'] = $this->user['uid'];
-                $data['operator_name'] = $this->user['truename'];
-                if ($this->ad_model->updateByPk($info['id'],$data))
-                {
-                    $result['msg'] = '删除成功';
-                    $result['status'] = true;
-                }
-                else
-                {
-                    $result['msg'] = '删除失败';
-                }
-            }
-            
-        }
-        else
-        {
-            $result['msg'] = '数据不存在';
-        }
-        
-        $this->_outputJSON($result);
-    }
-    
-    public function down()
-    {
-        $id = (int)$this->input->get_post('id');
-        $result = array('status'=>false,'msg'=>'操作失败');
-        if ($info = $this->ad_model->findByPk($id))
-        {
-            if (($info['status'] == 2) || ($info['status'] == 5))
-            {
-                
-                $data['status'] = 3;
-                $data['operator_id'] = $this->user['uid'];
-                $data['operator_name'] = $this->user['truename'];
-                $data['down_time'] = time();
-                if ($this->ad_model->updateByPk($info['id'],$data))
-                {
-                    $result['msg'] = '下架成功';
-                    $result['status'] = true;
-                }
-                else
-                {
-                    $result['msg'] = '下架失败';
-                }
-            }
-            else
-            {
-                $result['msg'] = '只有已发布/未开始状态才可以下架';
-            }
-            
-        }
-        else
-        {
-            $result['msg'] = '数据不存在';
-        }
-        
-        $this->_outputJSON($result);
-    }
-    
-    /**
-     * 置业顾问排序操作
-     */
-    public function upsort() {
-        $data = $this->input->post();
-        $res = array('status' => false, 'msg' => '');
-        $id = (int) $data['id'];
-        $sort = $data['new_sort'];
-        if (!$zygwInfo = $this->ad_model->findByPk($id)) {
-            $res['msg'] = '广告不存在';
-            $this->_outputJSON($res);
-        }
-
-        if ($sort >= 1000 || $sort < 0) {
-            $res['msg'] = '请输入0-999之间的排序';
-            $this->_outputJSON($res);
-        }
-        
-        if ($zygwInfo['sort'] == $sort) {
-            $res['status'] = true;
-            $this->_outputJSON($res);
-            exit;
-        }
-        $r = $this->ad_model->updateByPk($id, array('sort' => $sort));
-        if($r){
-            $res['status'] = true;
-        }    
-        $this->_outputJSON($res);
-    }
     protected function _save($data){
         $id = intval($data['id']);
         if ( !$id )
@@ -463,6 +334,37 @@ class Index extends MY_Controller
             return false;
         }
         return true;
-    }    
+    } 
+    
+    public function promoter(){
+        //判断上传文件类型为png或jpg且大小不超过1024000B
+        if($this->input->post()){
+            $form = $this->input->post();
+            if($form['type'] == 1){
+                $upload_file_url = $form['imgsrc1'];
+                $upload_frontId_url = $form['imgsrc2'];
+                $upload_backId_url = $form['imgsrc3'];
+            }else{
+                $upload_file_url = '';
+                $upload_frontId_url = $form['imgsrc4'];
+                $upload_backId_url = $form['imgsrc5'];
+            }
+            $data['type'] = trim($form['type']);
+            $data['code'] = md5($this->user['code'].time().rand(0,10000));
+            $data['owner'] = $this->user['code'];
+            $data['name'] = trim($form['name']);
+            $data['bs_license_img'] = $upload_file_url;
+            $data['id_card_img_1'] = $upload_frontId_url;
+            $data['id_card_img_2'] = $upload_backId_url;
+            $data['status'] = 0;
+            $data['audit_status'] = 0;
+            $data['created_time'] = date('Y-m-d H:i:s');
+            $data['updated_time'] = date('Y-m-d H:i:s');
+            $res = array('status'=>false, 'msg'=>'');
+            $this->company_model->add($data);
+            ci_redirect('/myad/index/index');
+        }
+        $this->layout->view('/myad/promoter', $this->data);
+    }
 }
 
