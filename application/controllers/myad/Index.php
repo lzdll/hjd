@@ -463,7 +463,6 @@ class Index extends MY_Controller
             return false;
         }
         return true;
-    }
-    
+    }    
 }
 
