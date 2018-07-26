@@ -34,7 +34,7 @@
 				</dl>
 				<dl class="topitemdl topitemdl25">
 					<dd>CPM(千人展示价)</dd>
-					<dt>￥<?php echo $v['cmp_price'];  ?></dt>
+					<dt>￥<?php echo $v['cmp_price']?$v['cmp_price']:0;  ?></dt>
 				</dl>
 			</div>
 		</div>

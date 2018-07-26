@@ -64,14 +64,15 @@
 
 				  <td><?php echo $v['owner'];  ?></td>
 				  <td><?php echo "￥".$v['ad_price']/100;  ?></td>
-				  <td><a href="/advert/index/binding?code=<?php echo $v['code']; ?>"><span class="tdobtn01 active">绑定</span></a></td>
+				  <td> <?php if($v['sdk_name'] == '' ){?> <a href="/advert/index/binding?code=<?php echo $v['code']; ?>"><span class="tdobtn01 active">绑定</span></a><?php  }else{ echo $v['sdk_name']; }?>
+				  </td>
 				  <td>
 					  <?php if($v['audit_status'] == 0 ){?> 
-						<a href="/advert/index/adopt"><span class="tdstatus active">待审核</span></a>
+						<a href="/advert/index/adopt?code=<?php echo $v['code']; ?>&id=<?php echo $v['id']; ?>"><span class="tdstatus active">待审核</span></a>
 					  <?php   }else if($v['audit_status'] == 1){ ?> 
 						<a href="javascript:void(0)"><span class="tdstatus">通过审核</span></a>
 					  <?php }else if($v['audit_status'] == 3){ ?>
-						<a href="/advert/index/adopt"><span class="tdstatus active">未过审核</span></a>	
+						<a href="/advert/index/adopt??code=<?php echo $v['code']; ?>&id=<?php echo $v['id']; ?>"><span class="tdstatus active">未过审核</span></a>	
 					  <?php } ?>
 				  </td>
 				  <td>

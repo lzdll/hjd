@@ -75,7 +75,7 @@ $config['rights'] = array(
         'child' => array(
 		 '4_1' => array('is_menu'=>0, 'name'=>'添加广告主', 'url'=>'/advertiser/index/add'),
 		 '4_2' => array('is_menu'=>0, 'name'=>'查看详情', 'url'=>'/advertiser/index/details'),
-		 '4_3' => array('is_menu'=>0, 'name'=>'重置密码', 'url'=>'/flow/index/resetpwd'),
+		 '4_3' => array('is_menu'=>0, 'name'=>'重置密码', 'url'=>'/advertiser/index/resetpwd'),
         ),
     ),
     '5' => array(
@@ -92,6 +92,7 @@ $config['rights'] = array(
 		   '5_3' => array('is_menu'=>0, 'name'=>'修改cmp', 'url'=>'/advert/index/editcmp'),
 		   '5_4' => array('is_menu'=>0, 'name'=>'上线', 'url'=>'/advert/index/online'),
 		   '5_5' => array('is_menu'=>0, 'name'=>'广告详情', 'url'=>'/advert/index/details'),
+		   '5_6' => array('is_menu'=>0, 'name'=>'审核', 'url'=>'/advert/index/adopts'),
         ),
     ), 
     '6' => array(

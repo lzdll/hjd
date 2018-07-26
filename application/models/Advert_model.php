@@ -107,6 +107,28 @@ class Advert_model extends MY_Model
        $row = $this->db->query($sql)->result_array();
 	   return $row;
     }
+	//获取绑定小程序信息
+	public function getBaingInfo($where){
+	  $sql="SELECT * FROM wy_ad_record AS a LEFT JOIN wy_wsdk AS b ON a.sdk_code=b.code WHERE b.`status`=0 AND a.ad_code='".$where['code']."' ";
+	  $row = $this->db->query($sql)->result_array();
+	  return $row;
+	
+	}
+
+	//获取广告
+	public function getOnead($data)
+    {
+		$where=' 1=1 AND ';
+		if($data['id']){
+			$where=" id=".$data['id'];			
+		}
+		if($data['code']){
+			$where=" code='".$data['code']."'";			
+		}
+        $sql = "select * from  ".$this->wy_ad." where $where limit 1";
+        $row = $this->db->query($sql)->result_array();
+		return $row[0];
+    }
 	
 }
 
