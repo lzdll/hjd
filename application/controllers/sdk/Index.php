@@ -85,7 +85,7 @@ class Index extends MY_Controller {
     {
         $input = array_merge($this->input->get(), $this->input->post());
 		if($input){
-			$update['code'] = strtoupper(md5($input['tradid'].time()));
+			$update['code'] = strtoupper(md5($this->getCode().time()));
 			$update['operator'] = $this->user['code'];
 			$update['name'] = $input['name'];
 			$update['url'] = $input['url'];

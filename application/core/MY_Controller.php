@@ -24,6 +24,7 @@ class MY_Controller extends CI_Controller
         $this->load->library('layout');
         $this->load->library('session');
         $this->load->model('user_model');
+        $this->load->model('code_model');
         /* CI框架 cache redis配置方法
          * $this->load->driver('cache');
         $this->redis = $this->cache->redis; */
@@ -45,6 +46,30 @@ class MY_Controller extends CI_Controller
         }
 
     }
+
+    /**
+     * 生成8位唯一编码
+     */
+    function getCode()
+    {
+        $str = '';
+        $strPool = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        for($i=0;$i<=7;$i++)
+        {
+            $rand = rand(0,61);
+            $str .= $strPool[$rand];
+        }
+        $sql = "select count(1) AS counts from wy_code WHERE code ='{$str}'";
+        $res = $this->db->query($sql)->row_array();
+        if($res['counts'] == 0){
+            $sql = " insert into wy_code (code) VALUES ('{$str}')";
+            $this->db->query($sql);
+            return $str;
+        }else{
+            self::getCode();
+        }
+    }
+
 
     /**
      * 初始化信息

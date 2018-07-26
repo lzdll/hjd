@@ -129,7 +129,7 @@ class Index extends MY_Controller {
     {
         $input = array_merge($this->input->get(), $this->input->post());
 		if($input){
-		    $update['code'] = md5($this->user['code'].time().rand(0,10000));
+		    $update['code'] = md5($this->getCode().time().rand(0,10000));
 			$update['operator'] = $this->user['code'];
 			$update['owner'] = $input['owner'];
 			$update['money'] =$input['money']*100;//转化分
@@ -207,7 +207,7 @@ class Index extends MY_Controller {
         $method = strtolower($_SERVER['REQUEST_METHOD']);
         if ($method == 'post'){
             $post = $this->input->post();
-            $arr['code'] = md5($this->user['code'].time().rand(0,10000));
+            $arr['code'] = md5($this->getCode().time().rand(0,10000));
             $arr['owner'] = $this->user['code'];
             $arr['title'] = $post['title'];
             $arr['taxid'] = $post['invoiceid'];

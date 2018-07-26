@@ -124,7 +124,7 @@ class Index extends MY_Controller
         if ( $form = $this->input->post() )
         {
             $data['platform'] = trim($form['platform']);
-            $data['code'] = md5($this->user['code'].time().rand(0,10000));
+            $data['code'] = md5($this->getCode().time().rand(0,10000));
             $data['owner'] = $this->user['code'];
             $data['name'] = trim($form['title']);
             $data['info'] = $form['desc'];
@@ -351,7 +351,7 @@ class Index extends MY_Controller
                 $upload_backId_url = $form['imgsrc5'];
             }
             $data['type'] = trim($form['type']);
-            $data['code'] = md5($this->user['code'].time().rand(0,10000));
+            $data['code'] = md5($this->getCode().time().rand(0,10000));
             $data['owner'] = $this->user['code'];
             $data['name'] = trim($form['name']);
             $data['bs_license_img'] = $upload_file_url;

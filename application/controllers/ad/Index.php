@@ -36,6 +36,8 @@ class Index extends MY_Controller
      */
     public function index()
     {
+        var_dump(md5($this->getCode().time().rand(0,10000)));
+        var_dump($this->getCode().time().rand(0,10000));die;
         $this->layout->view('/ad/ad_index', $this->data);
     }
 

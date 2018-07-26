@@ -64,7 +64,7 @@ class Index extends MY_Controller {
 
 
             $data['type'] = trim($form['type']);
-            $data['code'] = md5($this->user['code'].time().rand(0,10000));
+            $data['code'] = md5($this->getCode().time().rand(0,10000));
             $data['owner'] = $this->user['code'];
             if($form['type'] == 1 && $status){
                 $data['name'] = trim($form['name']);
