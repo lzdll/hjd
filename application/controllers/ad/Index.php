@@ -108,9 +108,11 @@ class Index extends MY_Controller
                     if($fileinfo['size'] < 1024000 && ($fileinfo['type'] =="image/png" || $fileinfo['type']=="image/jpeg" ) ){
                         $status = true;
                     }else{
-                        ci_redirect('/ad/index/add', 1, '图片格式或大小不对');
+                        ci_redirect('/ad/index/add', 3, '图片格式或大小不对');
                     }
                 }
+            }else{
+                ci_redirect('/ad/index/add', 3, '请上传图片');
             }
             //判断上传文件类型为png或jpg且大小不超过1024000B
             if($status)
@@ -125,6 +127,9 @@ class Index extends MY_Controller
              $upload_file_url1 = $this->proxy->UploadFiles($filename1,$_FILES["file1"]["tmp_name"]);
              $upload_file_url2 = $this->proxy->UploadFiles($filename2,$_FILES["file2"]["tmp_name"]);
              $upload_file_url3 = $this->proxy->UploadFiles($filename3,$_FILES["file3"]["tmp_name"]);
+                if(!$upload_file_url1 || !$upload_file_url2 || !$upload_file_url3){
+                    ci_redirect('/ad/index/add', 3, '图片上传失败');
+                }
             }
             //测试阶段可用
             $upload_file_url = '/2018/07/21/img/1532151910bg_lq.png';

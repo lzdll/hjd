@@ -15,6 +15,7 @@ class Index extends MY_Controller {
         $this->load->library('Ucloud/Proxy');
         $this->load->model('company_model');
         $this->load->model('advertiser_model');
+        $this->load->model('user_model');
 
         //$this->load->model('plugin_building_model');
     }
@@ -47,7 +48,7 @@ class Index extends MY_Controller {
                 if($fileinfo['size'] < 1024000 && ($fileinfo['type'] =="image/png" || $fileinfo['type']=="image/jpeg" ) ){
                     $status = true;
                 }else{
-                    ci_redirect('/member/index/lists', 40, '图片格式或大小不对');
+                    ci_redirect('/member/index/lists', 3, '图片格式或大小不对');
                 }
             }
 
@@ -122,27 +123,21 @@ class Index extends MY_Controller {
 
 public function edit()
 	{
-        //$data  = $this->input->get();
-        //$valid      = array();
-        //$validData  = $this->_getValidParam($data, $valid);
-        //$urlParam   = $this->_generalUrl($validData);
-        //$page = intval($data['page']) > 0 ? intval($data['page']) : 1;
-        //$data['page'] = $page;
-        //$offset = ($page-1) * $this->limit;
-        //$rs = $this->Reward_model->getList(array(),$this->limit, $offset);
-       //// var_dump($rs);die;
-        //if ($data['_debug'] == '1')
-        //{
-            //var_dump($this->db->last_query());
-        //}
-
-        //$filters['config'] = $this->config->item('reward');
-        
-        //$this->data = array_merge($this->data,array(
-            //'list'      => $rs['list'],
-            //'page'      => page($urlParam,$rs['cnt'],$this->limit),
-            //'filters'   => $filters,
-        //));
+        $method = strtolower($_SERVER['REQUEST_METHOD']);
+        if($method == "post"){
+            $form = $this->input->post();
+            $uid = $this->user['id'];
+            $data = array(
+                "password" => gen_pwd(trim($form['repwd'])),
+                "updated_time" => date('Y-m-d H:i:s',time())
+            );
+            $res = $this->user_model->edit($uid,$data);
+            if($res){
+                ci_redirect('/sign/logout', 3, '修改成功，请重新登录');
+            }else{
+                ci_redirect('member/index/edit', 3, '修改失败，请重新提交');
+            }
+        }
 		$this->layout->view('/member/edit', $this->data);
 	} 
 	
