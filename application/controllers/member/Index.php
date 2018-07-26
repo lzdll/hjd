@@ -32,6 +32,16 @@ class Index extends MY_Controller {
 
 	public function lists()
 	{
+        $urole = $this->user['type']; //0:广告主 1: 流量主
+        if($urole == 0){
+            $this->data['tips']  = "提交公司资质后才可投放广告";
+            $this->data['companytype'] = "公司企业广告主";
+            $this->data['perosntype'] = "个人广告主";
+        }else{
+            $this->data['tips'] = "提交公司资质审核通过后可上线广告，获取收益";
+            $this->data['companytype'] = "公司企业流量主";
+            $this->data['perosntype'] = "个人流量主";
+        }
         //判断上传文件类型为png或jpg且大小不超过1024000B
         if($this->input->post()){
             $form = $this->input->post();

@@ -1,5 +1,5 @@
 <div class="layuibodycont">
-		<div class="tips"><img src="/public/money_ex/images/lc06.png" />提交公司资质后才可投放广告</div>
+		<div class="tips"><img src="/public/money_ex/images/lc06.png" /><?php echo $tips;?></div>
 		<div class="clearfix formblock">
 			<form class="layui-form compform" action="lists" method="post" enctype="multipart/form-data">
 				<p class="formtitle">账号信息</p>
@@ -21,8 +21,8 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label idcard">身份类型：</label>
 					<div class="layui-input-block">
-					  <input type="radio" name="type" value="1" title="公司企业广告主" checked="" lay-filter="idtype" >
-					  <input type="radio" name="type" value="0" lay-filter="idtype"  title="个人广告主" >
+					  <input type="radio" name="type" value="1" title="<?php echo $companytype;?>" checked="" lay-filter="idtype" >
+					  <input type="radio" name="type" value="0" lay-filter="idtype"  title="<?php echo $perosntype;?>" >
 					</div>
 				  </div>
 				  <div class="comtabs tx on">

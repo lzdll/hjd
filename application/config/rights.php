@@ -282,7 +282,7 @@ $config['rights'] = array(
 		'type'      => 'folder',
 		'folder'    => '/myad/',         // 类型 item菜单  folder目录
 		'name'      => '个人中心',
-		'url'       => '/myad/index/promoter',
+		'url'       => '/member/index/lists',
 		'class'     => 'dropdown-toggle',
 		'icon'      => 'menu-icon fa fa-lock',
 		'child' => array(
@@ -290,7 +290,7 @@ $config['rights'] = array(
 				'is_menu'=>1,
 				'type'      => 'item',
 				'name'      => '用户资料',
-				'url'       =>'/myad/index/promoter',
+				'url'       =>'/member/index/lists',
 				'child'     => array(
 				),
 			),
