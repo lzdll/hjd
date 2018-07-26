@@ -158,7 +158,7 @@ protected function _save()
 					$type = 1;
 				}
 				$data['type'] = $type;
-				$data['code'] = substr(strtoupper(md5($form['login_name'])),0,8);
+				$data['code'] = md5($this->user['code'].time().rand(0,10000));
 				$data['login_name'] = $form['login_name'];
 				$data['password'] = gen_pwd($form['password']);
 				$data['status'] = $form['status'];	

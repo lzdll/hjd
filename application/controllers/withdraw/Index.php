@@ -57,7 +57,7 @@ class Index extends MY_Controller {
         $method = strtolower($_SERVER['REQUEST_METHOD']);
         if ($method == 'post'){
             $post = $this->input->post();
-            $arr['code'] = gen_pwd($this->user['code'].time());
+            $arr['code'] = md5($this->user['code'].time().rand(0,10000));
             $arr['owner'] = $this->user['code'];
             $arr['subject'] = 0;
             $arr['money'] = $post['money'];

@@ -148,7 +148,7 @@ class Index extends MY_Controller
                   $platform = "wechat";
                     $link = $form['link3'];
             }
-                $data['code'] = md5($this->user['code'].rand(0,10000));
+                $data['code'] = md5($this->user['code'].time().rand(0,10000));
                 $data['owner'] = $this->user['code'];
                 $data['name'] = trim($form['title']);
                 $data['info'] = $form['contact'];
@@ -164,7 +164,7 @@ class Index extends MY_Controller
                 $price['user_code'] = $this->user['code'];
                 $price['ad_code'] = $data['code'];
                 $price['type'] = 0;
-                $price['code'] = md5($this->user['code'].rand(0,10000));
+                $price['code'] = md5($this->user['code'].time().rand(0,10000));
                 $price['price'] = $form['price'] * 100;
                 $price['status'] = 0;
                 $price['created_time'] = date('Y-m-d H:i:s');

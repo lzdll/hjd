@@ -9,13 +9,13 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">手机号：</label>
 					<div class="layui-input-block">
-					   <input type="text" name="title" value="18600900254" class="layui-input putpros"/>
+					   <input type="text" name="title" value="<?php echo $user['phone'];?>" class="layui-input putpros"/>
 					</div>
 				  </div>
 				  <div class="layui-form-item">
 					<label class="layui-form-label">邮箱：</label>
 					<div class="layui-input-block">
-					  <input type="text" name="title" value="18600900254@163.com" class="layui-input putpros"/>
+					  <input type="text" name="title" value="<?php echo $user['email'];?>" class="layui-input putpros"/>
 					</div>
 				  </div>
 				<p class="formtitle">公司资质</p> 

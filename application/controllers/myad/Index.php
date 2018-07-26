@@ -124,7 +124,7 @@ class Index extends MY_Controller
         if ( $form = $this->input->post() )
         {
             $data['platform'] = trim($form['platform']);
-            $data['code'] = md5($this->user['code'].rand(0,10000));
+            $data['code'] = md5($this->user['code'].time().rand(0,10000));
             $data['owner'] = $this->user['code'];
             $data['name'] = trim($form['title']);
             $data['info'] = $form['desc'];
@@ -338,6 +338,7 @@ class Index extends MY_Controller
     
     public function promoter(){
         //判断上传文件类型为png或jpg且大小不超过1024000B
+        $method = strtolower($_SERVER['REQUEST_METHOD']);
         if($this->input->post()){
             $form = $this->input->post();
             if($form['type'] == 1){
@@ -363,6 +364,25 @@ class Index extends MY_Controller
             $res = array('status'=>false, 'msg'=>'');
             $this->company_model->add($data);
             ci_redirect('/myad/index/index');
+        }
+        $this->data['user'] = $this->user;
+        $this->data['company'] = $this->company_model->getInfo($where = array("owner"=>$this->user['code']));
+        if(!empty( $this->data['company'])){
+            if($this->data['company']['type'] == 1){
+                $this->data['compaycheack'] = "checked";
+                $this->data['personcheack'] = "";
+                $this->data['compaystyle'] = "on";
+                $this->data['personstyle'] = "";
+            }else{
+                $this->data['compaycheack'] = "";
+                $this->data['personcheack'] = "checked";
+                $this->data['compaystyle'] = "";
+                $this->data['personstyle'] = "on";
+            }
+            $this->layout->view('/myad/company', $this->data);
+        }else{
+            $this->layout->view('/myad/person', $this->data);
+            
         }
         $this->layout->view('/myad/promoter', $this->data);
     }

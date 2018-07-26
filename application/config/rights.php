@@ -280,9 +280,9 @@ $config['rights'] = array(
 	'23' => array(
 		'is_menu'   => 1,               // 是否是菜单(是否显示为菜单)
 		'type'      => 'folder',
-		'folder'    => '/member/',         // 类型 item菜单  folder目录
+		'folder'    => '/myad/',         // 类型 item菜单  folder目录
 		'name'      => '个人中心',
-		'url'       => '/member/index/lists',
+		'url'       => '/myad/index/promoter',
 		'class'     => 'dropdown-toggle',
 		'icon'      => 'menu-icon fa fa-lock',
 		'child' => array(
@@ -290,17 +290,16 @@ $config['rights'] = array(
 				'is_menu'=>1,
 				'type'      => 'item',
 				'name'      => '用户资料',
-				'url'       =>'/member/index/lists',
+				'url'       =>'/myad/index/promoter',
 				'child'     => array(
 				),
 			),
 			'23_2' => array(
-				'is_menu'=>1,
-				'type'      => 'item',
-				'name'      => '修改密码',
-				'url'       =>'/member/index/edit',
-				'child'     => array(
-				 
+			    'is_menu'=>1,
+			    'type'      => 'item',
+			    'name'      => '修改密码',
+			    'url'       =>'/member/index/edit',
+			    'child'     => array(
 				),
 			),
 			
