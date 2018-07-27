@@ -3,19 +3,19 @@
 		<div class="topblock clearfix">
 			<dl class="topitemdl topeditem">
 				<dd>每日限额<span class="editpricebtn">编辑</span></dd>
-				<dt>{quota}</dt>
+				<dt><?php echo $countinfo['quota']; ?></dt>
 			</dl>
 			<dl class="topitemdl">
-				<dd>流量池金主</dd>
-				<dt>￥93000.00</dt>
+				<dd>账户余额</dd>
+				<dt>￥<?php echo $countinfo['money']; ?></dt>
 			</dl>
 			<dl class="topitemdl">
 				<dd>当前投放广告</dd>
-				<dt>3040<span>个</span></dt>
+				<dt><?php echo $countinfo['ad_num']; ?><span>个</span></dt>
 			</dl>
 			<dl class="topitemdl noborder">
 				<dd>今日消耗</dd>
-				<dt>￥23040.30</dt>
+				<dt>￥<?php echo $totalmoney; ?></dt>
 			</dl>
 		</div>
 		<div class="clearfix navtabs">
@@ -50,7 +50,7 @@
 			</div>
 		</div>
 		<div class="clearfix" style="margin-top:10px;">
-			<div class="countitem fl">
+			<div class="countitem fl" style="display: none">
 				<div class="countnav"><p class="fl countleft"><i><img src="/public/money_ex/images/icon.png"></i><span>用户画像</span></p>
 				</div>
 				<div class="">
@@ -59,7 +59,7 @@
 				<!-- ECharts单文件引入 -->
 				</div>
 			</div>
-			<div class="countitem fr">
+			<div class="countitem f1">
 				<div class="countnav"><p class="fl countleft"><i><img src="/public/money_ex/images/icon03.png"></i><span>点击排行</span></p>
 				</div>
 				<div class="">
@@ -84,7 +84,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">价格：</label>
 					<div class="layui-input-block" >
-					  <span>￥</span><input type="text" name="title" placeholder="请输入新限额" class="layui-input">
+					  <span>￥</span><input type="text" onkeyup="this.value=this.value.toString().match(/^\d+(?:\.\d{0,2})?/)"  id="quota" name="quota" placeholder="请输入新限额" class="layui-input">
 					</div>
 				  </div>
 			 </form>
@@ -112,9 +112,23 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
 			,btn: ['确定','取消']
 			,moveType: 1 //拖拽模式，0或者1
 			,content: $('#layer04')
-			,success: function(layero){
-			  //成功输出内容
-			  console.log(11);
+			,yes: function(layero){
+                var quota = $('#quota').val();
+                if(quota == "") {
+                    alert("金额不能为空");
+                    return false;
+                }else{
+                    $.ajax({
+                        type: "POST",
+                        url: '/ad/index/editquota',
+                        data:{quota:quota},
+                        dataType: "json",
+                        success: function(data){
+                            location.reload();
+                            layer.closeAll();
+                        }
+                    });
+                }
 			}
 		});
 	});
@@ -131,7 +145,7 @@ layui.use('laydate', function(){
 // 基于准备好的dom，初始化echarts实例
 var myChart = echarts.init(document.getElementById('report-chart'));
 var myChart2 = echarts.init(document.getElementById('report-chart2'));
-var myChart3 = echarts.init(document.getElementById('report-chart3'));
+//var myChart3 = echarts.init(document.getElementById('report-chart3'));
 var myChart4 = echarts.init(document.getElementById('report-chart4'));
 // 指定图表的配置项和数据
 var option = {
@@ -382,7 +396,7 @@ var option3 = {
 };
 
 
-myChart3.setOption(option3);
+//myChart3.setOption(option3);
    
 var option4 = {
     title : {
@@ -443,7 +457,7 @@ myChart4.setOption(option4);
 window.addEventListener("resize", function () {
     myChart.resize();
 	myChart2.resize();
-	myChart3.resize();
+//	myChart3.resize();
 	myChart4.resize();
 });  
 </script>

@@ -46,7 +46,7 @@ class Advert_model extends MY_Model
 	//获取广告数
 	public function getCount($where)
     {
-        $sql = "select count(DISTINCT `code`) as total from  ".$this->wy_ad." where $where limit 1";
+        $sql = "select count(DISTINCT `code`) as total from  ".$this->wy_ad." where $where";
         $row = $this->db->query($sql)->row();
         return (int)$row->total;
     }
@@ -129,7 +129,18 @@ class Advert_model extends MY_Model
         $row = $this->db->query($sql)->result_array();
 		return $row[0];
     }
-	
+    //广告主首页信息
+    public function getAdMasterCountInfo($uowner)
+    {
+
+        $sql = "SELECT a.money money,a.credit credit,a.quota,COUNT(ad.id) ad_num FROM wy_account a LEFT JOIN wy_ad ad ON a.`owner` = ad.`owner` where a.`owner` = '{$uowner}' AND ad.`status`= 0 " ;
+        $msql = "select  sum(a.code) as totalmoney from wy_ad_order a  WHERE a.ad_price > 0 AND a.ad_owner = '{$uowner}' AND a.created_time > CURDATE()";
+        $row = $this->db->query($sql)->result_array();
+        $totalmoney = $this->db->query($msql)->row_array();
+        $res['account'] =  $row[0];
+        $res['totalmoney'] = $totalmoney[0];
+        return $res;
+    }
 }
 
  

@@ -6,13 +6,13 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">手机号：</label>
 					<div class="layui-input-block">
-					   <input type="text" name="title" value="<?php echo $user['phone'];?>" disabled class="layui-input putpros"/>
+					   <input type="text" name="phone" value="<?php echo $phone;?>"  class="layui-input putpros"/>
 					</div>
 				  </div>
 				  <div class="layui-form-item">
 					<label class="layui-form-label">邮箱：</label>
 					<div class="layui-input-block">
-					  <input type="text" name="title" value="<?php echo $user['email'];?>" disabled class="layui-input putpros"/>
+					  <input type="text" name="email" value="<?php echo $email;?>"  class="layui-input putpros"/>
 					</div>
 				  </div>
 				  
@@ -86,7 +86,7 @@
 				  
 				  <div class="layui-form-item">
 					<div class="layui-input-block formopearbtn">
-					  <button class="layui-btn layui-btn-primary resetbtn">取消</button>
+					  <button class="layui-btn layui-btn-primary resetbtn" type="reset">取消</button>
                         <button class="layui-btn addbtn"><a href="javascript:void(0);" >提交</a></button>
 					</div>
 				  </div>
@@ -107,10 +107,10 @@ layui.use(['form', 'layedit', 'laydate'], function(){
   var form = layui.form;
 	form.on("radio(idtype)",function(data){
 		//alert(data.value);//判断单选框的选中值/
-		if(data.value == 01){
+		if(data.value == 1){
 			$(".comtabs").show();
 			$(".persontabs").hide();
-		}else if(data.value == 02){
+		}else if(data.value == 0){
 			$(".comtabs").hide();
 			$(".persontabs").show();
 		}

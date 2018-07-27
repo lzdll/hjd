@@ -31,6 +31,7 @@ class Account_model extends MY_Model
     {
         return $this->findByAttributes($data);
     }
+<<<<<<< HEAD
     function getTodayProfit($ucode){
         $begin_time = date('Y-m-d');
         $end_time = date('Y-m-d',strtotime('+1 day'));
@@ -45,5 +46,15 @@ class Account_model extends MY_Model
                  AND `c`.`created_time` <'".$end_time."'
             ) t ")->result_array();
         return $data;
+=======
+    /**
+     * 编辑
+     */
+    function edit($owner,$quota)
+    {
+        $sql = "update wy_account set quota = {$quota} WHERE owner = '{$owner}'";
+       $res = $this->db->query($sql);
+        return $res;
+>>>>>>> b585327f7b7a1f2540a97eafa51808ad2638a429
     }
 }
