@@ -31,6 +31,7 @@ class Account_model extends MY_Model
     {
         return $this->findByAttributes($data);
     }
+
     function getTodayProfit($ucode){
         $begin_time = date('Y-m-d');
         $end_time = date('Y-m-d',strtotime('+1 day'));
@@ -46,6 +47,8 @@ class Account_model extends MY_Model
             ) t ")->result_array();
         return $data;
     }
+
+
     /**
      * 编辑
      */
