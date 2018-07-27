@@ -20,6 +20,7 @@ class Index extends MY_Controller
         $this->load->model('company_model');
         $this->load->model('advert_model');
         $this->load->model('account_model');
+        $this->load->model('slot_model');
         //$this->load->model('plugin_building_model');
     }
 
@@ -43,6 +44,47 @@ class Index extends MY_Controller
         $info['account']['quota'] = number_format( $info['account']['quota']/100,2,'.','');
         $this->data['countinfo'] = $info['account'];
         $this->data['totalmoney'] = $info['totalmoney'];
+        //广告推广量
+        $begin_time = $this->input->get('begin_time');
+        $end_time = $this->input->get('end_time');
+        if(empty($begin_time)){
+            $begin_time = date('Y-m-d', strtotime('-7 days'));
+        }
+        if(empty($end_time)){
+            $end_time = date('Y-m-d', time());
+        }
+        $adInfo = $this->slot_model->getExtensionStatices($this->user['code'],'',$begin_time,$end_time);
+        $recharge = $this->account_model->getFinanceInfo($this->user['code'],'',$begin_time,$end_time);
+        $datedata = $this->getDateSection($begin_time, $end_time);
+        $sectionCount = count(explode(',', $datedata));
+        $staticesCpc = $staticesCpm = $staticesAdPrice = $staticesadRechage =array();
+        if(!empty($adInfo)){
+            foreach ($adInfo as $key =>$val){
+                $staticesCpc[] = $val['cpc'] ;
+                $staticesCpm[] = $val['cpm'] ;
+                $staticesAdPrice[] = $val['ad_price'] ;
+                $staticesadRechage[] = $val['ad_price'] ;
+            }
+        }
+        if(!empty($recharge)){
+            foreach ($recharge as $key =>$val){
+                $staticesAdRechage[] = $val['money'] ;
+            }
+        }
+        if(count($staticesCpm) < $sectionCount){
+            $max = ($sectionCount-count($staticesCpm));
+            for ($i=0;$i<$max;$i++){
+                $staticesCpc[] = 0;
+                $staticesCpm[] = 0;
+                $staticesAdPrice[] = 0;
+            }
+        }
+        $this->data['avg_price'] = $adInfo['avg_price']>0?number_format($adInfo['avg_price'],2,'.',''):"0.00";
+        $this->data['staticesCpc'] = implode(',',$staticesCpc);
+        $this->data['staticesCpm'] = implode(',',$staticesCpm);
+        $this->data['staticesAdPrice'] = implode(',',$staticesAdPrice);
+        $this->data['staticesAdRechage'] = implode(',',$staticesAdRechage);
+        $this->data['date'] = $this->getDateTime();
 //        var_dump($info);die;
         $this->layout->view('/ad/ad_index', $this->data);
     }
@@ -266,6 +308,7 @@ class Index extends MY_Controller
     {
             $type = $_POST['type'];
             $id = $_POST['id'];
+        $price = $_POST['price'] * 100;
             if ($type == "delete")
             {
                 //删除广告
@@ -275,6 +318,10 @@ class Index extends MY_Controller
             if($type == 'publish'){
                 //发布广告
                 $res = $this->advertiser_model->edit($id,0);
+                echo json_encode($res);exit;
+            }
+            if($type == 'price'){
+                $res = $this->advertiser_model->edit($id,"",$price);
                 echo json_encode($res);exit;
             }
             else
@@ -318,76 +365,30 @@ class Index extends MY_Controller
        }
    }
 
-    public function del()
-    {
-        $id = (int)$this->input->get_post('id');
-        $result = array('status'=>false,'msg'=>'操作失败');
-        if ($info = $this->ad_model->findByPk($id))
-        {
-            if ($info['status'] != 1)
-            {
-                $result['msg'] = '只有未发布状态才可以删除';
-            }
-            else
-            {
-                $data['status'] = -1;
-                $data['operator_id'] = $this->user['uid'];
-                $data['operator_name'] = $this->user['truename'];
-                if ($this->ad_model->updateByPk($info['id'],$data))
-                {
-                    $result['msg'] = '删除成功';
-                    $result['status'] = true;
-                }
-                else
-                {
-                    $result['msg'] = '删除失败';
-                }
-            }
-            
+    private function getDateSection($startdate, $enddate){
+
+        $stimestamp = strtotime($startdate);
+        $etimestamp = strtotime($enddate);
+        // 计算日期段内有多少天
+        $days = ($etimestamp-$stimestamp)/86400+1;
+        // 保存每天日期
+        $str = '';
+        for($i=0; $i<$days; $i++){
+            $str .= "'".date('n.j', $stimestamp+(86400*$i))."',";
         }
-        else
-        {
-            $result['msg'] = '数据不存在';
-        }
-        
-        $this->_outputJSON($result);
+        return mb_substr($str, 0,-1);
     }
-    
-    public function down()
-    {
-        $id = (int)$this->input->get_post('id');
-        $result = array('status'=>false,'msg'=>'操作失败');
-        if ($info = $this->ad_model->findByPk($id))
-        {
-            if (($info['status'] == 2) || ($info['status'] == 5))
-            {
-                
-                $data['status'] = 3;
-                $data['operator_id'] = $this->user['uid'];
-                $data['operator_name'] = $this->user['truename'];
-                $data['down_time'] = time();
-                if ($this->ad_model->updateByPk($info['id'],$data))
-                {
-                    $result['msg'] = '下架成功';
-                    $result['status'] = true;
-                }
-                else
-                {
-                    $result['msg'] = '下架失败';
-                }
-            }
-            else
-            {
-                $result['msg'] = '只有已发布/未开始状态才可以下架';
-            }
-            
-        }
-        else
-        {
-            $result['msg'] = '数据不存在';
-        }
-        
-        $this->_outputJSON($result);
+    private function getDateTime(){
+        $date['today']['begin_date'] = date("Y-m-d");
+        $date['today']['end_date'] = date("Y-m-d",strtotime("+1 day"));
+        $date['yesterday']['begin_date'] = date("Y-m-d",strtotime("-1 day"));
+        $date['yesterday']['end_date'] = date("Y-m-d");
+        $date['week']['begin_date'] = date("Y-m-d",strtotime("-1 week"));
+        $date['week']['end_date'] = date("Y-m-d");
+        $date['month']['begin_date'] = date("Y-m-01");
+        $date['month']['end_date'] = date("Y-m-d");
+
+        return $date;
     }
         
 }

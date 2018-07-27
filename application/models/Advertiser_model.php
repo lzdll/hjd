@@ -32,14 +32,21 @@ class Advertiser_model extends MY_Model
     /**
      * 编辑
      */
-    function edit($id,$status)
+    function edit($id,$status,$price)
     {
-        $data=array(
-        'status'=> $status,
-        'updated_time'=>date("Y-m-d H:i:s",time()),
-    );
-        $this->db->where('id',$id);
-        return $this->updateByPk($id,$data);
+        if($price>0){
+            $sql = "update wy_ad a LEFT JOIN wy_ad_price b ON a.code = b.ad_code set b.price = {$price} WHERE a.id = {$id}";
+            $res = $this->db->query($sql);
+            return $res;
+        }else{
+            $data=array(
+                'status'=> $status,
+                'updated_time'=>date("Y-m-d H:i:s",time()),
+            );
+            $this->db->where('id',$id);
+            return $this->updateByPk($id,$data);
+        }
+
 
     }
     /**
@@ -116,6 +123,36 @@ class Advertiser_model extends MY_Model
         }
         $row = $this->db->query($sql)->result_array();
         return $row;
+    }
+
+    /**
+     * 广告推广量统计
+     * @param $user_code
+     * @param $st_id
+     * @param $begin_time
+     * @param $end_time
+     * @return mixed
+     */
+    public function getExtensionStatices($user_code ,$ad_id,$begin_time,$end_time){
+        $where = ' c.owner = "'.$user_code.'" and b.created_time >= "'.$begin_time.'" and b.created_time < "'.$end_time.'" ';
+        if(!empty($ad_id) && $ad_id > 0){
+            $where .= ' and c.id= '.$ad_id ;
+        }
+        $data = $this->db->query("SELECT id,`code`,cpc,cpm,totalcpc,totalAd,IF (ad_price>0,ad_price,0) st_price ,FORMAT((ad_price/cpc),2) avg_price FROM(
+            SELECT c.id,c.`code`,
+            	COUNT(distinct(b.ad_code)) totalAd,
+                IF (b.type = 0,IF (b.ad_price > 0, COUNT(1), 0), 0) cpc,
+                IF (b.type = 1,IF (b.ad_price > 0, COUNT(1), 0), 0) cpm,
+                COUNT(type) totalcpc,
+            	SUM(b.ad_price) ad_price,
+                DATE_FORMAT(b.created_time,'%Y-%m-%d') d
+            FROM `wy_ad` AS `c`
+            LEFT JOIN `wy_ad_order` AS `b` ON `c`.`owner` = `b`.`ad_owner`
+            WHERE
+            	".$where."
+            GROUP BY d
+            ) t")->result_array();
+        return $data;
     }
 
 }

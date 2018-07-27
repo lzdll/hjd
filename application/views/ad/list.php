@@ -25,7 +25,7 @@
 				  <td><?php echo $item['pv'];?></td>
 				  <td><?php echo $item['cpc'];?></td>
 				  <td><?php echo $item['rate'];?>%</td>
-				  <td><span class="tdfont01 editjs">￥<input type="text" value=<?php echo $item['price'];?> class="editput" disabled /></span></td>
+				  <td><span class="tdfont01 editjs" onclick="edit(<?php echo $item['id'];?>)">￥<input type="text" value=<?php echo $item['price'];?> class="editput" disabled /></span></td>
 				  <td>￥0.00</td>
 				  <td>￥<?php echo $item['ad_sumprice'];?></td>
 				  <td><span class="tdstatus <?php echo $item['active'];?>"><?php echo $item['audit_status'];?></span></td>
@@ -49,7 +49,7 @@
 <div class="selectgoodsbox tx" id="layer04">
 	<div class="adopearbox">您确定要发布此广告吗？</div>
 </div>
-<div class="selectgoodsbox tx" id="layer04">
+<div class="selectgoodsbox tx" id="layer05">
    <div class="">
 		<p class="editprice">编辑价格</p>
 		<div class="adopearbox">
@@ -57,7 +57,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">价格：</label>
 					<div class="layui-input-block" >
-					  <span>￥</span><input type="text" name="title" placeholder="请输入新的价格" class="layui-input">
+					  <span>￥</span><input type="text" onkeyup="this.value=this.value.toString().match(/^\d+(?:\.\d{0,2})?/)" id="price" name="price" placeholder="请输入新的价格" class="layui-input">
 					</div>
 				  </div>
 			 </form>
@@ -138,13 +138,27 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
             ,closeBtn: false
             ,area: ['400px', '230px']
             ,shade: 0.8
-            ,id: 'LAY_layuipro4' //设定一个id，防止重复弹出
+            ,id: 'LAY_layuipro5' //设定一个id，防止重复弹出
             ,btn: ['确定','取消']
             ,moveType: 1 //拖拽模式，0或者1
-            ,content: $('#layer04')
-            ,success: function(layero){
-                //成功输出内容
-                console.log(11);
+            ,content: $('#layer05')
+            ,yes: function(layero){
+                var price = $('#price').val();
+                if(price == "") {
+                    alert("金额不能为空");
+                    return false;
+                }else{
+                    $.ajax({
+                        type: "POST",
+                        url: '/ad/index/edit',
+                        data:{type:"price",price:price,id:adid},
+                        dataType: "json",
+                        success: function(data){
+                            location.reload();
+                            layer.closeAll();
+                        }
+                    });
+                }
             }
         });
     });

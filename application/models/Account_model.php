@@ -47,7 +47,10 @@ class Account_model extends MY_Model
             ) t ")->result_array();
         return $data;
     }
-
+    function getFinanceInfo($user_code,$begin_time,$end_time){
+        $where = ' a.owner = "'.$user_code.'" and a.created_time >= "'.$begin_time.'" and a.created_time < "'.$end_time.'" ';
+        $sql = "select sum(a.money), DATE_FORMAT(b.created_time,'%Y-%m-%d') d  money from wy_finance WHERE  '{$where}' AND a.`status` = 0 GROUP BY d";
+    }
 
     /**
      * 编辑
@@ -55,7 +58,7 @@ class Account_model extends MY_Model
     function edit($owner,$quota)
     {
         $sql = "update wy_account set quota = {$quota} WHERE owner = '{$owner}'";
-       $res = $this->db->query($sql);
+        $res = $this->db->query($sql)->result_array();
         return $res;
     }
 }

@@ -19,8 +19,8 @@
 			</dl>
 		</div>
 		<div class="clearfix navtabs">
-			<span class="navpan active">近7天</span>
-			<span class="navpan">本月</span>
+			<span class="navpan active"><a href="/ad/index/index?begin_time=<?php echo $date['week']['begin_date'];?>&end_time=<?php echo $date['week']['end_date'];?>">近7天</a></span>
+			<span class="navpan"><a href="/ad/index/index?begin_time=<?php echo $date['month']['begin_date'];?>&end_time=<?php echo $date['month']['end_date'];?>">本月</a></span>
 			<div class="layui-inline" style="margin-top:4px;">
 			  <label class="layui-form-label">时间</label>
 			  <div class="layui-input-inline">
@@ -31,7 +31,7 @@
 		<div class="clearfix">
 			<div class="countitem fl">
 				<div class="countnav"><p class="fl countleft"><i><img src="/public/money_ex/images/icon04.png"></i><span>广告推广量</span></p>
-				<span class="fr countright">均价<i class="">￥0.3</i></span></div>
+				<span class="fr countright">均价<i class="">￥<?php echo $avg_price;?></i></span></div>
 				<div class="">
 					<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 				<div id="report-chart" class="report-chart" style="height:400px" data-action="week"></div>
@@ -59,7 +59,7 @@
 				<!-- ECharts单文件引入 -->
 				</div>
 			</div>
-			<div class="countitem f1">
+			<div class="countitem f1" style="display: none">
 				<div class="countnav"><p class="fl countleft"><i><img src="/public/money_ex/images/icon03.png"></i><span>点击排行</span></p>
 				</div>
 				<div class="">
@@ -99,6 +99,24 @@
 <script type="text/javascript" src="/public/money_ex/js/detect-report.js"></script>
 <script type="text/javascript" src="/public/money_ex/js/echarts.common.min.js"></script>
 <script>
+layui.use('laydate', function(){
+    var laydate = layui.laydate;
+//日期范围
+    laydate.render({
+        elem: '#test6'
+        ,range: true
+        ,done: function(value, date, endDate) {
+            var a = value.split('-');
+            var begin_time = a[0]+"-"+a[1]+"-"+a[2];
+            var end_time = a[3]+"-"+a[4]+"-"+a[5];
+            window.location.href = '/ad/index/index?begin_time='+begin_time+"&end_time="+end_time;
+        }
+        ,choose: function(dates){
+            alert(dates);
+        }
+    });
+});
+
 layui.use('layer', function(){ //独立版的layer无需执行这一句
   var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
 	$(document).on("click",".editpricebtn",function(){
@@ -134,14 +152,6 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
 	});
 });
 
-layui.use('laydate', function(){
-  var laydate = layui.laydate;
-//日期范围
-  laydate.render({
-    elem: '#test6'
-    ,range: true
-  });
- });
 // 基于准备好的dom，初始化echarts实例
 var myChart = echarts.init(document.getElementById('report-chart'));
 var myChart2 = echarts.init(document.getElementById('report-chart2'));
@@ -177,7 +187,7 @@ var option = {
         {
             type : 'category',
             boundaryGap : false,
-            data : ['6.21','6.22','6.23','6.24','6.25','6.26','6.27']
+            data : [<?php echo $section;?>]
         }
     ],
     yAxis: {
@@ -195,7 +205,7 @@ var option = {
 								formatter:'{c}'
 							},
 							areaStyle:{
-								color:new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ 
+								color:new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
 									offset: 0,
 									color: '#afeff3'
 								}, {
@@ -207,7 +217,7 @@ var option = {
 								}])
 							},
 							color:'#2cc6ad'}},
-            data:[10, 12, 21, 54, 260, 830, 710]
+            data:[<?php echo $staticesCpm;?>]
         },
         {
             name:'点击',
@@ -217,7 +227,7 @@ var option = {
 			areaStyle: {type: 'default'},
 			label : {show:true,position:'top',formatter:'{c}'},
 			areaStyle:{
-								color:new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ 
+								color:new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
 									offset: 0,
 									color: '#ffd280'
 								}, {
@@ -229,7 +239,7 @@ var option = {
 								}])
 							},color:'#ffc400'
 			}},
-            data:[30, 182, 434, 791, 390, 30, 10]
+            data:[<?php echo $staticesCpc;?>]
         }
     ]
 };
@@ -265,7 +275,7 @@ var option2 = {
         {
             type : 'category',
             boundaryGap : false,
-            data : ['6.21','6.22','6.23','6.24','6.25','6.26','6.27']
+            data : [<?php echo $section;?>]
         }
     ],
     yAxis: {
@@ -285,7 +295,7 @@ var option2 = {
 					}
 				},
             stack: '总量',
-            data:[120, 132, 201, 134, 190, 230, 210]
+            data:[<?php echo $staticesAdRechage ;?>]
 
         },
         {
@@ -300,12 +310,12 @@ var option2 = {
 						}
 					}
 				},
-            data:[30, 182, 34, 91, 30, 30, 10]
+            data:[<?php echo $staticesAdPrice ;?>]
         }
     ]
-}; 
+};
 // 使用刚指定的配置项和数据显示图表。
-myChart2.setOption(option2); 
+myChart2.setOption(option2);
 
 var option3 = {
     tooltip : {
@@ -321,7 +331,7 @@ var option3 = {
     legend: {
         orient : 'vertical',
 		x: 'left',
-		y: 'top', 
+		y: 'top',
         data:['男性用户','女性用户','其他']
     },
 	title : {
@@ -335,12 +345,12 @@ var option3 = {
             type:'pie',
             radius : ['45%', '30%','25%'],
             itemStyle : {
-                normal:{ 
-                        label:{ 
-                            show: true, 
-                            formatter: '{b} : {c} ({d}%)' 
-                        }, 
-                        labelLine :{show:true} 
+                normal:{
+                        label:{
+                            show: true,
+                            formatter: '{b} : {c} ({d}%)'
+                        },
+                        labelLine :{show:true}
                     } ,
                 emphasis : {
                     label : {
@@ -367,7 +377,7 @@ var option3 = {
 					}
 				},
                 {
-					value:132, 
+					value:132,
 					name:'女性用户',
 					itemStyle: {
 						normal: {
@@ -379,7 +389,7 @@ var option3 = {
 					}
 				},
                 {
-					value:93, 
+					value:93,
 					name:'其他',
 					itemStyle: {
 						normal: {
@@ -397,7 +407,7 @@ var option3 = {
 
 
 //myChart3.setOption(option3);
-   
+
 var option4 = {
     title : {
         //text: '世界人口总量',
@@ -417,7 +427,7 @@ var option4 = {
     },
     toolbox: {
         show : true,
-       
+
     },
     calculable : true,
     xAxis : [
@@ -437,9 +447,9 @@ var option4 = {
             name:'数量',
             type:'bar',
 			barWidth : 20,//柱图宽度
-			label : {normal:{ 
-                                        show: true, 
-                                        position: 'right'} 
+			label : {normal:{
+                                        show: true,
+                                        position: 'right'}
                                         },
 			itemStyle:{
                                     normal:{
@@ -450,8 +460,8 @@ var option4 = {
         }
     ]
 };
-     
-        
+
+
 // 使用刚指定的配置项和数据显示图表。
 myChart4.setOption(option4);
 window.addEventListener("resize", function () {
@@ -459,7 +469,7 @@ window.addEventListener("resize", function () {
 	myChart2.resize();
 //	myChart3.resize();
 	myChart4.resize();
-});  
+});
 </script>
 </body>
 </html>

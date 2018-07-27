@@ -25,7 +25,7 @@
 		</div>
 		<div class="clearfix">
 			<div class="countitem fl">
-				<div class="countnav"><p class="fl countleft"><i><img src="images/icon04.png"></i><span>广告推广量</span></p>
+				<div class="countnav"><p class="fl countleft"><i><img src="/public/money_ex/images/icon04.png"></i><span>广告推广量</span></p>
 				</div>
 				<div class="">
 					<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
@@ -35,7 +35,7 @@
 				</div>
 			</div>
 			<div class="countitem fr">
-				<div class="countnav"><p class="fl countleft"><i><img src="images/icon02.png"></i><span>收益</span></p></div>
+				<div class="countnav"><p class="fl countleft"><i><img src="/public/money_ex/images/icon02.png"></i><span>收益</span></p></div>
 				<div class="">
 					<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 					<div id="report-chart2" class="report-chart" style="height:400px" data-action="week"></div>
