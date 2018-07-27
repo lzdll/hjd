@@ -82,7 +82,7 @@ class Index extends MY_Controller
         $data['ad_price'] = $staticesInfo['ad_price'];
         $data['st_price'] = $staticesInfo['st_price'];
         $data['cpc'] = $staticesInfo['cpc'];
-        $data['cpm'] = $staticesInfo['cpm'];
+        $data['cmp'] = $staticesInfo['cpm'];
         $data['total_cpc'] = $staticesInfo['total_cpc'];
         $data['create_time'] = date('Y-m-d H:i:s');
         $staticesInfo = $this->statistics_model->add();

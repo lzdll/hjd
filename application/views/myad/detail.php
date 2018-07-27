@@ -77,11 +77,21 @@
 <script type="text/javascript" src="/public/money_ex/js/echarts.common.min.js"></script>
 <script>
 layui.use('laydate', function(){
+	var id = <?php echo $id;?>;
   var laydate = layui.laydate;
 //日期范围
   laydate.render({
     elem: '#test6'
     ,range: true
+    ,done: function(value, date, endDate) {
+        	var a = value.split('-');
+        	var begin_time = a[0]+"-"+a[1]+"-"+a[2];
+        	var end_time = a[3]+"-"+a[4]+"-"+a[5];
+        	window.location.href = '/myad/index/details?id='+id+'&begin_time='+begin_time+"&end_time="+end_time;
+        }
+  	,choose: function(dates){
+			alert(dates);
+  	  	}
   });
  });
 layui.use(['laypage', 'layer'], function(){

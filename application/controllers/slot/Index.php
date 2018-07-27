@@ -15,6 +15,7 @@ class Index extends MY_Controller
         $this->_initNav();
         $this->load->library('session');
         $this->load->model('slot_model');
+        $this->load->model('account_model');
     }
 
     /**
@@ -24,20 +25,6 @@ class Index extends MY_Controller
     {
         $method = $this->router->method;
         $nav = array();
-        if ($method == 'index') // 列表
-        {
-            $nav[] = array('name' => '系统消息管理', 'url' => '');
-        } else if ($method == 'lists') // 添加
-        {
-            $nav[] = array('name' => '广告列表', 'url' => '');
-        } else if ($method == 'add') // 添加
-        {
-            $nav[] = array('name' => '添加广告', 'url' => '');
-        }
-        else if ( $method == 'edit' ) // 添加
-        {
-            $nav[] = array('name' => '编辑广告', 'url' => '');
-        }
         $this->data['nav'] = array_merge($this->data['nav'], $nav);
     }
 
@@ -58,11 +45,12 @@ class Index extends MY_Controller
         $stInfo = $this->slot_model->getExtensionStatices($this->user['code'],'',$begin_time,$end_time);
         $datedata = $this->getDateSection($begin_time, $end_time);
         $sectionCount = count(explode(',', $datedata));
-        $staticesCpc = $staticesCpm = array();
+        $staticesCpc = $staticesCpm = $staticesStPrice = array();
         if(!empty($stInfo)){
             foreach ($stInfo as $key =>$val){
                 $staticesCpc[] = $val['cpc'] ;
                 $staticesCpm[] = $val['cpm'] ;
+                $staticesStPrice[] = $val['st_price'] ;
             }
         }
         $st_total = $ad_total = $avgamount = $total_cpc = $st_price = 0;
@@ -71,15 +59,23 @@ class Index extends MY_Controller
             for ($i=0;$i<$max;$i++){
                 $staticesCpc[] = 0;
                 $staticesCpm[] = 0;
+                $staticesStPrice[] = 0;
             }
         }
         //收益统计
         $stProfit = $this->slot_model->getProfitStatices($this->user['code'],$begin_time,$end_time);
+        //总收益
+        $account = $this->account_model->getInfo(array('owner'=>$this->user['code']));
+        //今日收益
+        $todayProfit = $this->account_model->getTodayProfit($this->user['code'],$this->user['type']);
+        $this->data['accountinfo'] = $account;
+        $this->data['todayProfit'] = $todayProfit[0];
         $this->data['statices'] = $stInfo;
         $this->data['section'] = $datedata;
         $this->data['st_price'] = $st_price;
         $this->data['staticesCpc'] = implode(',',$staticesCpc);
         $this->data['staticesCpm'] = implode(',',$staticesCpm);
+        $this->data['staticesStPrice'] = implode(',',$staticesStPrice);
         $this->data['date'] = $this->getDateTime();
         $this->layout->view('/slot/index', $this->data);
     }

@@ -55,8 +55,13 @@ class Index extends MY_Controller {
      */
     public function apply(){
         $method = strtolower($_SERVER['REQUEST_METHOD']);
+        $where['owner'] = $this->user['code'];
+        $accountInfo = $this->account_model->getInfo($where);
         if ($method == 'post'){
             $post = $this->input->post();
+            if(bccomp($accountInfo['money'], $post['money']) === -1){
+                ci_redirect('/withdraw/index/lists', 3, '提现金额大于账户金额');   
+            }
             $arr['code'] = md5($this->getCode().time().rand(0,10000));
             $arr['owner'] = $this->user['code'];
             $arr['subject'] = 0;
@@ -71,10 +76,10 @@ class Index extends MY_Controller {
             $res = $this->finance_model->add($arr);
             if($res){
                 ci_redirect('/withdraw/index/lists', 3, '添加成功');
+            }else{
+                ci_redirect('/withdraw/index/lists', 3, '添加失败');                
             }
         }else{
-            $where['owner'] = $this->user['code'];
-            $accountInfo = $this->account_model->getInfo($where);
             $this->data['accountinfo'] = $accountInfo;
             $this->layout->view('/withdraw/apply', $this->data);
         }

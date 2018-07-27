@@ -2,7 +2,14 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>运营平台首页</title>
+	<?php if($this->user['type'] == 0){?>
+		<title>广告主</title>
+	<?php }elseif($this->user['type'] == 1){?>
+		<title>流量主</title>
+	<?php }elseif($this->user['type'] == 2){?>
+    	<title>广告运营平台</title>
+	<?php }?>
+	
 	<meta name="renderer" content="webkit">	
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -41,7 +48,15 @@
     <div class="layui-logo">
 		<span class="loginname"><img src="/public/money_ex/images/logobg.png" /></span>
 		<span class="layuitoptags"><img src="/public/money_ex/images/logofont.png" /></span>
-		<span class="layuitoptags02">广告运营平台</span>
+		<span class="layuitoptags02">
+			<?php if($this->user['type'] == 0){?>
+    		广告主
+    	<?php }elseif($this->user['type'] == 1){?>
+    		流量主
+    	<?php }elseif($this->user['type'] == 2){?>
+        	广告运营平台
+    	<?php }?>
+		</span>
 	</div>
     <!-- 头部区域（可配合layui已有的水平导航） -->
 	<ul class="layui-nav">

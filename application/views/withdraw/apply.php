@@ -5,7 +5,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">提现金额：</label>
 					<div class="layui-input-block">
-					  <input type="text" name="money"  placeholder="请输入金额" class="layui-input fl"  lay-verify="required|validateMoney" style="width:50%;" />
+					  <input type="text" name="money"  placeholder="请输入金额" class="layui-input fl" lay-verify="required|validateMoney" style="width:50%;" />
 					  <p class="fl inputtips">可提现金额 <?php echo $accountinfo['money']/100;?>元</p>
 					</div>
 				  </div>
@@ -42,39 +42,67 @@
 <script type="text/javascript" src="/public/money_ex/layui/layui.js"></script>
 <script type="text/javascript" src="/public/money_ex/js/global.js"></script>
 <script>
-layui.use(['form', 'layedit', 'laydate'], function () {
-    var form = layui.form
-            , layer = layui.layer
+	layui.use(['form', 'layedit', 'laydate'], function(){
+		var form = layui.form
+				,layer = layui.layer
+				,layedit = layui.layedit
+				,laydate = layui.laydate;
+		//自定义验证规则
+			form.verify({
+	          validateMoney: function (value) {
+	              var result = validateMoney(value);
+	              alert(222);
+	              if (result != "Y") {
+	                  return result;
+	              }
+	          },
+	          validateCard:function(value) {
+	              var resultcard = validateCard(value)
+	          	if (resultcard != "Y") {
+	                  return resultcard;
+	              }
+	          }
+	        });
+	});
+</script>
+<script>
+	layui.use(['form', 'layedit', 'laydate'], function(){
+      var form = layui.form()
+              ,layer = layui.layer
+              ,layedit = layui.layedit
+              ,laydate = layui.laydate;
     //自定义验证规则
-    form.verify({
-        validateMoney: function (value) {
-            var result = validateMoney(value);
-            if (result != "Y") {
-                return result;
-            }
-        },
-        validateCard:function(value) {
-            var resultcard = validateCard(value)
-        	if (resultcard != "Y") {
-                return resultcard;
-            }
-        }
+        form.verify({
+          validateMoney: function (value) {
+              var result = validateMoney(value);
+              if (result != "Y") {
+                  return result;
+              }
+          },
+          validateCard:function(value) {
+              var resultcard = validateCard(value)
+          	if (resultcard != "Y") {
+                  return resultcard;
+              }
+          }
+        });
+        //监听提交
+        form.on('submit(demo1)', function (data) {
+          layer.alert(JSON.stringify(data.field), {
+              $('#withdraw_apply_from').submit();
+          })
+          return false;
+        });
     });
-    //监听提交
-    form.on('submit(demo1)', function (data) {
-        layer.alert(JSON.stringify(data.field), {
-            $('#withdraw_apply_from').submit();
-        })
-        return false;
-    });
-});
-
+ </script>
+<script>
 /**
  * 金额校验
  * @param money
  * @returns {*}
  */
 function validateMoney(money) {
+	
 	var withdraw_money = <?php echo $accountinfo['money'];?>;
     var reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
     if (reg.test(money) && money*100 <= withdraw_money) {
@@ -97,3 +125,5 @@ function validateCard(card){
     return "请输入正确的银行卡号";
 }
 </script>
+
+

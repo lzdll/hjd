@@ -46,8 +46,8 @@
 					<div class="layui-input-block">
 					  <div class="file-input-wrapper iconfiles">
 						<input type="button" class="file_btn" value="">
-						<input type="file" class="file-input" name='file' value="" lay-verify="required" >
-						<!--<img src="images/dot003.png" class="">-->
+						<input type="file" class="file-input" name='file' value="" lay-verify="required" onchange="xmTanUploadImg5(this)"  >
+						<img id="xmTanImg5" src="" class="">
 					  </div>
 					  <span class="addfilespro grayfont">建议上传100*100像素的图片</span>
 					</div>
@@ -118,7 +118,39 @@ layui.use(['form', 'layedit', 'laydate'], function(){
 //     })  
 //     return false;  
   });  
-
-
 });  
-</script>  
+</script>
+<script type="text/javascript">
+    $("#xmTanImg5").hide();
+    //判断浏览器是否支持FileReader接口
+    if (typeof FileReader == 'undefined') {
+//		document.getElementById("xmTanDiv").InnerHTML = "<h1>当前浏览器不支持FileReader接口</h1>";
+        document.getElementById("xmTanDiv").InnerHTML = "<h1>当前浏览器不支持图片预览</h1>";
+        //使选择控件不可操作
+        document.getElementById("xdaTanFileImg").setAttribute("disabled", "disabled");
+    }
+
+    //选择图片，马上预览
+    function xmTanUploadImg5(obj) {
+        var file = obj.files[0];
+        var reader = new FileReader();
+
+        //读取文件过程方法
+        reader.onloadstart = function (e) {
+        }
+        reader.onprogress = function (e) {
+        }
+        reader.onabort = function (e) {
+        }
+        reader.onerror = function (e) {
+        }
+        reader.onload = function (e) {
+            $("#xmTanImg5").show();
+            var img = document.getElementById("xmTanImg5");
+            img.src = e.target.result;
+            //或者 img.src = this.result;  //e.target == this
+        }
+
+        reader.readAsDataURL(file)
+    }
+</script>

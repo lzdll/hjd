@@ -1,21 +1,21 @@
 <div class="layuibodycont">
 		<div class="topblock clearfix">
 			<dl class="topitemdl topitemdl30">
-				<dd>昨日预计收益</dd>
-				<dt>￥93000.00</dt>
+				<dd>今日收益</dd>
+				<dt>￥<?php echo $todayProfit['st_price']/100;?></dt>
 			</dl>
 			<dl class="topitemdl topitemdl30">
 				<dd>总收益金额</dd>
-				<dt>￥23040.30</dt>
+				<dt>￥<?php echo $accountinfo['total_money']/100;?></dt>
 			</dl>
 			<dl class="topitemdl topitemdl30 noborder">
-				<dd>今日消耗</dd>
-				<dt>￥23040.30</dt>
+				<dd>可提现金额</dd>
+				<dt>￥<?php echo $accountinfo['money']/100;?></dt>
 			</dl>
 		</div>
 		<div class="clearfix navtabs">
-			<span class="navpan active"><a href="/myad/index/index?begin_time=<?php echo $date['week']['begin_date'];?>&end_time=<?php echo $date['week']['end_date'];?>">近7天</a></span>
-			<span class="navpan"><a href="/myad/index/index?begin_time=<?php echo $date['month']['begin_date'];?>&end_time=<?php echo $date['month']['end_date'];?>">本月</a></span>
+			<span class="navpan active"><a href="/slot/index/index?begin_time=<?php echo $date['week']['begin_date'];?>&end_time=<?php echo $date['week']['end_date'];?>">近7天</a></span>
+			<span class="navpan"><a href="/slot/index/index?begin_time=<?php echo $date['month']['begin_date'];?>&end_time=<?php echo $date['month']['end_date'];?>">本月</a></span>
 			<div class="layui-inline" style="margin-top:4px;">
 			  <label class="layui-form-label">时间</label>
 			  <div class="layui-input-inline">
@@ -57,6 +57,15 @@ layui.use('laydate', function(){
   laydate.render({
     elem: '#test6'
     ,range: true
+    ,done: function(value, date, endDate) {
+        	var a = value.split('-');
+        	var begin_time = a[0]+"-"+a[1]+"-"+a[2];
+        	var end_time = a[3]+"-"+a[4]+"-"+a[5];
+        	window.location.href = '/slot/index/index?begin_time='+begin_time+"&end_time="+end_time;
+        }
+  	,choose: function(dates){
+			alert(dates);
+  	  	}
   });
  });
 // 基于准备好的dom，初始化echarts实例
@@ -144,7 +153,7 @@ var option = {
 								}])
 							},color:'#ffc400'
 			}},
-            data:[<?php echo $staticesCpm;?>]
+            data:[<?php echo $staticesCpc;?>]
         }
     ]
 };
@@ -180,7 +189,7 @@ var option2 = {
         {
             type : 'category',
             boundaryGap : false,
-            data : ['6.21','6.22','6.23','6.24','6.25','6.26','6.27']
+            data : [<?php echo $section;?>]
         }
     ],
     yAxis: {
@@ -200,7 +209,7 @@ var option2 = {
 					}
 				},
             stack: '总量',
-            data:[120, 132, 201, 134, 190, 230, 210]
+            data:[<?php echo $staticesStPrice ;?>]
 
         }
     ]

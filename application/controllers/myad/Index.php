@@ -26,20 +26,6 @@ class Index extends MY_Controller
     {
         $method = $this->router->method;
         $nav = array();
-        if ($method == 'index') // 列表
-        {
-            $nav[] = array('name' => '系统消息管理', 'url' => '');
-        } else if ($method == 'lists') // 添加
-        {
-            $nav[] = array('name' => '广告列表', 'url' => '');
-        } else if ($method == 'add') // 添加
-        {
-            $nav[] = array('name' => '添加广告', 'url' => '');
-        }
-        else if ( $method == 'edit' ) // 添加
-        {
-            $nav[] = array('name' => '编辑广告', 'url' => '');
-        }
         $this->data['nav'] = array_merge($this->data['nav'], $nav);
     }
 
@@ -128,7 +114,7 @@ class Index extends MY_Controller
             $data['owner'] = $this->user['code'];
             $data['name'] = trim($form['title']);
             $data['info'] = $form['desc'];
-            $data['icon'] = $upload_file_url;
+            $data['icon'] = 'http://osv.ufile.ucloud.com.cn/'.$upload_file_url;
             $data['status'] = 1;
             $data['callback'] = $form['callback'];
             $data['callback_status'] = $form['callback_status'];
@@ -257,6 +243,7 @@ class Index extends MY_Controller
                 }
             }
             $avgamount = sprintf("%.2f",$avgamount/$sectionCount);
+            $this->data['id'] = $id;
             $this->data['info'] = $info;
             $this->data['statices'] = $stInfo;
             $this->data['section'] = $datedata;

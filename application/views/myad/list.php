@@ -17,7 +17,7 @@
 			  <tbody>
 			  <?php foreach ($list as $key => $val){ ?>
 				<tr>
-				  <td><?php echo $val['code'];?></td>
+				  <td><?php echo $val['name'];?></td>
 				  <td><?php if(bccomp($val['cpc'], 0)===1){ echo $val['cpc'];}else { echo 0;}?></td>
 				  <td><?php if(bccomp($val['rate'], 0)===1){ echo $val['rate'];}else { echo 0;}?>%</td>
 				  <td>￥<?php if(bccomp($val['sc_price'], 0)===1){ echo $val['sc_price'];}else { echo 0;}?></td>
@@ -26,7 +26,7 @@
 			  <?php } ?>
 			  </tbody>
 			</table>
-			<div id="demo0" class="pages"><div class="y_tip">共 <?php echo $pager['count'];?> 条 每页 <?php echo $pagesize;?> 条	</div><div class="y_page"><?php echo $pager['links'];?></div></div>
+			<div class="pages"><div class="y_tip">共 <?php echo $pager['count'];?> 条 每页 <?php echo $pagesize;?> 条	</div><div class="y_page"><?php echo $pager['links'];?></div></div>
 		</div>
 	 </div>
   <!--<div class="site-tree-mobile layui-hide">
