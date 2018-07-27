@@ -18,6 +18,8 @@ class Index extends MY_Controller
         $this->load->model('adprice_model');
         $this->load->model('advertiser_model');
         $this->load->model('company_model');
+        $this->load->model('advert_model');
+        $this->load->model('account_model');
         //$this->load->model('plugin_building_model');
     }
 
@@ -36,6 +38,12 @@ class Index extends MY_Controller
      */
     public function index()
     {
+        $info = $this->advert_model->getAdMasterCountInfo($this->user['code']);
+        $info['totalmoney'] = number_format( $info['totalmoney']/100,2,'.','');
+        $info['account']['quota'] = number_format( $info['account']['quota']/100,2,'.','');
+        $this->data['countinfo'] = $info['account'];
+        $this->data['totalmoney'] = $info['totalmoney'];
+//        var_dump($info);die;
         $this->layout->view('/ad/ad_index', $this->data);
     }
 
@@ -55,8 +63,13 @@ class Index extends MY_Controller
             $item['pv'] = $item['totalcpc'] + $item['totalcpm'];
             $item['pv'] = $item['totalcpc'] + $item['totalcpm'];
             if( ($item['audit_status'] == 0 ||  $item['audit_status'] == 3) ){
-                $item['status'] = "撤下";
-                $item['statusac'] = "aduseroper active";
+                if($item['status'] == 2){
+                    $item['status'] = "下线";
+                    $item['statusac'] = "";
+                }else{
+                    $item['status'] = "撤下";
+                    $item['statusac'] = "aduseroper active";
+                }
             }else{
                 if($item['status'] == 0){
                     $item['status'] = "已上线";
@@ -256,7 +269,7 @@ class Index extends MY_Controller
             if ($type == "delete")
             {
                 //删除广告
-               $res = $this->advertiser_model->deleteById($id);
+               $res = $this->advertiser_model->edit($id,2);
                 echo json_encode($res);exit;
             }
             if($type == 'publish'){
@@ -288,35 +301,22 @@ class Index extends MY_Controller
         else
             ci_redirect('/ad/', 3, 'ID错误或信息不存在');
     }
-    
-   
-    /**
-     * 发布消息
-     */
-    public function pub()
-    {
-        $id = $this->input->get_post('id');
-        $result = array('status'=>false,'msg'=>'操作失败');
-        if ($info = $this->ad_model->findByPk($id))
-        {
-            $time = time();
-            if($time>$info['valid_end']){
-                $result['msg'] = '有效期过期，请修改后发布';
-                $this->_outputJSON($result);
-            }
-            if($time<$info['valid_start']){
-                $msg= "广告将于".date("Y年m月d日",$info['valid_start'])."展示";
-                $status = 5;
-            }else{
-                $msg= '广告发布成功';
-                $status = 2;
-            }
-            $this->ad_model->updateByPk($id,array('status'=>$status,'pub_time'=>$time,'operator_id'=>$this->user['uid'],'operator_name'=>$this->user['truename']));
-            $result['status'] = true; 
-            $result['msg'] = $msg;
-        }
-        $this->_outputJSON($result);
-    }
+
+
+   public function editquota(){
+       $owner = $this->user['code'];
+//       var_dump($owner);
+//       var_dump(trim($_POST['quota']));die;
+       $res = $this->account_model->edit($owner,trim($_POST['quota'])*100);
+       if($res==1){
+           $res= true;
+           echo json_encode($res);exit;
+       }
+       else
+       {
+           ci_redirect('/ad/index/index', 3, '修改成功');
+       }
+   }
 
     public function del()
     {

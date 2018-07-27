@@ -45,6 +45,8 @@ class Index extends MY_Controller {
         //判断上传文件类型为png或jpg且大小不超过1024000B
         if($this->input->post()){
             $form = $this->input->post();
+            $user['phone'] = $form['phone'];
+            $user['email'] = $form['email'];
             if($form['type'] == 1){
                     unset($_FILES['imgsrc5']);
                     unset($_FILES['imgsrc4']);
@@ -83,7 +85,7 @@ class Index extends MY_Controller {
                 $data['bs_license_img'] = "http://osv.ufile.ucloud.com.cn/".$upload_file_url1;
                 $data['id_card_img_1'] = "http://osv.ufile.ucloud.com.cn/".$upload_file_url2;
                 $data['id_card_img_2'] = "http://osv.ufile.ucloud.com.cn/".$upload_file_url3;
-            }else if($form['type'] == 2 && $status){
+            }else if($form['type'] == 0 && $status){
                 $data['name'] = "";
                 $filename4 =date('Y/m/d')."/img/".time().rand(0,1000).$_FILES["imgsrc4"]["name"];
                 $filename4 =iconv("UTF-8","gb2312",$filename4);
@@ -105,12 +107,19 @@ class Index extends MY_Controller {
             $data['created_time'] = date('Y-m-d H:i:s');
             $data['updated_time'] = date('Y-m-d H:i:s');
             $res = $this->company_model->add($data);
-            if(!$res) {
+            $res2 = $this->user_model->edit($this->user['uid'],$user);
+            if(!$res || !$res2) {
                 ci_redirect('/member/index/lists', 3, '提交失败');
             }
+            unset($this->user['phone']);
+            unset($this->user['email']);
+            $_SESSION['phone'] = $user['phone'];
+            $_SESSION['email'] = $user['email'];
             ci_redirect('/ad/index/index');
         }
         $this->data['user'] = $this->user;
+        $this->data['phone'] = $_SESSION['phone'];
+        $this->data['email'] = $_SESSION['email'];
         $this->data['company'] = $this->company_model->getInfo($where = array("owner"=>$this->user['code']));
         if(!empty( $this->data['company'])){
             if($this->data['company']['type'] == 1){

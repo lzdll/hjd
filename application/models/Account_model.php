@@ -31,4 +31,13 @@ class Account_model extends MY_Model
     {
         return $this->findByAttributes($data);
     }
+    /**
+     * 编辑
+     */
+    function edit($owner,$quota)
+    {
+        $sql = "update wy_account set quota = {$quota} WHERE owner = '{$owner}'";
+       $res = $this->db->query($sql);
+        return $res;
+    }
 }
