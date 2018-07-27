@@ -67,7 +67,7 @@ class Sign extends CI_Controller {
                  ci_redirect('/ad/index/index');
              }
              if($info['type'] == 1){
-                 ci_redirect('/slot/index');
+                 ci_redirect('/slot/index/index');
              }
              if($info['type'] == 2){
                  ci_redirect('/home/index');

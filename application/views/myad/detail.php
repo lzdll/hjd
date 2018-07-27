@@ -36,10 +36,10 @@
 			</div>
 		</div>
 		<div class="clearfix navtabs">
-			<span class="navpan"><a href="/myad/index/details?id=3&begin_time=<?php echo $date['today']['begin_date'];?>&end_time=<?php echo $date['today']['end_date'];?>" >今日</a></span>
-			<span class="navpan"><a href="/myad/index/details?id=3&begin_time=<?php echo $date['yesterday']['begin_date'];?>&end_time=<?php echo $date['yesterday']['end_date'];?>">昨日</a></span>
-			<span class="navpan active"><a href="/myad/index/details?id=3&begin_time=<?php echo $date['week']['begin_date'];?>&end_time=<?php echo $date['week']['end_date'];?>">近7天</a></span>
-			<span class="navpan"><a href="/myad/index/details?id=3&begin_time=<?php echo $date['month']['begin_date'];?>&end_time=<?php echo $date['month']['end_date'];?>">本月</a></span>
+			<span class="navpan"><a href="/myad/index/details?id=<?php echo $id;?>&begin_time=<?php echo $date['today']['begin_date'];?>&end_time=<?php echo $date['today']['end_date'];?>" >今日</a></span>
+			<span class="navpan"><a href="/myad/index/details?id=<?php echo $id;?>&begin_time=<?php echo $date['yesterday']['begin_date'];?>&end_time=<?php echo $date['yesterday']['end_date'];?>">昨日</a></span>
+			<span class="navpan active"><a href="/myad/index/details?id=<?php echo $id;?>&begin_time=<?php echo $date['week']['begin_date'];?>&end_time=<?php echo $date['week']['end_date'];?>">近7天</a></span>
+			<span class="navpan"><a href="/myad/index/details?id=<?php echo $id;?>&begin_time=<?php echo $date['month']['begin_date'];?>&end_time=<?php echo $date['month']['end_date'];?>">本月</a></span>
 			<div class="layui-inline" style="margin-top:4px;">
 			  <label class="layui-form-label">时间</label>
 			  <div class="layui-input-inline">
