@@ -25,6 +25,13 @@ class Account_model extends MY_Model
         parent::__construct();
     }
     /**
+     * 添加
+     */
+    function add($data)
+    {
+        return $this->insertData($data);
+    }
+    /**
      * 根据条件获取信息
      */
     function getInfo($data)
