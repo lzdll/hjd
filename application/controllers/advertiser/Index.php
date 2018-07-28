@@ -72,7 +72,6 @@ class Index extends MY_Controller {
 	} 
 	public function details()
 	{
-
         $input = array_merge($this->input->get(), $this->input->post());
 		$page=intval(trim($_GET['p']))?intval(trim($_GET['p'])):1;
         $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;

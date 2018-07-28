@@ -51,9 +51,9 @@ class Audit_model extends MY_Model
 	public function getUserCode($where = array(), $limit = 0, $offset = 0, $sort = NULL)
     {
 	   if(isset($limit)){
-			$sql = "select id,code  from ".$this->_wy_user." where $where AND id>0 order by id desc limit $offset,$limit";
+			$sql = "select id,user_code code from ".$this->_wy_user." where $where AND id>0 order by id desc limit $offset,$limit";
 	   }else{
-			$sql = "select id,code  from ".$this->_wy_user." where $where AND id>0 order by id desc";
+			$sql = "select id,user_code code  from ".$this->_wy_user." where $where AND id>0 order by id desc";
 	   }
        $row = $this->db->query($sql)->result_array();
 	   return $row;

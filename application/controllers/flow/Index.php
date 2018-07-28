@@ -105,7 +105,7 @@ class Index extends MY_Controller {
 	    $begin_time = date('Y-m-d', strtotime('-7 days'));
 	    $end_time = date('Y-m-d', time());
 		//运营平台流量主详情页面统计图表部分代码
-		$stInfo = $this->slot_model->getExtensionStatices($this->user['code'],'',$begin_time,$end_time);
+		$stInfo = $this->slot_model->getExtensionStatices($this->user['user_code'],'',$begin_time,$end_time);
 		$datedata = $this->getDateSection($begin_time, $end_time);
 		$sectionCount = count(explode(',', $datedata));
 		$staticesCpc = $staticesCpm = array();
@@ -143,9 +143,9 @@ class Index extends MY_Controller {
 		}
 		
 		//获取用户信息
-		$userinfo = $this->user_model->getInfo($where = array("code"=>$user_code));
+		$userinfo = $this->user_model->getInfo($where = array("user_code"=>$user_code));
 		//获取账户信息
-		$accountinfo = $this->account_model->getInfo($where = array("code"=>$user_code));
+		$accountinfo = $this->account_model->getInfo($where = array("owner"=>$user_code));
 		
 		//分页
 		if ($total > 0) {

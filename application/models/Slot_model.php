@@ -73,8 +73,14 @@ class Slot_model extends MY_Model
     
     public function getDataByOwner($ucode,$limit = 0, $offset = 0, $sort = NULL)
     {
-        $data = $this->db->query("SELECT id,icon,code,name,cpc,cpm,cpc/(cpc+cpm) rate, totalcpc,st_price,status FROM ( SELECT
-            c.id,c.`slot_code` as code,c.`icon`,c.`name`,IF(b.type=0,IF(b.slot_price>0,COUNT(1),0),0) cpc,IF(b.type=1,IF(b.slot_price>0,COUNT(1),0),0) cpm,IF(b.type=0,COUNT(1),0) totalcpc,IF(b.slot_price>0,SUM(b.slot_price),0) st_price,c.status
+        $data = $this->db->query("SELECT id,icon,code,name,cpc,cpm,cpc/(cpc+cpm) rate, 
+            totalcpc,st_price,status FROM ( 
+            SELECT
+            c.id,c.`slot_code` as code,c.`icon`,c.`name`,
+            IF(b.type=0,IF(b.slot_price>0,COUNT(1),0),0) cpc,
+            IF(b.type=1,IF(b.slot_price>0,COUNT(1),0),0) cpm,
+            IF(b.type=0,COUNT(1),0) totalcpc,
+            IF(b.slot_price>0,SUM(b.slot_price),0) st_price,c.status
             FROM
             	`wy_slot` AS `c`
             LEFT JOIN `wy_ad_order` AS `b` ON `c`.`owner` = `b`.`slot_owner`
@@ -88,7 +94,7 @@ class Slot_model extends MY_Model
     
     public function getSlotPrice($stcode)
     {
-        $data = $this->db->query('SELECT * FROM wy_slot_price WHERE st_code = "'.$stcode.'" AND status=0 GROUP BY type ORDER BY id DESC ')->result_array();
+        $data = $this->db->query('SELECT * FROM wy_slot_price WHERE slot_code = "'.$stcode.'" AND status=0 GROUP BY type ORDER BY id DESC ')->result_array();
         return $data;
     }
     /**

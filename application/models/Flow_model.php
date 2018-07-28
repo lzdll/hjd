@@ -38,7 +38,7 @@ class Flow_model extends MY_Model
     public function findAlls($where = array(), $limit = 0, $offset = 0, $sort = NULL)
     {
 	   if(isset($limit)){
-			$sql = "select a.*,b.credit from ".$this->wy_user." AS a LEFT JOIN wy_account as b on a.user_code= b.owner where 1 = 1 order by a.id desc limit $offset,$limit";
+			$sql = "select a.*,a.user_code as code,b.credit from ".$this->wy_user." AS a LEFT JOIN wy_account as b on a.user_code= b.owner where 1 = 1 order by a.id desc limit $offset,$limit";
 	   }else{
 			$sql = "select * from wy_user AS a LEFT JOIN wy_account as b on a.code= b.owner where 1 = 1 order by a.id desc order by a.id desc";
 	   }
@@ -163,8 +163,17 @@ class Flow_model extends MY_Model
 	  if($data['user_code']){
 			$where .=" AND `c`.`owner`= '".$data['user_code']."'";
 	  }
-	  $sql = "SELECT c.id, c.`code`,c.`name`,c.owner,c.ws_code,c.appid,c.status ,c.audit_status ,IF(b.type=0,IF(b.st_price>0,COUNT(1),0),0) cpc,IF(b.type=1,IF(b.st_price>0,COUNT(1),0),0) cpm,IF(b.type=0,COUNT(1),0) totalcpc,IF(b.st_price>0,SUM(b.st_price),0) st_price,IF(b.ad_price>0,SUM(b.ad_price),0) ad_price FROM `wy_ad` AS `c` LEFT JOIN `wy_ad_order` AS `b` ON `c`.`code` = `b`.`ad_code` WHERE ".$where." GROUP BY
-	`c`.`code` ORDER BY c.created_time DESC ";
+	  $sql = "SELECT c.id, c.`ad_code` as code,c.`name`,c.owner,c.ws_code,
+        c.appid,c.status ,c.audit_status ,
+        IF(b.type=0,IF(b.slot_price>0,COUNT(1),0),0) cpc,
+        IF(b.type=1,IF(b.slot_price>0,COUNT(1),0),0) cpm,
+        IF(b.type=0,COUNT(1),0) totalcpc,
+        IF(b.slot_price>0,SUM(b.slot_price),0) st_price,
+        IF(b.ad_price>0,SUM(b.ad_price),0) ad_price 
+        FROM 
+        `wy_ad` AS `c` LEFT JOIN `wy_ad_order` AS `b` ON `c`.`ad_code` = `b`.`ad_code` 
+        WHERE ".$where." GROUP BY
+	`c`.`ad_code` ORDER BY c.created_time DESC ";
        $row = $this->db->query($sql)->result_array();
 	   return $row;
     }
