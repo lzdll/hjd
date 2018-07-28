@@ -13,7 +13,6 @@ class Flow_model extends MY_Model
 	public $wy_account = 'wy_account';
 	public $wy_ad = 'ad';
     public $primaryKey = 'id';
-
     /**
      * 构造方法
      *
@@ -39,7 +38,7 @@ class Flow_model extends MY_Model
     public function findAlls($where = array(), $limit = 0, $offset = 0, $sort = NULL)
     {
 	   if(isset($limit)){
-			$sql = "select a.*,b.credit from ".$this->wy_user." AS a LEFT JOIN wy_account as b on a.code= b.owner where 1 = 1 order by a.id desc limit $offset,$limit";
+			$sql = "select a.*,b.credit from ".$this->wy_user." AS a LEFT JOIN wy_account as b on a.user_code= b.owner where 1 = 1 order by a.id desc limit $offset,$limit";
 	   }else{
 			$sql = "select * from wy_user AS a LEFT JOIN wy_account as b on a.code= b.owner where 1 = 1 order by a.id desc order by a.id desc";
 	   }
@@ -125,15 +124,15 @@ class Flow_model extends MY_Model
 	 public function getExtensionStatices($user_code,$begin_time,$end_time){
         $where = ' 1=1 and `c`.`owner` ="'.$user_code.'" AND b.created_time >= "'.$begin_time.'" and b.created_time < "'.$end_time.'" ';
 		$sql="SELECT id,`code`,cpc,cpm,totalcpc,totalAd,IF (st_price>0,st_price,0) st_price ,FORMAT((st_price/cpc),2) avg_price FROM(
-            SELECT c.id,c.`code`,
+            SELECT c.id,c.`slot_code` as code,
             	COUNT(distinct(b.ad_code)) totalAd,
-                IF (b.type = 0,IF (b.st_price > 0, COUNT(1), 0), 0) cpc,
-                IF (b.type = 1,IF (b.st_price > 0, COUNT(1), 0), 0) cpm,
+                IF (b.type = 0,IF (b.slot_price > 0, COUNT(1), 0), 0) cpc,
+                IF (b.type = 1,IF (b.slot_price > 0, COUNT(1), 0), 0) cpm,
                 COUNT(type) totalcpc,
-            	SUM(b.st_price) st_price,
+            	SUM(b.slot_price) st_price,
                 DATE_FORMAT(b.created_time,'%Y-%m-%d') d
             FROM `wy_slot` AS `c`
-            LEFT JOIN `wy_ad_order` AS `b` ON `c`.`owner` = `b`.`st_owner`
+            LEFT JOIN `wy_ad_order` AS `b` ON `c`.`owner` = `b`.`slot_owner`
             WHERE
             	".$where."
             GROUP BY d

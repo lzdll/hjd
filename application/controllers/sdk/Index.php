@@ -86,8 +86,8 @@ class Index extends MY_Controller {
     {
         $input = array_merge($this->input->get(), $this->input->post());
 		if($input){
-			$update['code'] = strtoupper(md5($this->getCode().time()));
-			$update['operator'] = $this->user['code'];
+		    $update['sdk_code'] = $this->getCode();
+			$update['operator'] = $this->user['user_code'];
 			$update['name'] = $input['name'];
 			$update['url'] = $input['url'];
             $update['sappid'] = $input['sappid'];

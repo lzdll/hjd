@@ -36,7 +36,7 @@ class Home extends MY_Controller {
         if(empty($end_time)){
             $end_time = date('Y-m-d', time());
         }
-		 $stInfo = $this->home_model->getExtensionStatices($info['code'],$id,$begin_time,$end_time);
+		 $stInfo = $this->home_model->getExtensionStatices('','',$begin_time,$end_time);
             $datedata = $this->getDateSection($begin_time, $end_time);
             $sectionCount = count(explode(',', $datedata));
             $staticesCpc = $staticesCpm = array();

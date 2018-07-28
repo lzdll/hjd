@@ -83,7 +83,7 @@ class Index extends MY_Controller {
 		$input = array_merge($this->input->get(), $this->input->post());
 		if($input){
 			$targetFolder = date('Y/m/d')."/img/"; // Relative to the root
-			$newname =$this->user['code']."_".time();//图片名字
+			$newname =$this->user['user_code']."_".time();//图片名字
 			$fileParts = pathinfo($_FILES['file']['name']);
 			$filename = rtrim($targetFolder). $newname.'.'.$fileParts['extension'];//图片路径
 			$filename =iconv("UTF-8","gb2312",$filename);
@@ -133,8 +133,8 @@ class Index extends MY_Controller {
     {
         $input = array_merge($this->input->get(), $this->input->post());
 		if($input){
-		    $update['code'] = md5($this->getCode().time().rand(0,10000));
-			$update['operator'] = $this->user['code'];
+		    $update['finance_code'] = $this->getCode();
+			$update['operator'] = $this->user['user_code'];
 			$update['owner'] = $input['owner'];
 			$update['money'] =$input['money']*100;//转化分
 			$update['subject']=1;
@@ -159,7 +159,7 @@ class Index extends MY_Controller {
         $offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
         $info = $this->audit_model->getList(
             $where = array(
-                'owner'=>$this->user['code'],
+                'owner'=>$this->user['user_code'],
                 'subject'=>1,
             ),
                 $limit = $pagesize,
@@ -190,7 +190,7 @@ class Index extends MY_Controller {
         $page = isset($_GET['p'])?$_GET['p']:1;
         $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
         $offset =intval($page) > 0 ?intval($page-1)*$pagesize:0;
-        $info = $this->invoice_model-> getList($where = array('owner'=>$this->user['code']),$limit = $pagesize, $offset = $offset, $sort = 'created_time');
+        $info = $this->invoice_model-> getList($where = array('owner'=>$this->user['user_code']),$limit = $pagesize, $offset = $offset, $sort = 'created_time');
         foreach ( $info['list']as &$item) {
             $item['created_time'] = date('Y-m-d',strtotime($item['created_time']));
             $item['money'] =number_format((floor($item['money']/100)).".".($item['money']%100),2,'.','');
@@ -211,8 +211,8 @@ class Index extends MY_Controller {
         $method = strtolower($_SERVER['REQUEST_METHOD']);
         if ($method == 'post'){
             $post = $this->input->post();
-            $arr['code'] = md5($this->getCode().time().rand(0,10000));
-            $arr['owner'] = $this->user['code'];
+            $arr['invoice_code'] = $this->getCode();
+            $arr['owner'] = $this->user['user_code'];
             $arr['title'] = $post['title'];
             $arr['taxid'] = $post['invoiceid'];
             $arr['money'] = $post['amount']* 100;//转为分
@@ -239,7 +239,7 @@ class Index extends MY_Controller {
         $res = array('status' => false, 'msg' => '');
         $update = array();
         if ($data) {//存在更新
-			$update['operator']=$this->user['code'];
+			$update['operator']=$this->user['user_code'];
 			$update['comment']=$data['opearea'];
 			$update['status']=0;
 			$update['updated_time']=date("Y-m-d H:i:s");

@@ -54,7 +54,7 @@ class Advertiser_model extends MY_Model
      */
     function getInfoIds($id,$ucode)
     {
-        $sql = "select a.platform,a.`name`,a.info,a.image,a.banner,a.icon,a.link,a.appid,a.ws_code,a.`status`,a.audit_status,b.type,b.price from wy_ad AS a LEFT JOIN wy_ad_price AS b ON a.code = b.ad_code WHERE a.id={$id} AND b.type=0 AND a.owner='{$ucode}'";
+        $sql = "select a.platform,a.`name`,a.info,a.image,a.banner,a.icon,a.link,a.appid,a.ws_code,a.`status`,a.audit_status,b.type,b.price from wy_ad AS a LEFT JOIN wy_ad_price AS b ON a.ad_code = b.ad_code WHERE a.id={$id} AND b.type=0 AND a.owner='{$ucode}'";
         $result = $this->db->query($sql)->row_array();
         return $result;
     }
@@ -83,7 +83,7 @@ class Advertiser_model extends MY_Model
                     FROM
                         (
                             SELECT
-                                c.id,c.`code`,c.`name`,c.`status`,c.`audit_status`,d.price,
+                                c.id,c.`ad_code` as code,c.`name`,c.`status`,c.`audit_status`,d.price,
                             IF (
                                 b.type = 0,
 
@@ -109,11 +109,11 @@ class Advertiser_model extends MY_Model
                     FROM
                         `wy_ad` AS `c`
                     LEFT JOIN `wy_ad_order` AS `b` ON `c`.`owner` = `b`.`ad_owner`
-                    LEFT JOIN `wy_ad_price` AS `d` ON `c`.`code` = `d`.`ad_code`
+                    LEFT JOIN `wy_ad_price` AS `d` ON `c`.`ad_code` = `d`.`ad_code`
                     WHERE
                         `c`.`owner` = '".$ucode."'
                     GROUP BY
-                        `c`.`code`
+                        `c`.`ad_code`
                     ORDER BY c.created_time desc
                         ) t
                     LIMIT $offset,

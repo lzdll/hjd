@@ -43,7 +43,7 @@ class Index extends MY_Controller
             $end_time = date('Y-m-d', time());
         }
         //广告推广量统计
-        $stInfo = $this->slot_model->getExtensionStatices($this->user['code'],'',$begin_time,$end_time);
+        $stInfo = $this->slot_model->getExtensionStatices($this->user['user_code'],'',$begin_time,$end_time);
         $datedata = $this->getDateSection($begin_time, $end_time);
         $sectionCount = count(explode(',', $datedata));
         $staticesCpc = $staticesCpm = array();
@@ -62,7 +62,7 @@ class Index extends MY_Controller
             }
         }
         //收益统计
-        $stProfit = $this->slot_model->getProfitStatices($this->user['code'],$begin_time,$end_time);
+        $stProfit = $this->slot_model->getProfitStatices($this->user['user_code'],$begin_time,$end_time);
         $this->data['statices'] = $stInfo;
         $this->data['section'] = $datedata;
         $this->data['st_price'] = $st_price;
@@ -84,10 +84,9 @@ class Index extends MY_Controller
         $search = array_intersect_key($input, $filter);
         $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
         $offset =intval($page) > 0 ?intval($page-1)*$pagesize:0;
-        $data['owner'] = $this->user['code'];
+        $data['owner'] = $this->user['user_code'];
         $total = $this->slot_model->getCount($data);
-        $list = $this->slot_model->getDataByOwner($this->user['code'],$pagesize,$offset);
-
+        $list = $this->slot_model->getDataByOwner($this->user['user_code'],$pagesize,$offset);
         $this->data['list'] = $list;
         $this->data['total'] = $total;
         $this->data['pagesize'] = $pagesize;
@@ -112,8 +111,8 @@ class Index extends MY_Controller
         if ( $form = $this->input->post() )
         {
             $data['platform'] = trim($form['platform']);
-            $data['code'] = md5($this->getCode().time().rand(0,10000));
-            $data['owner'] = $this->user['code'];
+            $data['slot_code'] = $this->getCode();
+            $data['owner'] = $this->user['user_code'];
             $data['name'] = trim($form['title']);
             $data['info'] = $form['desc'];
             $data['icon'] = 'http://osv.ufile.ucloud.com.cn/'.$upload_file_url;
@@ -221,7 +220,7 @@ class Index extends MY_Controller
         }
         if ($info)
         {
-            $stInfo = $this->slot_model->getExtensionStatices($this->user['code'],$id,$begin_time,$end_time);
+            $stInfo = $this->slot_model->getExtensionStatices($this->user['user_code'],$id,$begin_time,$end_time);
             $datedata = $this->getDateSection($begin_time, $end_time);
             $sectionCount = count(explode(',', $datedata));
             $staticesCpc = $staticesCpm = array();
@@ -324,56 +323,5 @@ class Index extends MY_Controller
         }
         return true;
     } 
-    
-    public function promoter(){
-        //判断上传文件类型为png或jpg且大小不超过1024000B
-        $method = strtolower($_SERVER['REQUEST_METHOD']);
-        if($this->input->post()){
-            $form = $this->input->post();
-            if($form['type'] == 1){
-                $upload_file_url = $form['imgsrc1'];
-                $upload_frontId_url = $form['imgsrc2'];
-                $upload_backId_url = $form['imgsrc3'];
-            }else{
-                $upload_file_url = '';
-                $upload_frontId_url = $form['imgsrc4'];
-                $upload_backId_url = $form['imgsrc5'];
-            }
-            $data['type'] = trim($form['type']);
-            $data['code'] = md5($this->getCode().time().rand(0,10000));
-            $data['owner'] = $this->user['code'];
-            $data['name'] = trim($form['name']);
-            $data['bs_license_img'] = $upload_file_url;
-            $data['id_card_img_1'] = $upload_frontId_url;
-            $data['id_card_img_2'] = $upload_backId_url;
-            $data['status'] = 0;
-            $data['audit_status'] = 0;
-            $data['created_time'] = date('Y-m-d H:i:s');
-            $data['updated_time'] = date('Y-m-d H:i:s');
-            $res = array('status'=>false, 'msg'=>'');
-            $this->company_model->add($data);
-            ci_redirect('/myad/index/index');
-        }
-        $this->data['user'] = $this->user;
-        $this->data['company'] = $this->company_model->getInfo($where = array("owner"=>$this->user['code']));
-        if(!empty( $this->data['company'])){
-            if($this->data['company']['type'] == 1){
-                $this->data['compaycheack'] = "checked";
-                $this->data['personcheack'] = "";
-                $this->data['compaystyle'] = "on";
-                $this->data['personstyle'] = "";
-            }else{
-                $this->data['compaycheack'] = "";
-                $this->data['personcheack'] = "checked";
-                $this->data['compaystyle'] = "";
-                $this->data['personstyle'] = "on";
-            }
-            $this->layout->view('/myad/company', $this->data);
-        }else{
-            $this->layout->view('/myad/person', $this->data);
-            
-        }
-        $this->layout->view('/myad/promoter', $this->data);
-    }
 }
 

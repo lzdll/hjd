@@ -68,8 +68,8 @@ class Index extends MY_Controller {
 
 
             $data['type'] = trim($form['type']);
-            $data['code'] = md5($this->getCode().time().rand(0,10000));
-            $data['owner'] = $this->user['code'];
+            $data['company_code'] = $this->getCode();
+            $data['owner'] = $this->user['user_code'];
             if($form['type'] == 1 && $status){
                 $data['name'] = trim($form['name']);
                 $filename1 =date('Y/m/d')."/img/".time().rand(0,1000).$_FILES["imgsrc1"]["name"];
@@ -120,8 +120,8 @@ class Index extends MY_Controller {
             ci_redirect('/ad/index/index');
         }
         if(!empty($user_code) && isset($user_code)){
-            $userinfo = $this->user_model->getInfo($where = array("code"=>$user_code));
-            $this->data['user'] = $userinfo['code'];
+            $userinfo = $this->user_model->getInfo($where = array("user_code"=>$user_code));
+            $this->data['user'] = $userinfo['user_code'];
             $this->data['phone'] = $userinfo['phone'];
             $this->data['email'] = $userinfo['email'];
         }else{
@@ -129,7 +129,7 @@ class Index extends MY_Controller {
             $this->data['phone'] = $_SESSION['phone'];
             $this->data['email'] = $_SESSION['email'];
         }
-        $this->data['company'] = $this->company_model->getInfo($where = array("owner"=>$this->user['code']));
+        $this->data['company'] = $this->company_model->getInfo($where = array("owner"=>$this->user['user_code']));
         if(!empty( $this->data['company'])){
             if($this->data['company']['type'] == 1){
                 $this->data['compaycheack'] = "checked";

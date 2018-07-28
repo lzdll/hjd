@@ -42,7 +42,7 @@ class Index extends MY_Controller
             $end_time = date('Y-m-d', time());
         }
         //广告推广量统计
-        $stInfo = $this->slot_model->getExtensionStatices($this->user['code'],'',$begin_time,$end_time);
+        $stInfo = $this->slot_model->getExtensionStatices($this->user['user_code'],'',$begin_time,$end_time);
         $datedata = $this->getDateSection($begin_time, $end_time);
         $sectionCount = count(explode(',', $datedata));
         $staticesCpc = $staticesCpm = $staticesStPrice = array();
@@ -63,11 +63,11 @@ class Index extends MY_Controller
             }
         }
         //收益统计
-        $stProfit = $this->slot_model->getProfitStatices($this->user['code'],$begin_time,$end_time);
+        $stProfit = $this->slot_model->getProfitStatices($this->user['user_code'],$begin_time,$end_time);
         //总收益
-        $account = $this->account_model->getInfo(array('owner'=>$this->user['code']));
+        $account = $this->account_model->getInfo(array('owner'=>$this->user['user_code']));
         //今日收益
-        $todayProfit = $this->account_model->getTodayProfit($this->user['code'],$this->user['type']);
+        $todayProfit = $this->account_model->getTodayProfit($this->user['user_code'],$this->user['type']);
         $this->data['accountinfo'] = $account;
         $this->data['todayProfit'] = $todayProfit[0];
         $this->data['statices'] = $stInfo;

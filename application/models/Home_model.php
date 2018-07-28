@@ -40,11 +40,17 @@ class Home_model extends MY_Model
 	//获取上周点击冠军
     public function getOne($where = array(), $limit = 1)
     {
-	   $sql = "SELECT c.id,c.`code`,c.`name`,IF (b.type = 0,IF (b.st_price > 0, COUNT(1), 0),0) cpc,IF (b.type = 1,IF (b.st_price > 0, COUNT(1), 0),
-		 0) cpm,IF (b.type = 0, COUNT(1), 0) totalcpc,IF (b.st_price > 0,SUM(b.st_price),0
-		) st_price,IF (b.ad_price > 0,SUM(b.ad_price),0
-		) ad_price FROM`wy_ad` AS `c` LEFT JOIN `wy_ad_order` AS `b` ON `c`.`code` = `b`.`ad_code` WHERE 1 = 1 AND c.id > 0 GROUP BY `c`.`code`
-		ORDER BY b.st_price DESC LIMIT 1";
+	   $sql = "SELECT c.id,c.`ad_code` as code,c.`name`,
+                IF (b.type = 0,IF (b.slot_price > 0, COUNT(1), 0),0) cpc,
+                IF (b.type = 1,IF (b.slot_price > 0, COUNT(1), 0),0) cpm,
+                IF (b.type = 0, COUNT(1), 0) totalcpc,
+                IF (b.slot_price > 0,
+                SUM(b.slot_price),0) st_price,
+                IF (b.ad_price > 0,SUM(b.ad_price),0) ad_price 
+        FROM`wy_ad` AS `c` LEFT JOIN 
+        `wy_ad_order` AS `b` ON `c`.`ad_code` = `b`.`ad_code` 
+        WHERE 1 = 1 AND c.id > 0 GROUP BY `c`.`ad_code`
+		ORDER BY b.slot_price DESC LIMIT 1";
        $row = $this->db->query($sql)->result_array();
 	   return $row;
     }
@@ -54,11 +60,11 @@ class Home_model extends MY_Model
     {
 	   $sql = "SELECT cpc,cpm,cpc/(cpc+cpm) rate,ad_price,totalcpc,st_price FROM ( 
 				SELECT
-				IF(type=0,IF(st_price>0,COUNT(1),0),0) cpc,
-				IF(type=1,IF(st_price>0,COUNT(1),0),0) cpm,
+				IF(type=0,IF(slot_price>0,COUNT(1),0),0) cpc,
+				IF(type=1,IF(slot_price>0,COUNT(1),0),0) cpm,
 				IF(ad_price>0,SUM(ad_price),0) ad_price,
 				IF(type=0,COUNT(1),0) totalcpc,
-				IF(st_price>0,SUM(st_price),0) st_price
+				IF(slot_price>0,SUM(slot_price),0) st_price
 				FROM
 				wy_ad_order
 				WHERE
@@ -73,7 +79,9 @@ class Home_model extends MY_Model
     {
 	   $star_time = date("Y-m-d")." 00:00:00";
 	   $end_time = date("Y-m-d")." 23:59:59";
-	   $sql = "SELECT SUM(money) as day_money FROM wy_finance WHERE  subject=1 AND created_time > '".$star_time."' AND created_time < '".$end_time."'";
+	   $sql = "SELECT SUM(money) as day_money FROM wy_finance 
+            WHERE  subject=1 AND created_time > '".$star_time."' 
+            AND created_time < '".$end_time."'";
        $row = $this->db->query($sql)->result_array();
 	   return $row;
     }
@@ -81,16 +89,18 @@ class Home_model extends MY_Model
 	//所有广告统计
 	 public function getExtensionStatices($begin_time,$end_time){
         $where = ' 1=1 and b.created_time >= "'.$begin_time.'" and b.created_time < "'.$end_time.'" ';
-		$data = $this->db->query("SELECT id,`code`,cpc,cpm,totalcpc,totalAd,IF (st_price>0,st_price,0) st_price ,FORMAT((st_price/cpc),2) avg_price FROM(
-            SELECT c.id,c.`code`,
+		$data = $this->db->query("SELECT id,`code`,cpc,cpm,totalcpc,totalAd,
+                    IF (st_price>0,st_price,0) st_price ,
+                    FORMAT((st_price/cpc),2) avg_price FROM(
+                SELECT c.id,c.`slot_code` as code,
             	COUNT(distinct(b.ad_code)) totalAd,
-                IF (b.type = 0,IF (b.st_price > 0, COUNT(1), 0), 0) cpc,
-                IF (b.type = 1,IF (b.st_price > 0, COUNT(1), 0), 0) cpm,
+                IF (b.type = 0,IF (b.slot_price > 0, COUNT(1), 0), 0) cpc,
+                IF (b.type = 1,IF (b.slot_price > 0, COUNT(1), 0), 0) cpm,
                 COUNT(type) totalcpc,
-            	SUM(b.st_price) st_price,
+            	SUM(b.slot_price) st_price,
                 DATE_FORMAT(b.created_time,'%Y-%m-%d') d
             FROM `wy_slot` AS `c`
-            LEFT JOIN `wy_ad_order` AS `b` ON `c`.`owner` = `b`.`st_owner`
+            LEFT JOIN `wy_ad_order` AS `b` ON `c`.`owner` = `b`.`slot_owner`
             WHERE
             	".$where."
             GROUP BY d

@@ -45,7 +45,7 @@ class Index extends MY_Controller {
         $list = $this->flow_model->findAlls($where,$pagesize,$offset);
 		foreach($list as $key=>$val){
 			//获取广告数量
-			$ad_where = "owner='".$val['code']."'";
+			$ad_where = "owner='".$val['account_code']."'";
 			$ad_total = $this->flow_model->getAdCount($ad_where);
 			$list[$key]['ad_total'] = $ad_total?$ad_total:0;
 			//获取充值次数
@@ -79,14 +79,14 @@ class Index extends MY_Controller {
 		$offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
 		//获取用户信息
 		$user_where['id']=$input['id'];
-		$user_where['code']=$input['code'];
+		$user_where['user_code']=$input['code'];
         $user_info = $this->user_model->getInfo($user_where);
 		//获取广告数量
-		$ad_where = "owner='".$user_info['code']."'";
+		$ad_where = "owner='".$user_info['user_code']."'";
 		$ad_total = $this->flow_model->getAdCount($ad_where);
 		$ad_total = $ad_total?$ad_total:0;
 		//获取充值次数
-		$cz_list = $this->flow_model->getFinaCount(array('code'=>$user_info['code']));
+		$cz_list = $this->flow_model->getFinaCount(array('code'=>$user_info['user_code']));
 		$list['cz_money'] = $cz_list['cz_money']?$cz_list['cz_money']:0;
 		$list['sy_money'] = $cz_list['cz_money']-$cz_list['tx_money'];
 		//广告推广量
@@ -101,7 +101,7 @@ class Index extends MY_Controller {
 		foreach($day_list as $v){
 			$week_arr[]="'周".$weekarray[date("w",strtotime($v))]."'";
 		}
-		$stInfo = $this->flow_model->getExtensionStatices($user_info['code'],$begin_time,$end_time);
+		$stInfo = $this->flow_model->getExtensionStatices($user_info['user_code'],$begin_time,$end_time);
         $datedata = getDateSection($begin_time, $end_time);
         $sectionCount = count(explode(',', $datedata));
          $staticesCpc = $staticesCpm = array();
@@ -132,7 +132,7 @@ class Index extends MY_Controller {
         $this->data['staticesCpc'] = implode(',',$staticesCpc);
         $this->data['staticesCpm'] = implode(',',$staticesCpm);
 		//计算交易流水
-		$Adprice = $this->flow_model->getAdprice($user_info['code'],$begin_time,$end_time);
+		$Adprice = $this->flow_model->getAdprice($user_info['user_code'],$begin_time,$end_time);
 		foreach($day_list as $val){
 			$ad_price='';
 			foreach($Adprice as $key=>$vals){
@@ -144,7 +144,7 @@ class Index extends MY_Controller {
 			}
 			$ad_rr[]=$ad_price?$ad_price:0;
 		}
-		$list2 = $this->flow_model->findAdAlls(array("user_code"=>$user_info['code']),$pagesize,$offset);
+		$list2 = $this->flow_model->findAdAlls(array("user_code"=>$user_info['user_code']),$pagesize,$offset);
 		foreach($list2 as $key=>$val){
 			//获取CPM
 			$cpm = $this->advert_model->getCpm($val);

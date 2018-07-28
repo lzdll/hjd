@@ -39,8 +39,8 @@ class Index extends MY_Controller {
         $search = array_intersect_key($input, $filter);
         $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
         $offset =intval($page) > 0 ?intval($page-1)*$pagesize:0;
-        $total = $this->finance_model->getCount("owner='".$this->user['code']."'");
-        $info = $this->finance_model-> getLists($where = array('owner'=>$this->user['code']),$pagesize, $offset, $sort = 'created_time');
+        $total = $this->finance_model->getCount("owner='".$this->user['user_code']."'");
+        $info = $this->finance_model-> getLists($where = array('owner'=>$this->user['user_code']),$pagesize, $offset, $sort = 'created_time');
         $this->data['list'] = $info['list'];
         //分页
         if ($total > 0) {
@@ -55,15 +55,15 @@ class Index extends MY_Controller {
      */
     public function apply(){
         $method = strtolower($_SERVER['REQUEST_METHOD']);
-        $where['owner'] = $this->user['code'];
+        $where['owner'] = $this->user['user_code'];
         $accountInfo = $this->account_model->getInfo($where);
         if ($method == 'post'){
             $post = $this->input->post();
             if(bccomp($accountInfo['money'], $post['money']) === -1){
                 ci_redirect('/withdraw/index/lists', 3, '提现金额大于账户金额');   
             }
-            $arr['code'] = md5($this->getCode().time().rand(0,10000));
-            $arr['owner'] = $this->user['code'];
+            $arr['finance_code'] = $this->getCode();
+            $arr['owner'] = $this->user['user_code'];
             $arr['subject'] = 0;
             $arr['money'] = $post['money'];
             $arr['bank'] = $post['bank_name'];

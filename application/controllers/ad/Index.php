@@ -39,9 +39,9 @@ class Index extends MY_Controller
      */
     public function index()
     {
-        $info = $this->advert_model->getAdMasterCountInfo($this->user['code']);
-        $info['totalmoney'] = number_format( $info['totalmoney']/100,2,'.','');
-        $info['account']['quota'] = number_format( $info['account']['quota']/100,2,'.','');
+        $info = $this->advert_model->getAdMasterCountInfo($this->user['user_code']);
+        $info['totalmoney'] = number_format( $info['totalmoney'],2,'.','');
+        $info['account']['quota'] = number_format( $info['account']['quota'],2,'.','');
         $this->data['countinfo'] = $info['account'];
         $this->data['totalmoney'] = $info['totalmoney'];
         //广告推广量
@@ -53,8 +53,8 @@ class Index extends MY_Controller
         if(empty($end_time)){
             $end_time = date('Y-m-d', time());
         }
-        $adInfo = $this->slot_model->getExtensionStatices($this->user['code'],'',$begin_time,$end_time);
-        $recharge = $this->account_model->getFinanceInfo($this->user['code'],'',$begin_time,$end_time);
+        $adInfo = $this->slot_model->getExtensionStatices($this->user['user_code'],'',$begin_time,$end_time);
+        $recharge = $this->account_model->getFinanceInfo($this->user['user_code'],'',$begin_time,$end_time);
         $datedata = $this->getDateSection($begin_time, $end_time);
         $sectionCount = count(explode(',', $datedata));
         $staticesCpc = $staticesCpm = $staticesAdPrice = $staticesadRechage =array();
@@ -85,7 +85,6 @@ class Index extends MY_Controller
         $this->data['staticesAdPrice'] = implode(',',$staticesAdPrice);
         $this->data['staticesAdRechage'] = implode(',',$staticesAdRechage);
         $this->data['date'] = $this->getDateTime();
-//        var_dump($info);die;
         $this->layout->view('/ad/ad_index', $this->data);
     }
 
@@ -94,11 +93,11 @@ class Index extends MY_Controller
      */
     public function lists()
     {
+        $input = array_merge($this->input->get(), $this->input->post());
         $page=intval($_GET['p'])?intval($_GET['p']):1;
-   
         $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 10;
         $offset =intval($page) > 0 ?intval($page-1)*$pagesize:0;
-        $info = $this->advertiser_model-> adlist($this->user['code'],$limit = $pagesize, $offset = $offset);
+        $info = $this->advertiser_model-> adlist($this->user['user_code'],$limit = $pagesize, $offset);
         foreach ( $info as $key => &$item) {
             $item['price'] = number_format((floor($item['price']/100)).".".($item['price']%100),2,'.','');
             $item['ad_sumprice'] = number_format((floor($item['ad_sumprice']/100)).".".($item['ad_sumprice']%100),2,'.','');
@@ -143,7 +142,7 @@ class Index extends MY_Controller
     public function add()
     {
         $method = strtolower($_SERVER['REQUEST_METHOD']);
-        $company = $this->company_model->getInfo($where = array("owner"=>$this->user['code']));
+        $company = $this->company_model->getInfo($where = array("owner"=>$this->user['user_code']));
         if($company['status'] ==1){
             ci_redirect('/ad/index/lists', 3, '已封号,请联系平台');
         }
@@ -203,8 +202,8 @@ class Index extends MY_Controller
                   $platform = "wechat";
                     $link = $form['link3'];
             }
-                $data['code'] = md5($this->user['code'].time().rand(0,10000));
-                $data['owner'] = $this->user['code'];
+                $data['ad_code'] = $this->getCode();
+                $data['owner'] = $this->user['user_code'];
                 $data['name'] = trim($form['title']);
                 $data['info'] = $form['contact'];
                 $data['icon'] = "http://osv.ufile.ucloud.com.cn/".$upload_file_url1;
@@ -216,10 +215,10 @@ class Index extends MY_Controller
                 $data['audit_status'] = 0;
                 $data['created_time'] = date('Y-m-d H:i:s');
                 $data['updated_time'] = date('Y-m-d H:i:s');
-                $price['user_code'] = $this->user['code'];
+                $price['user_code'] = $this->user['user_code'];
                 $price['ad_code'] = $data['code'];
                 $price['type'] = 0;
-                $price['code'] = md5($this->user['code'].time().rand(0,10000));
+                $price['ad_price_code'] = $this->getCode();
                 $price['price'] = $form['price'] * 100;
                 $price['status'] = 0;
                 $price['created_time'] = date('Y-m-d H:i:s');
@@ -240,7 +239,7 @@ class Index extends MY_Controller
         $targetFolder = date('Y/m/d')."/img/"; // Relative to the root
         if (!empty($_FILES)) {
             $tempFile = $_FILES['file']['tmp_name'];
-            $newname =$this->user['code']."_".time();//图片名字
+            $newname =$this->user['user_code']."_".time();//图片名字
             $fileTypes = array('jpg','jpeg','gif','png','pdf'); // 文件类型
             $fileParts = pathinfo($_FILES['file']['name']);
             $size = getimagesize($tempFile);
@@ -270,8 +269,8 @@ class Index extends MY_Controller
         }
     }
     public function details(){
-        $info = $this->advertiser_model->getInfoIds($_REQUEST['id'],$this->user['code']);
-        $info['price'] = number_format((floor( $info['price']/100)).".".( $info['price']%100),2,'.','');
+        $info = $this->advertiser_model->getInfoIds($_REQUEST['id'],$this->user['user_code']);
+        $info['price'] = number_format((floor( $info['price'])).".".( $info['price']%100),2,'.','');
 
         switch($info['platform']){
             case "H5":
@@ -351,7 +350,7 @@ class Index extends MY_Controller
 
 
    public function editquota(){
-       $owner = $this->user['code'];
+       $owner = $this->user['user_code'];
 //       var_dump($owner);
 //       var_dump(trim($_POST['quota']));die;
        $res = $this->account_model->edit($owner,trim($_POST['quota'])*100);

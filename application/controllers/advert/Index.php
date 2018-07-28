@@ -47,8 +47,6 @@ class Index extends MY_Controller {
 			$list[$key]['cmp_price'] = $cpm['cmp_price']?$cpm['cmp_price']/100:0;
 			$sdk_info = $this->advert_model->getBaingInfo(array('code'=>$val['code']));
 			$list[$key]['sdk_name'] = $sdk_info[0]['name']?$sdk_info[0]['name']:'';
-			
-
 		}
 		$page=getPage($total,$pagesize,$page,$page_len=7,"/advert/index/lists");
         $this->data['list'] = $list;

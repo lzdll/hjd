@@ -43,7 +43,7 @@ class Index extends MY_Controller {
         $list = $this->flow_model->findAlls($where,$pagesize,$offset);
 		foreach($list as $key=>$val){
 			//获取广告数量
-			$ad_where = "owner='".$val['code']."'";
+			$ad_where = "owner='".$val['user_code']."'";
 			$ad_total = $this->flow_model->getAdCount($ad_where);
 			$list[$key]['ad_total'] = $ad_total?$ad_total:0;
 		}

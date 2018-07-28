@@ -26,22 +26,6 @@ class Role extends MY_Controller
     {
         $method = $this->router->method;
         $nav = array();
-        if ( $method == 'index' ) // 角色列表
-        {
-            $nav[] = array('name' => '角色列表', 'url' => '');
-        }
-        else if ( $method == 'add' ) // 角色添加
-        {
-            $nav[] = array('name' => '角色添加', 'url' => '');
-        }
-        else if ( $method == 'edit' ) // 角色添加
-        {
-            $nav[] = array('name' => '角色编辑', 'url' => '');
-        }
-        else if ( $method == 'rights' ) // 角色添加
-        {
-            $nav[] = array('name' => '权限设置', 'url' => '');
-        }
         $this->data['nav'] = array_merge($this->data['nav'], $nav);
     }
 

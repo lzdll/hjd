@@ -36,10 +36,10 @@ class Account_model extends MY_Model
         $begin_time = date('Y-m-d');
         $end_time = date('Y-m-d',strtotime('+1 day'));
         $data = $this->db->query("SELECT id,code,name,cpc,cpm,cpc/(cpc+cpm) rate, totalcpc,st_price FROM ( SELECT
-            c.id,c.`code`,c.`name`,IF(b.type=0,IF(b.st_price>0,COUNT(1),0),0) cpc,IF(b.type=1,IF(b.st_price>0,COUNT(1),0),0) cpm,IF(b.type=0,COUNT(1),0) totalcpc,IF(b.st_price>0,SUM(b.st_price),0) st_price
+            c.id,c.`slot_code` as code,c.`name`,IF(b.type=0,IF(b.slot_price>0,COUNT(1),0),0) cpc,IF(b.type=1,IF(b.slot_price>0,COUNT(1),0),0) cpm,IF(b.type=0,COUNT(1),0) totalcpc,IF(b.slot_price>0,SUM(b.slot_price),0) st_price
             FROM
             	`wy_slot` AS `c`
-            LEFT JOIN `wy_ad_order` AS `b` ON `c`.`owner` = `b`.`st_owner`
+            LEFT JOIN `wy_ad_order` AS `b` ON `c`.`owner` = `b`.`slot_owner`
             WHERE
             	`c`.`owner` = '".$ucode."'
                 AND `c`.`created_time` >='".$begin_time."'

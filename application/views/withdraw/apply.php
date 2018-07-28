@@ -51,7 +51,6 @@
 			form.verify({
 	          validateMoney: function (value) {
 	              var result = validateMoney(value);
-	              alert(222);
 	              if (result != "Y") {
 	                  return result;
 	              }

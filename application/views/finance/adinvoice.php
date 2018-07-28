@@ -30,14 +30,6 @@
 					<?php endif; ?>
 				</tr>
 			  <?php endforeach;?>
-<!--				<tr>-->
-<!--				  <td>2018-06-27</td>-->
-<!--				  <td>北京微微生物有限公司</td>-->
-<!--				  <td>9135412454561232044</td>-->
-<!--				  <td>￥4000.5</td>-->
-<!--				  <td>6月23号充值</td>-->
-<!--				  <td><span class="tdstatus">已开票</span></td>-->
-<!--				</tr>-->
 			  </tbody>
 			</table>
 			<div id="demo0" class="pages"><?php echo $pager; ?></div>
