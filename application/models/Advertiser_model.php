@@ -35,7 +35,7 @@ class Advertiser_model extends MY_Model
     function edit($id,$status,$price)
     {
         if($price>0){
-            $sql = "update wy_ad a LEFT JOIN wy_ad_price b ON a.code = b.ad_code set b.price = {$price} WHERE a.id = {$id}";
+            $sql = "update wy_ad a LEFT JOIN wy_ad_price b ON a.ad_code = b.ad_code set b.price = {$price} WHERE a.id = {$id}";
             $res = $this->db->query($sql);
             return $res;
         }else{

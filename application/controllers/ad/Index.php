@@ -40,8 +40,8 @@ class Index extends MY_Controller
     public function index()
     {
         $info = $this->advert_model->getAdMasterCountInfo($this->user['user_code']);
-        $info['totalmoney'] = number_format( $info['totalmoney'],2,'.','');
-        $info['account']['quota'] = number_format( $info['account']['quota'],2,'.','');
+        $info['totalmoney'] = number_format( $info['totalmoney']/100,2,'.','');
+        $info['account']['quota'] = number_format( $info['account']['quota']/100,2,'.','');
         $this->data['countinfo'] = $info['account'];
         $this->data['totalmoney'] = $info['totalmoney'];
         //广告推广量
@@ -270,7 +270,7 @@ class Index extends MY_Controller
     }
     public function details(){
         $info = $this->advertiser_model->getInfoIds($_REQUEST['id'],$this->user['user_code']);
-        $info['price'] = number_format((floor( $info['price'])).".".( $info['price']%100),2,'.','');
+        $info['price'] = number_format((floor( $info['price']/100)).".".( $info['price']%100),2,'.','');
 
         switch($info['platform']){
             case "H5":
@@ -360,7 +360,7 @@ class Index extends MY_Controller
        }
        else
        {
-           ci_redirect('/ad/index/index', 3, '修改成功');
+           ci_redirect('/ad/index/index', 3, '修改失败');
        }
    }
 

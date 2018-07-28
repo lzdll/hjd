@@ -164,6 +164,7 @@ $config['rights'] = array(
         'class'     => '',
         'icon'      => 'menu-icon fa fa-cog',
         'child' => array(
+            '11_1' => array('is_menu'=>0, 'name'=>'限额修改', 'url'=>'/ad/index/editquota'),
         ),
     ),
 	'12' => array(

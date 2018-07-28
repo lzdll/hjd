@@ -58,7 +58,7 @@ class Account_model extends MY_Model
     function edit($owner,$quota)
     {
         $sql = "update wy_account set quota = {$quota} WHERE owner = '{$owner}'";
-        $res = $this->db->query($sql)->result_array();
+        $res = $this->db->query($sql);
         return $res;
     }
 }
