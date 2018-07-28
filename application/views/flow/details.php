@@ -4,25 +4,26 @@
 		<div class="topblock topblock02 clearfix">
 			<dl class="topitemdl topitemdlsep25">
 				<dd>广告位数量</dd>
-				<dt>130个</dt>
+				<dt><?php echo $slotcount;?>个</dt>
 			</dl>
 			<dl class="topitemdl topitemdlsep25">
 				<dd>收益总额(元)</dd>
-				<dt>￥33040.10</dt>
+				<dt>￥<?php echo $accountinfo['total_money'] > 0 ? $accountinfo['total_money']/100 : 0;?></dt>
 			</dl>
 			<dl class="topitemdl topitemdlsep25">
 				<dd>可提现金额(元)</dd>
-				<dt>￥60040.30</dt>
+				<dt>￥<?php echo $accountinfo['money'] > 0 ? $accountinfo['money']/100 : 0?></dt>
 			</dl>
 			<dl class="topitemdl topitemdlsep25 topitemdlsepfirst">
-				<dd><span class="">账号：</span>18600546906<a href="公司资质.html">查看资质</a><a class="liuuseropear liuuseropearjs">封号</a></dd>
-				<dd><span class="">邮箱：</span>18600546906</dd>
+				<dd><span class="">账号：</span><?php echo $userinfo['mobile'];?><a href="/member/index/lists?user_code=<?php echo $user_code;?>">查看资质</a><a class="liuuseropear liuuseropearjs">封号</a></dd>
+				<dd><span class="">邮箱：</span><?php echo $userinfo['email'];?></dd>
 			</dl>
 		</div>
 		<div class="clearfix" style="margin-top:20px">
 			<div class="countitem fl">
 				<div class="countnav"><p class="fl countleft"><i><img src="images/icon04.png"></i><span>近七天广告推广量</span></p>
-				<span class="fr countright">平均收益<i class="">￥0.3</i></span></div>
+				<span class="fr countright">平均收益<i class="">￥<?php echo $avgamount;?></i></span></div>
+				
 				<div class="">
 					<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 				<div id="report-chart" class="report-chart" style="height:400px" data-action="week"></div>
@@ -59,49 +60,28 @@
 				</tr> 
 			  </thead>
 			  <tbody>
+			  <?php foreach($slotlists as $key => $val){?>
 				<tr>
-				  <td>1dfedf1s</td>
-				  <td><div class="iconpic"><img src="images/dot003.png"></div></td>
-				  <td>32654</td>
-				  <td>1354</td>
-				  <td>1354</td>
-				  <td>35%</td>
-				  <td>￥4.5</td>
-				  <td><span class="tdfont01 editjs">￥<input type="text" value="70" class="editput" disabled /></span></td>
-				  <td><span class="tdfont01 editjs">￥<input type="text" value="0" class="editput" disabled=""></span></td>
-				  <td>￥3000.00</td>
+				  <td><?php echo $val['name'];?></td>
+				  <td><div class="iconpic"><img src="<?php echo $val['icon'];?>"></div></td>
+				  <td><?php echo $val['cpm'];?></td>
+				  <td><?php echo $val['totalcpc'];?></td>
+				  <td><?php echo $val['cpc'];?></td>
+				  <td><?php echo $val['rate'];?>%</td>
+				  <td>￥<?php echo $val['st_price'];?></td>
+				  <td><span class="tdfont01 editjs" value="cpc" stcode="<?php echo $val['code']?>">￥<input type="text" value="<?php echo $val['cpc_price'];?>" class="editput" disabled=""></span></td>
+				  <td><span class="tdfont01 editjs" value="cpm" stcode="<?php echo $val['code']?>">￥<input type="text" value="<?php echo $val['cpm_price'];?>" class="editput" disabled /></span></td>
+				  <td>￥<?php echo $val['st_price'];?></td>
 				  <td><a href="广告位详情.html" class="tdviewbtn">查看</a></td>
-				  <td><span class="opearbtn opearbtnjs2 active">关闭</span></td>
+				  <td>
+				  	<?php if($val['status'] == 0){?>
+				  	<span class="opearbtn opearbtnjs2 active" value="<?php echo $val['id'].'_'.$val['status'];?>">关闭</span>
+				  	<?php }elseif($val['status'] == 1){?>				  
+				  	<span class="opearbtn opearbtnjs"  value="<?php echo $val['id'].'_'.$val['status'];?>">开启</span>
+				  	<?php }?>
+				  </td>
 				</tr>
-				<tr>
-				  <td>1dfedf1s</td>
-				  <td><div class="iconpic"><img src="images/dot003.png"></div></td>
-				  <td>32654</td>
-				  <td>1354</td>
-				  <td>1354</td>
-				  <td>35%</td>
-				  <td>￥4.5</td>
-				  <td><span class="tdfont01 editjs">￥<input type="text" value="70" class="editput" disabled /></span></td>
-				  <td><span class="tdfont01 editjs">￥<input type="text" value="0" class="editput" disabled=""></span></td>
-				  <td>￥3000.00</td>
-				  <td><a href="广告位详情.html" class="tdviewbtn">查看</a></td>
-				  <td><span class="opearbtn opearbtnjs">开启</span></td>
-				</tr>
-				<tr>
-				  <td>1dfedf1s</td>
-				  <td><div class="iconpic"><img src="images/dot003.png"></div></td>
-				  <td>32654</td>
-				  <td>1354</td>
-				  <td>1354</td>
-				  <td>35%</td>
-				  <td>￥4.5</td>
-				  <td><span class="tdfont01 editjs">￥<input type="text" value="70" class="editput" disabled /></span></td>
-				  <td><span class="tdfont01 editjs">￥<input type="text" value="0" class="editput" disabled=""></span></td>
-				  <td>￥3000.00</td>
-				  <td><a href="广告位详情.html" class="tdviewbtn">查看</a></td>
-				  <!--<td><a href="page-1-运营平台2广告主_4广告审核3展示.html"><span class="tdstatus">已审核</span></a></td>-->
-				  <td><span class="opearbtn opearbtnjs">开启</span></td>
-				</tr>
+				<?php }?>
 			  </tbody>
 			</table>
 			<div id="demo0" class="pages"></div>
@@ -124,7 +104,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">价格：</label>
 					<div class="layui-input-block" >
-					  <span>￥</span><input type="text" name="title" placeholder="请输入新的价格" class="layui-input">
+					  <span>￥</span><input type="text" name="money" id="money" placeholder="请输入新的价格" class="layui-input">
 					</div>
 				  </div>
 			 </form>
@@ -149,6 +129,7 @@
 layui.use('layer', function(){ //独立版的layer无需执行这一句
   var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
 	$(document).on("click",".liuuseropearjs",function(){
+		var slot_user_id = <?php echo $userinfo['id'];?>;
 		layer.open({
 			type: 1
 			,title: false //不显示标题栏
@@ -159,13 +140,33 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
 			,btn: ['确定','取消']
 			,moveType: 1 //拖拽模式，0或者1
 			,content: $('#layer03')
-			,success: function(layero){
+			,yes: function (index, layero) {
 			  //成功输出内容
-			  console.log(11);
+			  $.ajax({
+					url: '/flow/index/sealoff',
+					dataType: 'json',  
+					type: 'post', 
+					data: {user_id:slot_user_id},
+					success: function(data , textStatus){
+					if (data.status === false)
+					{
+						alert(data.msg);
+						return false;
+					}
+					location.reload()
+					},
+					error: function(jqXHR , textStatus , errorThrown){
+					  //console.log("error");
+					}
+			 });
 			}
 		});
 	});
 	$(document).on("click",".editjs",function(){
+		var money_type = $('this').attr('class');
+		var type = $(this).attr('value');
+		var st_code = $(this).attr('stcode');
+		var user_code = "<?php echo $user_code;?>";
 		layer.open({
 			type: 1
 			,title: false //不显示标题栏
@@ -176,13 +177,31 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
 			,btn: ['确定','取消']
 			,moveType: 1 //拖拽模式，0或者1
 			,content: $('#layer04')
-			,success: function(layero){
+			,yes: function (index, layero) {
+				var money = $('#money').val();
 			  //成功输出内容
-			  console.log(11);
+			  $.ajax({
+					url: '/flow/index/setslotmoney',
+					dataType: 'json',  
+					type: 'post', 
+					data: {type:type,money:money,st_code:st_code,user_code:user_code},
+					success: function(data , textStatus){
+					if (data.status === false)
+					{
+						alert(data.msg);
+						return false;
+					}
+					location.reload()
+					},
+					error: function(jqXHR , textStatus , errorThrown){
+					  //console.log("error");
+					}
+			 });
 			}
 		});
 	});
 	$(document).on("click",".opearbtnjs",function(){
+		var param = $(this).attr('value');
 		layer.open({
 			type: 1
 			,title: false //不显示标题栏
@@ -193,13 +212,31 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
 			,btn: ['确定','取消']
 			,moveType: 1 //拖拽模式，0或者1
 			,content: $('#layer01')
-			,success: function(layero){
+			,yes: function (index, layero) {
 			  //成功输出内容
-			  console.log(11);
+			  $.ajax({
+					url: '/flow/index/updateslotprice',
+					dataType: 'json',  
+					type: 'post', 
+					data: {param:param},
+					success: function(data , textStatus){
+						
+							if (data.status === false)
+					{
+						alert(data.msg);
+						return false;
+					}
+					location.reload()
+					},
+					error: function(jqXHR , textStatus , errorThrown){
+					  //console.log("error");
+					}
+			 });
 			}
 		});
 	});
 	$(document).on("click",".opearbtnjs2",function(){
+		var param = $(this).attr('value');
 		layer.open({
 			type: 1
 			,title: false //不显示标题栏
@@ -210,9 +247,26 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
 			,btn: ['确定','取消']
 			,moveType: 1 //拖拽模式，0或者1
 			,content: $('#layer02')
-			,success: function(layero){
+			,yes: function (index, layero) {
 			  //成功输出内容
-			  console.log(11);
+			  $.ajax({
+					url: '/flow/index/updateslotprice',
+					dataType: 'json',  
+					type: 'post', 
+					data: {param:param},
+					success: function(data , textStatus){
+					if (data.status === false)
+					{
+						alert(222);
+						alert(data.msg);
+						return false;
+					}
+					location.reload()
+					},
+					error: function(jqXHR , textStatus , errorThrown){
+					  //console.log("error");
+					}
+			 });
 			}
 		});
 	});
@@ -263,7 +317,7 @@ var option = {
         {
             type : 'category',
             boundaryGap : false,
-            data : ['周一','周二','周三','周四','周五','周六','周日']
+            data : [<?php echo $section ;?>]
         }
     ],
     yAxis: {
@@ -293,7 +347,7 @@ var option = {
 								}])
 							},
 							color:'#2cc6ad'}},
-            data:[10, 12, 21, 54, 260, 830, 710]
+            data:[<?php echo $staticesCpm;?>]
         },
         {
             name:'点击',
@@ -315,7 +369,7 @@ var option = {
 								}])
 							},color:'#ffc400'
 			}},
-            data:[30, 182, 434, 791, 390, 30, 10]
+            data:[<?php echo $staticesCpc;?>]
         }
     ]
 };
@@ -351,7 +405,7 @@ var option2 = {
         {
             type : 'category',
             boundaryGap : false,
-            data : ['周一','周二','周三','周四','周五','周六','周日']
+            data : [<?php echo $section ;?>]
         }
     ],
     yAxis: {
@@ -379,7 +433,7 @@ var option2 = {
 							},color:'#2cc6ad'
 			}},
             stack: '总量',
-            data:[120, 132, 101, 134, 90, 230, 210]
+            data:[<?php echo $staticesPrice;?>]
 
         }
     ]

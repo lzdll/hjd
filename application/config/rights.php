@@ -62,6 +62,10 @@ $config['rights'] = array(
             '3_1' => array('is_menu'=>0, 'name'=>'添加流量主', 'url'=>'/flow/index/add'),
             '3_2' => array('is_menu'=>0, 'name'=>'查看详情', 'url'=>'/flow/index/details'),
 			'3_3' => array('is_menu'=>0, 'name'=>'重置密码', 'url'=>'/flow/index/resetpwd'),
+            '3_4' => array('is_menu'=>0, 'name'=>'封号操作', 'url'=>'/flow/index/sealoff'),
+            '3_5' => array('is_menu'=>0, 'name'=>'更新广告价格', 'url'=>'/flow/index/setslotmoney'),
+            '3_6' => array('is_menu'=>0, 'name'=>'开启广告位', 'url'=>'/flow/index/updateslotprice'),
+            '3_7' => array('is_menu'=>0, 'name'=>'关闭广告位', 'url'=>'/flow/index/updateslotprice'),
         ),
     ), 
     '4' => array(
