@@ -468,10 +468,9 @@ function rmTheArrayKey($data = array()) {
 	*$page 当前页
 	*$page_len 显示页的长度
 	*/
-  function getPage($count,$pagesize,$page,$page_len,$url,$str){
+  function getPage($count,$pagesize,$page,$page_len,$url,$str=''){
         $page_count  = ceil($count/$pagesize);//总页数
         $init=1;
-		$page_len=$page_len;
 		$max_p=$page_count;
 		$pages=$page_count;
 
