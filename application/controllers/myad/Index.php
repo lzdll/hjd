@@ -77,11 +77,13 @@ class Index extends MY_Controller
      */
     public function lists()
     {
+       
         $input = array_merge($this->input->get(), $this->input->post());
+        $page = isset($_GET['p'])?$_GET['p']:1;
         $filter = array();
         $search = array_intersect_key($input, $filter);
         $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
-        $offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
+        $offset =intval($page) > 0 ?intval($page-1)*$pagesize:0;
         $data['owner'] = $this->user['code'];
         $total = $this->slot_model->getCount($data);
         $list = $this->slot_model->getDataByOwner($this->user['code'],$pagesize,$offset);
@@ -92,7 +94,7 @@ class Index extends MY_Controller
         $this->data['search'] = $search;
         ////分页
         if ($total > 0) {
-            $this->data['pager'] = page($search, $total, $pagesize);
+            $this->data['pager'] = getPage($total,$pagesize,$page,$page_len=7,"/myad/index/lists");
         }
         $this->layout->view('/myad/list', $this->data);
     }

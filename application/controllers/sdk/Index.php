@@ -34,20 +34,21 @@ class Index extends MY_Controller {
         $data  = $this->input->get();
         $valid      = array();
         $validData  = $this->_getValidParam($data, $valid);
+		$page=intval(trim($_GET['p']))?intval(trim($_GET['p'])):1;
         $urlParam   = $this->_generalUrl($validData);
         $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
 		$offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
 		$where ='1 = 1 ANd id>0';
         $total = $this->wsdk_model->getCount($where);
         $list = $this->wsdk_model->findAlls($where,$pagesize,$offset);
+		$page=getPage($total,$pagesize,$page,$page_len=7,"/sdk/index/lists");
 		$this->data['list'] = $list;
         $this->data['total'] = $total;
         $this->data['search'] = $search;
         $this->data['pagesize'] = $pagesize;
-		//分页
+		 //分页
         if ($total > 0) {
-            $query_str = http_build_query($search);
-            $this->data['pager'] = page($query_str, $total, $pagesize);
+            $this->data['page'] = $page;
         }
 		$this->layout->view('/sdk/list', $this->data);
 	} 

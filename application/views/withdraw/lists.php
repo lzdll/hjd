@@ -32,7 +32,7 @@
 			  <?php endforeach;?>
 			  </tbody>
 			</table>
-			<div id="demo0" class="pages"><div class="y_tip">共 <?php echo $pager['count'];?> 条 每页 <?php echo $pagesize;?> 条	</div><div class="y_page"><?php echo $pager['links'];?></div></div>
+			<div id="demo0" class="pages"><?php echo $pager; ?></div>
 		</div>
    
     </div>

@@ -40,13 +40,8 @@
 <!--				</tr>-->
 			  </tbody>
 			</table>
-<!--			<div id="demo0" class="pages"></div>-->
-			<div id="" class="pages">
-				<?php foreach($page as $row): ?>
-					<?php echo $row; ?>
-				<?php endforeach;?>
-			</div>
-		</div>
+			<div id="demo0" class="pages"><?php echo $pager; ?></div>
+
    
     </div>
   </div>
@@ -54,19 +49,11 @@
 	  <i class="layui-icon layui-icon01"></i>
   </div>-->
 </div>
-<script type="text/javascript" src="/public/money_ex/js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="/public/money_ex/layui/layui.js"></script>
-<script type="text/javascript" src="/public/money_ex/js/global.js"></script>
+<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="layui/layui.js"></script>
+<script type="text/javascript" src="js/global.js"></script>
 <script>
-layui.use(['laypage', 'layer'], function(){
-  var laypage = layui.laypage
-  ,layer = layui.layer;
-  //总页数低于页码总数
-  laypage.render({
-    elem: 'demo0'
-    ,count: 50 //数据总数
-  });
-  });
+
 </script>
 </body>
 </html>

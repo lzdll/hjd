@@ -29,6 +29,7 @@ class Index extends MY_Controller {
 	public function lists()
 	{
         $input = array_merge($this->input->get(), $this->input->post());
+		$page=intval(trim($_GET['p']))?intval(trim($_GET['p'])):1;
 		$filter = array();
         $search = array_intersect_key($input, $filter);
         $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
@@ -49,15 +50,15 @@ class Index extends MY_Controller {
 			
 
 		}
+		$page=getPage($total,$pagesize,$page,$page_len=7,"/advert/index/lists");
         $this->data['list'] = $list;
         $this->data['total'] = $total;
         $this->data['advert_num'] = $advert_num;
 		$this->data['consume'] = $consume;
         $this->data['pagesize'] = $pagesize;
-        //分页
+         //分页
         if ($total > 0) {
-            $query_str = http_build_query($search);
-            $this->data['pager'] = page($query_str, $total, $pagesize);
+            $this->data['page'] = $page;
         }
 		$this->layout->view('/advert/list', $this->data);
 	} 

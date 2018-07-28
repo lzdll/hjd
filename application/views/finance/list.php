@@ -31,8 +31,7 @@
 			
 			<div id="demo0" class="pages">  
 			
-			<div class="y_tip">共 <?php echo $pager['count'];?> 条 每页 <?php echo $pagesize;?> 条	</div><div class="y_page"><?php echo $pager['links'];?></div>
-					
+ <div id="demo0" class="pages"><?php echo $page; ?></div>					
 					
 					</div>
 		</div>

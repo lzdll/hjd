@@ -34,18 +34,18 @@ class Index extends MY_Controller {
 	
     public function lists(){
         $input = array_merge($this->input->get(), $this->input->post());
+        $page = isset($_GET['p'])?$_GET['p']:1;   
         $filter = array();
         $search = array_intersect_key($input, $filter);
         $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
-        $offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
+        $offset =intval($page) > 0 ?intval($page-1)*$pagesize:0;
         $total = $this->finance_model->getCount("owner='".$this->user['code']."'");
         $info = $this->finance_model-> getLists($where = array('owner'=>$this->user['code']),$pagesize, $offset, $sort = 'created_time');
         $this->data['list'] = $info['list'];
         //分页
         if ($total > 0) {
-            $query_str = http_build_query($search);
-            $this->data['search'] = $search;
-            $this->data['pager'] = page($query_str, $total, $pagesize);
+ 
+           $this->data['pager'] = getPage($total,$pagesize,$page,$page_len=7,"/withdraw/index/lists");
             $this->data['pagesize'] = $pagesize;
         }
         $this->layout->view('/withdraw/lists', $this->data);

@@ -30,12 +30,13 @@ class Index extends MY_Controller {
 
 	public function lists()
 	{
-
+	  
         $input = array_merge($this->input->get(), $this->input->post());
+        $page = isset($_GET['p'])?$_GET['p']:1;
 		$filter = array();
         $search = array_intersect_key($input, $filter);
         $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
-		$offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
+        $offset =intval($page) > 0 ?intval($page-1)*$pagesize:0;
 		//获取流量主 条件
         $where = $this->flow_model->conditions(array('type'=>1,'role_id'=>3));
         $total = $this->flow_model->getCount($where);
@@ -52,20 +53,20 @@ class Index extends MY_Controller {
         $this->data['pagesize'] = $pagesize;
         //分页
         if ($total > 0) {
-            $query_str = http_build_query($search);
-            $this->data['pager'] = page($query_str, $total, $pagesize);
+            $this->data['pager'] = getPage($total,$pagesize,$page,$page_len=7,"/flow/index/lists");
+            
         }
 		$this->layout->view('/flow/list', $this->data);
 	} 
 	public function details()
 	{
-
+	    $page=intval(trim($_GET['p']))?intval(trim($_GET['p'])):1;
         $input = array_merge($this->input->get(), $this->input->post());
 		$filter = array();
 		$user_code = $this->input->get('code');
         $search = array_intersect_key($input, $filter);
         $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
-		$offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
+        $offset =intval($page) > 0 ?intval($page-1)*$pagesize:0;
 		//获取流量主 条件
         $where = $this->flow_model->conditions(array('type'=>1,'role_id'=>3));
         $total = $this->flow_model->getCount($where);
@@ -148,8 +149,7 @@ class Index extends MY_Controller {
 		
 		//分页
 		if ($total > 0) {
-		    $query_str = http_build_query($search);
-		    $this->data['pager'] = page($query_str, $slotcount, $pagesize);
+		    $this->data['pager'] =  getPage($total,$pagesize,$page,$page_len=7,"/flow/index/details");
 		}
 		
 		$this->data['id'] = $this->input->get('id');
@@ -172,8 +172,7 @@ class Index extends MY_Controller {
         $this->data['staticesPrice'] = implode(',',$staticesPrice);
         //分页
         if ($total > 0) {
-            $query_str = http_build_query($search);
-            $this->data['pager'] = page($query_str, $total, $pagesize);
+            $this->data['pager'] =  getPage($total,$pagesize,$page,$page_len=7,"/flow/index/details");
         }
 		$this->layout->view('/flow/details', $this->data);
 	} 

@@ -36,20 +36,21 @@ class Index extends MY_Controller {
         $data  = $this->input->get();
         $valid      = array();
         $validData  = $this->_getValidParam($data, $valid);
+		$page=intval(trim($_GET['p']))?intval(trim($_GET['p'])):1;
         $urlParam   = $this->_generalUrl($validData);
         $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
 		$offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
 		$where ='1 = 1 ANd id>0 AND subject=1';
         $total = $this->audit_model->getCount($where);
         $list = $this->audit_model->findAlls($where,$pagesize,$offset);
+		$page=getPage($total,$pagesize,$page,$page_len=7,"/finance/index/lists");
 		$this->data['list'] = $list;
         $this->data['total'] = $total;
         $this->data['search'] = $search;
         $this->data['pagesize'] = $pagesize;
 		//分页
         if ($total > 0) {
-            $query_str = http_build_query($search);
-            $this->data['pager'] = page($query_str, $total, $pagesize);
+            $this->data['page'] = $page;
         }
 		$this->layout->view('/finance/list', $this->data);
 	} 
@@ -58,21 +59,22 @@ class Index extends MY_Controller {
         $data  = $this->input->get();
         $valid      = array();
         $validData  = $this->_getValidParam($data, $valid);
+		$page=intval(trim($_GET['p']))?intval(trim($_GET['p'])):1;
         $urlParam   = $this->_generalUrl($validData);
-        $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
-		$offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
+        $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] :10;
+		$offset =intval($page) > 0 ?intval($page-1)*$pagesize:0;
 		$where = $this->audit_model->conditions($search);
         $total = $this->audit_model->getInvoiceCount($where);
         $list = $this->audit_model->findInvoice($where,$pagesize,$offset);
+
+		$page=getPage($total,$pagesize,$page,$page_len=7,"/finance/index/invoice");
 		$this->data['list'] = $list;
         $this->data['total'] = $total;
         $this->data['search'] = $search;
         $this->data['pagesize'] = $pagesize;
 		//分页
         if ($total > 0) {
-            $query_str = http_build_query($search);
-            $this->data['page'] = page($query_str, $total, $pagesize);
-	
+            $this->data['page'] = $page;
         }
 		$this->layout->view('/finance/invoice', $this->data);
 	} 
@@ -105,19 +107,21 @@ class Index extends MY_Controller {
         $valid      = array();
         $validData  = $this->_getValidParam($data, $valid);
         $urlParam   = $this->_generalUrl($validData);
-        $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
-		$offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
+		$page=intval(trim($_GET['p']))?intval(trim($_GET['p'])):1;
+        $urlParam   = $this->_generalUrl($validData);
+        $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] :10;
+		$offset =intval($page) > 0 ?intval($page-1)*$pagesize:0;
 		$where ='1 = 1 ANd id>0 AND subject=0';
         $total = $this->audit_model->getCount($where);
         $list = $this->audit_model->findAlls($where,$pagesize,$offset);
+		$page=getPage($total,$pagesize,$page,$page_len=7,"/finance/index/present");
 		$this->data['list'] = $list;
         $this->data['total'] = $total;
         $this->data['search'] = $search;
         $this->data['pagesize'] = $pagesize;
 		//分页
         if ($total > 0) {
-            $query_str = http_build_query($search);
-            $this->data['pager'] = page($query_str, $total, $pagesize);
+            $this->data['page'] = $page;
         }
 		$this->layout->view('/finance/present', $this->data);
 	} 
@@ -183,8 +187,9 @@ class Index extends MY_Controller {
         $this->layout->view('/finance/listrecord', $this->data);
     }
     public function adinvoice(){
+        $page = isset($_GET['p'])?$_GET['p']:1;
         $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
-        $offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
+        $offset =intval($page) > 0 ?intval($page-1)*$pagesize:0;
         $info = $this->invoice_model-> getList($where = array('owner'=>$this->user['code']),$limit = $pagesize, $offset = $offset, $sort = 'created_time');
         foreach ( $info['list']as &$item) {
             $item['created_time'] = date('Y-m-d',strtotime($item['created_time']));
@@ -194,9 +199,8 @@ class Index extends MY_Controller {
         $this->data['list'] = $info['list'];
         //分页
         if ($total > 0) {
-            $query_str = http_build_query($search);
-            $this->data['page'] = page($query_str, $total, $pagesize);
-
+            $this->data['pager'] = getPage($total,$pagesize,$page,$page_len=7,"/finance/index/adinvoice");
+            
         }
         $this->layout->view('/finance/adinvoice', $this->data);
     }

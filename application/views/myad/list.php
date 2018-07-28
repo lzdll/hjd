@@ -26,7 +26,7 @@
 			  <?php } ?>
 			  </tbody>
 			</table>
-			<div class="pages" id="demo0"><div class="y_tip">共 <?php echo $pager['count'];?> 条 每页 <?php echo $pagesize;?> 条	</div><div class="y_page"><?php echo $pager['links'];?></div></div>
+			<div id="demo0" class="pages"><?php echo $pager; ?></div>
 		</div>
 	 </div>
   <!--<div class="site-tree-mobile layui-hide">

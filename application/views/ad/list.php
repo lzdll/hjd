@@ -35,7 +35,7 @@
               <?php endforeach;?>
 			  </tbody>
 			</table>
-			<div id="demo0" class="pages"> </div>
+			<div id="demo0" class="pages"><?php echo $pager; ?></div>
 		</div>
 	 </div>
   </div>
@@ -165,15 +165,7 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
 
 });
 
-layui.use(['laypage', 'layer'], function(){
-    var laypage = layui.laypage
-        ,layer = layui.layer;
-    //总页数低于页码总数
-    laypage.render({
-        elem: 'demo0'
-        ,count: 50 //数据总数
-    });
-});
+
 
 
 

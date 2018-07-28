@@ -29,9 +29,7 @@
 				<?php } ?>
 			  </tbody>
 			</table>
-			<div id="demo0" class="pages">
-			<?php $this->load->view('common/page.php') ?> 
-			</div>
+			<div id="demo0" class="pages"><?php echo $page; ?></div>
 		</div>
     </div>
   </div>

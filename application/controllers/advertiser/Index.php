@@ -34,7 +34,7 @@ class Index extends MY_Controller {
 	{
        
         $input = array_merge($this->input->get(), $this->input->post());
-		$page=intval(trim($_GET['p']))?intval(trim($_GET['p'])):1;
+        $page=intval(trim($this->input->get('p')))?intval(trim($this->input->get('p'))):1;
 		$filter = array();
         $search = array_intersect_key($input, $filter);
         $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 10;
@@ -163,7 +163,7 @@ class Index extends MY_Controller {
         $this->data['user_info'] = $user_info;
         //分页
         if ($total > 0) {
-			$page=getPage($total,$pagesize,$page,$page_len=7,"/advertiser/index/lists");
+            $page = getPage($total,$pagesize,$page,$page_len=7,"/myad/index/lists");
             $this->data['page'] = $page;
         }
 		$this->layout->view('/advertiser/details', $this->data);

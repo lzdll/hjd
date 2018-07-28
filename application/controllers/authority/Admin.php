@@ -42,6 +42,7 @@ class Admin extends MY_Controller {
 	public function index()
 	{
         $data       = $this->input->get();
+		$page=intval(trim($_GET['p']))?intval(trim($_GET['p'])):1;
         $filters    = array();// 默认数据
         $valid      = array('id'=>'', 'email' => '', 'truename' => '', );
         $validData  = $this->_getValidParam($data, $valid);
@@ -49,7 +50,7 @@ class Admin extends MY_Controller {
         $urlParam   = $this->_generalUrl($validData);
 
         $filters['default'] = $validData;
-        $page = intval($data['page']) > 0 ? intval($data['page']) : 1;
+        $page = intval($page) > 0 ? intval($page) : 1;
         $data['page'] = $page;
         $offset = ($page-1) * $this->limit;
         $rs = $this->user_model->getList($where, $this->limit, $offset);
@@ -57,10 +58,11 @@ class Admin extends MY_Controller {
         {
             var_dump($this->db->last_query());
         }
+		$page=getPage($rs['cnt'],$this->limit,$page,$page_len=7,"/authority/admin/index");
         $rs['list'] = $this->_getFilterDataMaps($rs['list']);
         $this->data = array_merge($this->data,array(
             'list'      => $rs['list'],
-            'page'      => page($urlParam,$rs['cnt'],$this->limit),
+            'page'      => $page,
             'filters'   => $filters,
         ));
 		$this->layout->view('/authority/admin/list', $this->data);

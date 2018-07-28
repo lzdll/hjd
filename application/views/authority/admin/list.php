@@ -41,9 +41,7 @@
                 <?php } ?>
             </tbody></table>
         </div>
-        <div class="y_pagebox d-mt20">
-        	<?php $this->load->view('common/page.php') ?> 
-        </div>
+        <div id="demo0" class="pages"><?php echo $page; ?></div>
     </div>
 </div>
 <script>

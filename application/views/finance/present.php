@@ -26,7 +26,7 @@
 					  <?php if($v['status'] == 0 ){?> 
 					  <span class="opearbtn" >已打款</span>
 					  <?php   }else{ ?> 
-					  <span class="opearbtn opearbtnjs active" onclick="viewimgs('<?=$v['id']?>')">未打款</span>
+					  <span class="opearbtn opearbtnjs active" onclick="editjs('<?=$v['id']?>')">未打款</span>
 					  <?php } ?>
 				  </td>
 				</tr>
@@ -34,15 +34,7 @@
 			  </tbody>
 			</table>
 			
-			<div id="demo0" class="pages">  
-			
-			<div class="y_tip">共 <?php echo $pager['count'];?> 条 每页 <?php echo $pagesize;?> 条	</div>
-                    <div class="y_page">
-                       <?php echo $pager['links'];?>
-                    </div>
-					
-					
-					</div>
+			<div id="demo0" class="pages"><?php echo $page; ?></div>
 		</div>
 		</div>
     </div>
@@ -59,7 +51,7 @@
 			<form class="layui-form">
 				<div class="layui-form-item">
 					<div class="layui-input-block opeareablock" >
-					  <textarea class="opearea" placeholder="建议输入流水号"></textarea>
+					  <textarea class="opearea" placeholder="建议输入流水号" id="opearea"></textarea>
 					</div>
 				  </div>
 			 </form>
@@ -73,25 +65,39 @@
 <script type="text/javascript" src="/public/money_ex/js/global.js"></script>
 <script>
 
- layui.use('layer', function(){ //独立版的layer无需执行这一句
-  var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
-	$(document).on("click",".opearbtnjs",function(){
-		layer.open({
-			type: 1
+function editjs(obj){
+	layer.open({
+			 type: 1
 			,title: false //不显示标题栏
 			,closeBtn: false
-			,area: ['400px', '250px']
+			,area: ['400px', '230px']
 			,shade: 0.8
 			,id: 'LAY_layuipro' //设定一个id，防止重复弹出
-			,btn: ['确定已打款','取消']
+			,btn: ['确定','取消']
 			,moveType: 1 //拖拽模式，0或者1
 			,content: $('#layer04')
-			,success: function(layero){
-			  //成功输出内容
-			  console.log(11);
+			,yes: function (index, layero) {
+				 var opearea = $("#opearea").val();
+				//成功输出内容
+				$.ajax({
+					url: '/finance/index/unexecuted',
+					dataType: 'json',  
+					type: 'post', 
+					data: {id:obj, opearea:opearea},
+					success: function(data , textStatus){
+					if (data.status === false)
+					{
+						alert(data.msg);
+						return false;
+					}
+					location.reload()
+					},
+					error: function(jqXHR , textStatus , errorThrown){
+					  //console.log("error");
+					}
+				});
 			}
 		});
-	});
-});
 
+}
 </script>

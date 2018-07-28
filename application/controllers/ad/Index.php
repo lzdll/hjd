@@ -94,9 +94,10 @@ class Index extends MY_Controller
      */
     public function lists()
     {
-
+        $page=intval($_GET['p'])?intval($_GET['p']):1;
+   
         $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 10;
-        $offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
+        $offset =intval($page) > 0 ?intval($page-1)*$pagesize:0;
         $info = $this->advertiser_model-> adlist($this->user['code'],$limit = $pagesize, $offset = $offset);
         foreach ( $info as $key => &$item) {
             $item['price'] = number_format((floor($item['price']/100)).".".($item['price']%100),2,'.','');
@@ -132,8 +133,7 @@ class Index extends MY_Controller
 
         //分页
         if ($total > 0) {
-            $query_str = http_build_query($search);
-            $this->data['pager'] = page($query_str, $total, $pagesize);
+            $this->data['pager'] = getPage($total,$pagesize,$page,$page_len=7,"/ad/index/lists");
         }
 
         $this->layout->view('/ad/list', $this->data);
