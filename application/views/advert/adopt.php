@@ -39,13 +39,13 @@
 				  <div class="layui-form-item">
 					<label class="layui-form-label">点击单价：</label>
 					<div class="layui-input-block">
-					  <input type="text" name="title" placeholder="" value="0.50" class="layui-input putprice" disabled>
+					  <input type="text" name="title" placeholder="" value="<?=$list['price']?>" class="layui-input putprice" disabled>
 					</div>
 				  </div>
 				  <div class="layui-form-item">
 					<label class="layui-form-label">CMP：</label>
 					<div class="layui-input-block">
-					  <input type="text" name="title" placeholder="￥12.50" class="layui-input" disabled />
+					  <input type="text" name="title" placeholder="￥<?=$list['cmp_price']?>" class="layui-input" disabled />
 					</div>
 				  </div>
 				  <div class="layui-form-item">
@@ -108,13 +108,12 @@
 				  </div>
 				  </div>
 				  <?php }else{ ?>
-				  <div class="layui-form-item">
-					<label class="layui-form-label" style="color:#666666;">SDK：</label>
-					<div class="layui-input-block">
-					  <a href="/advert/index/binding?code=<?php echo $list['code'] ?>"><span class="bindbtn">绑定</span></a>
-					</div>
-				  </div>
-				  
+					  <div class="layui-form-item">
+						<label class="layui-form-label" style="color:#666666;">SDK：</label>
+						<div class="layui-input-block">
+						  <a href="/advert/index/binding?code=<?php echo $list['code'] ?>&id=<?php echo $list['id'] ?>"><span class="bindbtn">绑定</span></a>
+						</div>
+					  </div>
 				 <?php } ?>
 				  <div class="layui-form-item">
 					<div class="layui-input-block formopearbtn">

@@ -3,26 +3,26 @@
 		
 		<div class="topblock clearfix">
 			<dl class="topitemdl topitemdlsep25 topitemdlsepfirst">
-				<dd><span class="">账号：</span>18600546906<a href="公司资质.html">查看资质</a></dd>
-				<dd><span class="">邮箱：</span>18600546906</dd>
+				<dd><span class="">账号：</span><?php  echo $user_info['login_name']; ?><a href="/member/index/lists?user_code=<?php  echo $code; ?>">查看资质</a></dd>
+				<dd><span class="">邮箱：</span><?php  echo $user_info['email']; ?></dd>
 			</dl>
 			<dl class="topitemdl topitemdlsep25">
 				<dd>广告数量</dd>
-				<dt>30个</dt>
+				<dt><?php echo $ad_total; ?>个</dt>
 			</dl>
 			<dl class="topitemdl topitemdlsep25">
 				<dd>充值总额(元)</dd>
-				<dt>￥33040.10</dt>
+				<dt>￥<?php echo $list['cz_money']/100; ?></dt>
 			</dl>
 			<dl class="topitemdl topitemdlsep25 noborder">
 				<dd>余额总额(元)</dd>
-				<dt>￥60040.30</dt>
+				<dt>￥<?php echo $list['sy_money']/100; ?></dt>
 			</dl>
 		</div>
 		<div class="clearfix" style="margin-top:20px">
 			<div class="countitem fl">
-				<div class="countnav"><p class="fl countleft"><i><img src="images/icon04.png"></i><span>广告推广量</span></p>
-				<span class="fr countright">均价<i class="">￥0.3</i></span></div>
+				<div class="countnav"><p class="fl countleft"><i><img src="/public/money_ex/images/icon04.png"></i><span>广告推广量</span></p>
+				<span class="fr countright">均价<i class="">￥<?php echo $avgamount;?></i></span></div>
 				<div class="">
 					<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 				<div id="report-chart" class="report-chart" style="height:400px" data-action="week"></div>
@@ -30,7 +30,7 @@
 				</div>
 			</div>
 			<div class="countitem fr">
-				<div class="countnav"><p class="fl countleft"><i><img src="images/icon02.png"></i><span>近七天消耗金额</span></p>
+				<div class="countnav"><p class="fl countleft"><i><img src="/public/money_ex/images/icon02.png"></i><span>近七天消耗金额</span></p>
 				</div>
 				<div class="">
 					<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
@@ -47,8 +47,9 @@
 				  <th>曝光量</th>
 				  <th>点击量</th>
 				  <th>点击率</th>
-				  <th>点击均价</th>
+				  <th>点击单价</th>
 				  <th>CMP(千人展示价)</th>
+				  <th>广告主</th>
 				  <th>消耗</th>
 				  <th>SDK</th>
 				  <th>状态</th>
@@ -56,42 +57,51 @@
 				</tr> 
 			  </thead>
 			  <tbody>
+			  <?php foreach ($list2 as $v){ ?>
 				<tr>
-				  <td>米加小程序</td>
-				  <td>32654</td>
-				  <td>1354</td>
-				  <td>35%</td>
-				  <td>￥4.5</td>
-				  <td><span class="tdfont01 editjs">￥<input type="text" value="0" class="editput" disabled=""></span></td>
-				  <td>￥0.00</td>
-				  <td><a href="绑定SDK.html"><span class="tdobtn01 active">绑定</span></a></td>
-				  <td><a href="page-1-运营平台2广告主_4广告审核1.html"><span class="tdstatus active">待审核</span></a></td>
-				  <td><span class="tdoper02">未投放</span></td>
+				  <td><?=$v['name']?></td>
+				  <td><?php echo $v['cpc']+$v['cpm'];  ?></td>
+				  <td><?php echo $v['cpc'];  ?></td>
+				  <td>
+				  <?php 
+					$click = round($v['cpc']/($v['cpc']+$v['cpm']), 2)*100;
+					echo  $click."%" ?>
+					</td>
+				  <td>
+					<?php 
+						$totol=$v['cpc'];
+						if($v['ad_price']){
+							echo "￥".$v['ad_price']/$totol; 
+						}else{
+							echo "￥0"; 
+						}
+					?>
+					</td>
+
+				  <td><span class="tdfont01 editjs" onclick="editjs('<?=$v['code']?>','<?=$v['owner']?>')">￥<input type="text" value="<?php echo $v['cmp_price'];  ?>" class="editput" disabled="" id="editput_<?php echo $v['id']; ?>"></span></td>
+
+				  <td><?php echo $v['owner'];  ?></td>
+				  <td><?php echo "￥".$v['ad_price'];  ?></td>
+				  <td> <?php if($v['sdk_name'] == '' ){?> <a href="/advert/index/binding?code=<?php echo $v['code']; ?>"><span class="tdobtn01 active">绑定</span></a><?php  }else{ echo $v['sdk_name']; }?>
+				  </td>
+				  <td>
+					  <?php if($v['audit_status'] == 0 ){?> 
+						<a href="/advert/index/adopt?code=<?php echo $v['code']; ?>&id=<?php echo $v['id']; ?>"><span class="tdstatus active">待审核</span></a>
+					  <?php   }else if($v['audit_status'] == 1){ ?> 
+						<a href="javascript:void(0)"><span class="tdstatus">通过审核</span></a>
+					  <?php }else if($v['audit_status'] == 3){ ?>
+						<a href="/advert/index/adopt??code=<?php echo $v['code']; ?>&id=<?php echo $v['id']; ?>"><span class="tdstatus active">未过审核</span></a>	
+					  <?php } ?>
+				  </td>
+				  <td>
+					  <?php if($v['status'] == 0 ){?> 
+					   <span class="tdoper02 active aduseroper" onclick="upstatus('<?=$v['id']?>')">撤下</span>
+					  <?php   }else{ ?> 
+						<span class="tdoper02">未投放</span>
+					  <?php } ?>
+				 </td>
 				</tr>
-				<tr>
-				  <td>米加小程序</td>
-				  <td>32654</td>
-				  <td>1354</td>
-				  <td>35%</td>
-				  <td>￥4.5</td>
-				  <td><span class="tdfont01 editjs">￥<input type="text" value="0" class="editput" disabled=""></span></td>
-				  <td>￥0.00</td>
-				  <td><span class="tdobtn01">小玩家</span></td>
-				  <td><a href="page-1-运营平台2广告主_4广告审核3展示.html"><span class="tdstatus">通过审核</span></a></td>
-				  <td><span class="tdoper02 active aduseroper">撤下</span></td>
-				</tr>
-				<tr>
-				  <td>米加小程序</td>
-				  <td>32654</td>
-				  <td>1354</td>
-				  <td>35%</td>
-				  <td>￥4.5</td>
-				  <td><span class="tdfont01 editjs">￥<input type="text" value="0" class="editput" disabled=""></span></td>
-				  <td>￥0.00</td>
-				  <td><span class="tdobtn01">小玩家</span></td>
-				  <td><a href="page-1-运营平台2广告主_4广告审核3展示.html"><span class="tdstatus">通过审核</span></a></td>
-				  <td><span class="tdoper02">未投放</span></td>
-				</tr>
+				<?php } ?>
 			  </tbody>
 			</table>
 		</div>
@@ -113,7 +123,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">价格：</label>
 					<div class="layui-input-block" >
-					  <span>￥</span><input type="text" name="title" placeholder="请输入新的价格" class="layui-input">
+					  <span>￥</span><input type="text" name="title" placeholder="请输入新的价格" class="layui-input" id="cmp_price">
 					</div>
 				  </div>
 			 </form>
@@ -128,28 +138,9 @@
 <script type="text/javascript" src="/public/money_ex/js/echarts.common.min.js"></script>
 
 <script>
-layui.use('layer', function(){ //独立版的layer无需执行这一句
-  var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
-	$(document).on("click",".aduseroper",function(){
-		layer.open({
-			type: 1
-			,title: false //不显示标题栏
-			,closeBtn: false
-			,area: ['400px', '130px']
-			,shade: 0.8
-			,id: 'LAY_layuipro' //设定一个id，防止重复弹出
-			,btn: ['确定','取消']
-			,moveType: 1 //拖拽模式，0或者1
-			,content: $('#layer03')
-			,success: function(layero){
-			  //成功输出内容
-			  console.log(11);
-			}
-		});
-	});
-	$(document).on("click",".editjs",function(){
-		layer.open({
-			type: 1
+function editjs(code,owner){
+layer.open({
+			 type: 1
 			,title: false //不显示标题栏
 			,closeBtn: false
 			,area: ['400px', '230px']
@@ -158,13 +149,70 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
 			,btn: ['确定','取消']
 			,moveType: 1 //拖拽模式，0或者1
 			,content: $('#layer04')
-			,success: function(layero){
-			  //成功输出内容
-			  console.log(11);
+			,yes: function (index, layero) {
+				 var cmp_price = $("#cmp_price").val();
+				 if(cmp_price == ''){
+					alert('价格不能为空');
+					return false;
+				 }
+				//成功输出内容
+				$.ajax({
+					url: '/advert/index/editcmp',
+					dataType: 'json',  
+					type: 'post', 
+					data: {code:code, owner:owner,cmp_price,cmp_price},
+					success: function(data , textStatus){
+					if (data.status === false)
+					{
+						alert(data.msg);
+						return false;
+					}
+					location.reload()
+					},
+					error: function(jqXHR , textStatus , errorThrown){
+					  //console.log("error");
+					}
+				});
 			}
 		});
-	});
-});
+}
+
+//更新广告状态
+function upstatus(obj){
+	layer.open({
+			 type: 1
+			,title: false //不显示标题栏
+			,closeBtn: false
+			,area: ['400px', '130px']
+			,shade: 0.8
+			,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+			,btn: ['确定','取消']
+			,moveType: 1 //拖拽模式，0或者1
+			,content: $('#layer03')
+			,yes: function (index, layero) {
+				//成功输出内容
+				$.ajax({
+					url: '/advert/index/online',
+					dataType: 'json',  
+					type: 'post', 
+					data: {id:obj},
+					success: function(data , textStatus){
+						
+						if (data.status === false)
+					{
+						alert(data.msg);
+						return false;
+					}
+					location.reload()
+					},
+					error: function(jqXHR , textStatus , errorThrown){
+					 alert("error");
+					}
+				});
+			}
+		});
+}
+
 
 // 基于准备好的dom，初始化echarts实例
 var myChart = echarts.init(document.getElementById('report-chart'));
@@ -200,7 +248,7 @@ var option = {
         {
             type : 'category',
             boundaryGap : false,
-            data : ['周一','周二','周三','周四','周五','周六','周日']
+            data : [<?php echo $section;?>],
         }
     ],
     yAxis: {
@@ -230,7 +278,7 @@ var option = {
 								}])
 							},
 							color:'#2cc6ad'}},
-            data:[10, 12, 21, 54, 260, 830, 710]
+            data:[<?php echo $staticesCpm;?>]
         },
         {
             name:'点击',
@@ -252,7 +300,7 @@ var option = {
 								}])
 							},color:'#ffc400'
 			}},
-            data:[30, 182, 434, 791, 390, 30, 10]
+            data:[<?php echo $staticesCpm;?>]
         }
     ]
 };
@@ -288,7 +336,7 @@ var option2 = {
         {
             type : 'category',
             boundaryGap : false,
-            data : ['周一','周二','周三','周四','周五','周六','周日']
+            data : [<?php echo $week_arr;?>],
         }
     ],
     yAxis: {
@@ -316,7 +364,7 @@ var option2 = {
 							},color:'#2cc6ad'
 			}},
             stack: '总量',
-            data:[120, 132, 101, 134, 90, 230, 210]
+            data:[<?php echo $ad_rr;?>]
 
         }
     ]

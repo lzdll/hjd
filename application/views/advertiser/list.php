@@ -8,11 +8,11 @@
 			</dl>
 			<dl class="topitemdl topitemdl25">
 				<dd>充值总额(元)</dd>
-				<dt>￥33040.10</dt>
+				<dt>￥<?php echo $account['total_money']/100; ?></dt>
 			</dl>
 			<dl class="topitemdl topitemdl25">
 				<dd>余额总额(元)</dd>
-				<dt>￥60040.30</dt>
+				<dt>￥<?php echo $account['money']/100; ?></dt>
 			</dl>
 			<dl class="topitemdl topitemdl25 noborder">
 				<dd><a href="/authority/admin/add?type=0" class="addads">添加广告主</a></dd>
@@ -42,10 +42,10 @@
 				  <td><?=$v['phone']?></td>
 				  <td><?=$v['email']?></td>
 				  <td><?=$v['ad_total']?></td>
-				  <td>5</td>
-				  <td>￥140.00</td>
-				  <td>￥30.00</td>
-				  <td><span class="tdfont01 editjs">￥<input type="text" value="0" class="editput" disabled=""></span></td>
+				  <td><?=$v['cz_total']?></td>
+				  <td>￥<?php echo $v['cz_money']; ?></td>
+				  <td>￥<?php echo $v['sy_money']; ?></td>
+				  <td><span class="tdfont01 editjs" onclick="editjs('<?=$v['code']?>')">￥<input type="text" value="<?php echo $v['credit']/100; ?>" class="editput" disabled=""></span></td>
 				  <td><a href="/advertiser/index/resetpwd?code=<?=$v['code']?>&id=<?=$v['id']?>&type=<?=$v['type']?>" class="tdfont01">重置</a></td>
 				  <td><a class="tdfont01" href="/advertiser/index/details?code=<?=$v['code']?>&id=<?=$v['id']?>&type=<?=$v['type']?>">查看详情</a></td>
 				</tr>
@@ -53,7 +53,7 @@
 			  </tbody>
 			</table>
 			
-			<div id="demo0" class="pages"><div class="y_tip">共 <?php echo $pager['count'];?> 条 每页 <?php echo $pagesize;?> 条	</div><div class="y_page"><?php echo $pager['links'];?></div></div>
+			<div id="demo0" class="pages"><?php echo $page; ?></div>
 		</div>
 		</div>
     </div>
@@ -71,7 +71,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">价格：</label>
 					<div class="layui-input-block" >
-					  <span>￥</span><input type="text" name="title" placeholder="请输入授信额价格" class="layui-input">
+					  <span>￥</span><input type="text" name="title" placeholder="请输入授信额价格" class="layui-input" id="credit">
 					</div>
 				  </div>
 			 </form>
@@ -84,20 +84,9 @@
 <script type="text/javascript" src="layui/layui.js"></script>
 <script type="text/javascript" src="js/global.js"></script>
 <script>
-//layui.use(['laypage', 'layer'], function(){
-  //var laypage = layui.laypage
-  //,layer = layui.layer;
-  ////总页数低于页码总数
-  //laypage.render({
-    //elem: 'demo0'
-    //,count: 50 //数据总数
-  //});
-  //});
-  
-layui.use('layer', function(){ //独立版的layer无需执行这一句
-  var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
-		$(document).on("click",".editjs",function(){
-		layer.open({
+function editjs(code){
+	alert(code);
+layer.open({
 			type: 1
 			,title: false //不显示标题栏
 			,closeBtn: false
@@ -107,12 +96,33 @@ layui.use('layer', function(){ //独立版的layer无需执行这一句
 			,btn: ['确定','取消']
 			,moveType: 1 //拖拽模式，0或者1
 			,content: $('#layer04')
-			,success: function(layero){
-			  //成功输出内容
-			  console.log(11);
+			,yes: function (index, layero) {
+				 var credit = $("#credit").val();
+				 if(credit == ''){
+					alert('授信额价格不能为空');
+					return false;
+				 }
+				//成功输出内容
+				$.ajax({
+					url: '/advertiser/index/credit',
+					dataType: 'json',  
+					type: 'post', 
+					data: {code:code,credit:credit},
+					success: function(data , textStatus){
+					if (data.status === false)
+					{
+						alert(data.msg);
+						return false;
+					}
+					location.reload()
+					},
+					error: function(jqXHR , textStatus , errorThrown){
+					 
+					}
+				});
 			}
 		});
-	});
-});
+}
+
 
 </script>

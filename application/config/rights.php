@@ -80,6 +80,7 @@ $config['rights'] = array(
 		 '4_1' => array('is_menu'=>0, 'name'=>'添加广告主', 'url'=>'/advertiser/index/add'),
 		 '4_2' => array('is_menu'=>0, 'name'=>'查看详情', 'url'=>'/advertiser/index/details'),
 		 '4_3' => array('is_menu'=>0, 'name'=>'重置密码', 'url'=>'/advertiser/index/resetpwd'),
+		 '4_4' => array('is_menu'=>0, 'name'=>'修改授信额', 'url'=>'/advertiser/index/credit'),
         ),
     ),
     '5' => array(
@@ -163,7 +164,6 @@ $config['rights'] = array(
         'class'     => '',
         'icon'      => 'menu-icon fa fa-cog',
         'child' => array(
-            '11_1' => array('is_menu'=>0, 'name'=>'限额修改', 'url'=>'/ad/index/editquota'),
         ),
     ),
 	'12' => array(

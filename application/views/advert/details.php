@@ -5,7 +5,7 @@
 				<img src="<?php  echo $list['image']; ?>" />
 				<dl>
 					<dt><?php  echo $list['name']; ?><span>广告主：<?php  echo $list['owner']; ?></span></dt>
-					<dd>平台类型：小程序</dd>
+					<dd>平台类型：<?php if($list['platform'] == 'H5'){ echo "H5";}else if($list['platform'] == 'ios'){ echo "ios";}else if($list['platform'] == 'android'){ echo "android";}else if($list['wechat'] == '小程序'){ } ?></dd>
 					<dd>小程序路径：<?php  echo $list['link']; ?></dd>
 					<dd>广告导语：<?php  echo $list['info']; ?></dd>
 				</dl>
@@ -39,10 +39,10 @@
 			</div>
 		</div>
 		<div class="clearfix navtabs">
-			<span class="navpan">今日</span>
-			<span class="navpan">昨日</span>
-			<span class="navpan active">近7天</span>
-			<span class="navpan">本月</span>
+			<span class="navpan"><a href="/advert/index/details?id=<?php echo $id;?>&code=<?php echo $code;?>&begin_time=<?php echo $date['today']['begin_date'];?>&end_time=<?php echo $date['today']['end_date'];?>" >今日</a></span>
+			<span class="navpan"><a href="/advert/index/details?id=<?php echo $id;?>&code=<?php echo $code;?>&begin_time=<?php echo $date['yesterday']['begin_date'];?>&end_time=<?php echo $date['yesterday']['end_date'];?>">昨日</a></span>
+			<span class="navpan active"><a href="/advert/index/details?id=<?php echo $id;?>&code=<?php echo $code;?>&begin_time=<?php echo $date['week']['begin_date'];?>&end_time=<?php echo $date['week']['end_date'];?>">近7天</a></span>
+			<span class="navpan"><a href="/advert/index/details?id=<?php echo $id;?>&code=<?php echo $code;?>&begin_time=<?php echo $date['month']['begin_date'];?>&end_time=<?php echo $date['month']['end_date'];?>">本月</a></span>
 			<div class="layui-inline" style="margin-top:4px;">
 			  <label class="layui-form-label">时间</label>
 			  <div class="layui-input-inline">
@@ -51,16 +51,16 @@
 			</div>
 		</div>
 		<div class="clearfix mt10">
+			
 			<div class="countitem countitemone">
 				<div class="countnav"><p class="fl countleft"><i><img src="/public/money_ex/images/icon04.png"></i><span>广告推广量</span></p>
-				<span class="fr countright">均价<i class="">￥0.3</i></span></div>
+				<span class="fr countright">均价<i class="">￥<?php echo $avgamount;?></i></span></div>
 				<div class="">
 					<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 				<div id="report-chart" class="report-chart" style="height:400px" data-action="week"></div>
 				<!-- ECharts单文件引入 -->
 				</div>
 			</div>
-
 		</div>
     </div>
   </div>
@@ -75,13 +75,33 @@
 
 <script>
 layui.use('laydate', function(){
+	var id = <?php echo $id;?>;
+var code = <?php echo $id;?>;
   var laydate = layui.laydate;
 //日期范围
   laydate.render({
     elem: '#test6'
     ,range: true
+    ,done: function(value, date, endDate) {
+        	var a = value.split('-');
+        	var begin_time = a[0]+"-"+a[1]+"-"+a[2];
+        	var end_time = a[3]+"-"+a[4]+"-"+a[5];
+        	window.location.href = '/advert/index/details?id='+id+'&code='+code+'&begin_time='+begin_time+"&end_time="+end_time;
+        }
+  	,choose: function(dates){
+			alert(dates);
+  	  	}
   });
  });
+layui.use(['laypage', 'layer'], function(){
+  var laypage = layui.laypage
+  ,layer = layui.layer;
+  //总页数低于页码总数
+  laypage.render({
+    elem: 'demo0'
+    ,count: 50 //数据总数
+  });
+  });
 
 layui.use('layer', function(){ //独立版的layer无需执行这一句
   var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
@@ -136,7 +156,20 @@ var option = {
         {
             type : 'category',
             boundaryGap : false,
-            data : ['6.21','6.22','6.23','6.24','6.25','6.26','6.27']
+            data : [<?php echo $section;?>],
+            axisLabel: {
+                interval: 0,
+                formatter:function(value,index)
+                {
+                    debugger
+                    if (index % 2 != 0) {
+                        return '\n\n' + value;
+                    }
+                    else {
+                        return value;
+                    }
+                }
+            }
         }
     ],
     yAxis: {
@@ -166,7 +199,7 @@ var option = {
 								}])
 							},
 							color:'#2cc6ad'}},
-            data:[10, 12, 21, 54, 260, 830, 710]
+            data:[<?php echo $staticesCpm;?>]
         },
         {
             name:'点击',
@@ -188,7 +221,7 @@ var option = {
 								}])
 							},color:'#ffc400'
 			}},
-            data:[30, 182, 434, 791, 390, 30, 10]
+            data:[<?php echo $staticesCpm;?>]
         }
     ]
 };
@@ -197,4 +230,5 @@ myChart.setOption(option);
 window.addEventListener("resize", function () {
     myChart.resize();
 });
+
 </script>

@@ -13,6 +13,7 @@ class Advert_model extends MY_Model
 	public $wy_ad = 'ad';
 	public $wy_ad_price = 'ad_price';
     public $primaryKey = 'id';
+	public $tableName   = 'ad';
 
     /**
      * 构造方法
@@ -46,7 +47,7 @@ class Advert_model extends MY_Model
 	//获取广告数
 	public function getCount($where)
     {
-        $sql = "select count(DISTINCT `code`) as total from  ".$this->wy_ad." where $where";
+        $sql = "select count(DISTINCT `code`) as total from  ".$this->wy_ad." where $where limit 1";
         $row = $this->db->query($sql)->row();
         return (int)$row->total;
     }
@@ -103,7 +104,7 @@ class Advert_model extends MY_Model
     {
 	   $id = $where['id'];
 	   $code = $where['code'];
-	   $sql = "SELECT c.id, c.`code`,c.`name`,c.`image`,c.`link`,c.owner,c.ws_code,c.appid,c.info,c.status ,c.audit_status ,IF(b.type=0,IF(b.st_price>0,COUNT(1),0),0) cpc,IF(b.type=1,IF(b.st_price>0,COUNT(1),0),0) cpm,IF(b.type=0,COUNT(1),0) totalcpc,IF(b.st_price>0,SUM(b.st_price),0) st_price,IF(b.ad_price>0,SUM(b.ad_price),0) ad_price FROM `wy_ad` AS `c` LEFT JOIN `wy_ad_order` AS `b` ON `c`.`code` = `b`.`ad_code` WHERE 1 = 1 AND c.id > 0 AND c.id=$id AND  c.code='".$code."' limit 1";
+	   $sql = "SELECT c.id, c.`code`,c.`name`,c.`image`,c.`link`,c.`platform`,c.owner,c.ws_code,c.appid,c.info,c.status ,c.audit_status ,IF(b.type=0,IF(b.st_price>0,COUNT(1),0),0) cpc,IF(b.type=1,IF(b.st_price>0,COUNT(1),0),0) cpm,IF(b.type=0,COUNT(1),0) totalcpc,IF(b.st_price>0,SUM(b.st_price),0) st_price,IF(b.ad_price>0,SUM(b.ad_price),0) ad_price FROM `wy_ad` AS `c` LEFT JOIN `wy_ad_order` AS `b` ON `c`.`code` = `b`.`ad_code` WHERE 1 = 1 AND c.id > 0 AND c.id=$id AND  c.code='".$code."' limit 1";
        $row = $this->db->query($sql)->result_array();
 	   return $row;
     }
@@ -115,7 +116,7 @@ class Advert_model extends MY_Model
 	
 	}
 
-	//获取广告
+	//获取广告 审核
 	public function getOnead($data)
     {
 		$where=' 1=1 AND ';
@@ -129,18 +130,43 @@ class Advert_model extends MY_Model
         $row = $this->db->query($sql)->result_array();
 		return $row[0];
     }
-    //广告主首页信息
-    public function getAdMasterCountInfo($uowner)
-    {
 
-        $sql = "SELECT a.money money,a.credit credit,a.quota,COUNT(ad.id) ad_num FROM wy_account a LEFT JOIN wy_ad ad ON a.`owner` = ad.`owner` where a.`owner` = '{$uowner}' AND ad.`status`= 0 " ;
-        $msql = "select  sum(a.code) as totalmoney from wy_ad_order a  WHERE a.ad_price > 0 AND a.ad_owner = '{$uowner}' AND a.created_time > CURDATE()";
+	//获取广告 审核价格
+	public function getOnePrice($data)
+    {
+		$where=' 1=1 AND ';
+		if($data['id']){
+			$where=" id=".$data['id'];			
+		}
+		if($data['code']){
+			$where=" ad_code='".$data['code']."'";			
+		}
+        $sql = "select * from  ".$this->wy_ad_price." where $where";
         $row = $this->db->query($sql)->result_array();
-        $totalmoney = $this->db->query($msql)->row_array();
-        $res['account'] =  $row[0];
-        $res['totalmoney'] = $totalmoney[0];
-        return $res;
+		return $row;
     }
+	//单个广告统计
+	 public function getExtensionStatices($ad_code ,$ad_id,$begin_time,$end_time){
+        $where = ' b.ad_code = "'.$ad_code.'" and b.created_time >= "'.$begin_time.'" and b.created_time < "'.$end_time.'" ';
+       
+        $data = $this->db->query("SELECT id,`code`,cpc,cpm,totalcpc,totalAd,IF (st_price>0,st_price,0) st_price ,FORMAT((st_price/cpc),2) avg_price FROM(
+            SELECT c.id,c.`code`,
+            	COUNT(distinct(b.ad_code)) totalAd,
+                IF (b.type = 0,IF (b.st_price > 0, COUNT(1), 0), 0) cpc,
+                IF (b.type = 1,IF (b.st_price > 0, COUNT(1), 0), 0) cpm,
+                COUNT(type) totalcpc,
+            	SUM(b.st_price) st_price,
+                DATE_FORMAT(b.created_time,'%Y-%m-%d') d
+            FROM `wy_slot` AS `c`
+            LEFT JOIN `wy_ad_order` AS `b` ON `c`.`owner` = `b`.`st_owner`
+            WHERE
+            	".$where."
+            GROUP BY d
+            ) t")->result_array();
+        return $data;
+    }
+
+	
 }
 
  

@@ -461,6 +461,105 @@ function rmTheArrayKey($data = array()) {
 
         return $data;
     }
+
+	/*获取分页 2018/7/28 llm
+	*$count 总的条数
+	*$pagesize 一页显示的条数
+	*$page 当前页
+	*$page_len 显示页的长度
+	*/
+  function getPage($count,$pagesize,$page,$page_len,$url,$str){
+        $page_count  = ceil($count/$pagesize);//总页数
+        $init=1;
+		$page_len=$page_len;
+		$max_p=$page_count;
+		$pages=$page_count;
+
+		$page_len = ($page_len%2)?$page_len:$pagelen+1;//页码个数
+		$pageoffset = ($page_len-1)/2;//页码个数左右偏移量
+		 $key.='<div class="layui-box layui-laypage layui-laypage-default" id="layui-laypage-1">';
+		 $key.="";			//第几页,共几页
+		 if($page!=1){
+			$key.="<a href=\"".$url."?p=1$str\" class='layui-laypage-prev' data-page='0'>上一页</a>&nbsp;";				//第一页
+			
+		}else {
+		
+			$key.="<a class='layui-laypage-prev layui-disabled' data-page='0'>上一页</a>";	//上一页
+		}
+    if($pages>$page_len){
+	//如果当前页小于等于左偏移
+		if($page<=$pageoffset){
+		$init=1;
+		$max_p = $page_len;
+		}else{//如果当前页大于左偏移
+				//如果当前页码右偏移超出最大分页数
+				if($page+$pageoffset>=$pages+1){
+				$init = $pages-$page_len+1;
+				}else{
+				//左右偏移都存在时的计算
+				$init = $page-$pageoffset;
+				$max_p = $page+$pageoffset;
+				}
+		}
+ 	}
+ 	for($i=$init;$i<=$max_p;$i++){
+	if($i==$page){
+	$key.=' <span class="layui-laypage-curr"><em class="layui-laypage-em"></em><em>'.$i.'</em></span>';
+	} else {
+	$key.=" <a href=\"".$url."?p=".$i."$str\" class='currentpages' >".$i."</a>";
+	}
+ 	}
+
+ 	if($page!=$pages){
+	$key.=" <a href=\"".$url."?p=".($page+1)."$str\" class='layui-laypage-next'>下一页</a> ";//最后一页
+		//最后一页
+	}else {
+	$key.="&nbsp;<a href='javascript:;' class='layui-laypage-next layui-disabled' data-page='6'>下一页</a>";//下一页
+	
+	}
+	$key.='</div>';
+    return $key;
+  }
+function getDateSection($startdate, $enddate){
+        
+        $stimestamp = strtotime($startdate);
+        $etimestamp = strtotime($enddate);
+        // 计算日期段内有多少天
+        $days = ($etimestamp-$stimestamp)/86400+1;
+        // 保存每天日期
+        $str = '';
+        for($i=0; $i<$days; $i++){
+            $str .= "'".date('n.j', $stimestamp+(86400*$i))."',";
+        }
+        
+        return mb_substr($str, 0,-1);
+    }
+function getDateTime(){
+        $date['today']['begin_date'] = date("Y-m-d");
+        $date['today']['end_date'] = date("Y-m-d",strtotime("+1 day"));
+        $date['yesterday']['begin_date'] = date("Y-m-d",strtotime("-1 day"));
+        $date['yesterday']['end_date'] = date("Y-m-d");
+        $date['week']['begin_date'] = date("Y-m-d",strtotime("-1 week"));
+        $date['week']['end_date'] = date("Y-m-d");
+        $date['month']['begin_date'] = date("Y-m-01");
+        $date['month']['end_date'] = date("Y-m-d");
+        return $date; 
+    }
+
+
+ function getDates($startdate, $enddate){
+		$stimestamp = strtotime($startdate);
+        $etimestamp = strtotime($enddate);
+        // 计算日期段内有多少天
+        $days = ($etimestamp-$stimestamp)/86400+1;
+		//保存每天日期
+        $str = '';
+        for($i=0; $i<$days; $i++){
+            $arr[]=date("Y-m-d",strtotime("-$i day"));
+        }
+        return $arr;
+   
+   }
 /**
  * 生成密码
  */

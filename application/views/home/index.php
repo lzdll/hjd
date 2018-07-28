@@ -4,42 +4,42 @@
 				<dl>
 					<img src="/public/money_ex/images/dot001.png" />
 					<dd>上周点击冠军</dd>
-					<dt>广告名称</dt>
+					<dt><?php echo $ad_name; ?></dt>
 				</dl>
 			</div>
 			<dl class="topitemdl">
 				<dd>流量池金主</dd>
-				<dt>￥93000.00</dt>
+				<dt>￥<?php echo $day_money; ?></dt>
 			</dl>
 			<dl class="topitemdl">
 				<dd>今日点击量(次)/展示数</dd>
-				<dt>3040/20</dt>
+				<dt><?php echo $other_list['cpc'] ?>/<?php echo $other_list['cpm'] ?></dt>
 			</dl>
 			<dl class="topitemdl">
 				<dd>交易流水</dd>
-				<dt>￥33040.10</dt>
+				<dt>￥<?php echo $other_list['ad_price']/100 ?></dt>
 			</dl>
 			<dl class="topitemdl noborder">
 				<dd>流量主总收入</dd>
-				<dt>￥23040.30</dt>
+				<dt>￥<?php echo $other_list['st_price']/100 ?></dt>
 			</dl>
 		</div>
 		<div class="clearfix navtabs">
-			<span class="navpan">今日</span>
-			<span class="navpan">昨日</span>
-			<span class="navpan active">近7天</span>
-			<span class="navpan">本月</span>
+			<span class="navpan"><a href="/home/index?begin_time=<?php echo $date['today']['begin_date'];?>&end_time=<?php echo $date['today']['end_date'];?>" >今日</a></span>
+			<span class="navpan"><a href="/home/index?begin_time=<?php echo $date['yesterday']['begin_date'];?>&end_time=<?php echo $date['yesterday']['end_date'];?>">昨日</a></span>
+			<span class="navpan active"><a href="/home/index?begin_time=<?php echo $date['week']['begin_date'];?>&end_time=<?php echo $date['week']['end_date'];?>">近7天</a></span>
+			<span class="navpan"><a href="/home/index?begin_time=<?php echo $date['month']['begin_date'];?>&end_time=<?php echo $date['month']['end_date'];?>">本月</a></span>
 			<div class="layui-inline" style="margin-top:4px;">
 			  <label class="layui-form-label">时间</label>
 			  <div class="layui-input-inline">
-				<input type="text" class="layui-input" id="test6" placeholder="开始 到 结束">
+				<input type="text" class="layui-input" id="test6" placeholder="开始 到 结束" lay-key="1">
 			  </div>
 			</div>
 		</div>
 		<div class="clearfix">
 			<div class="countitem fl">
 				<div class="countnav"><p class="fl countleft"><i><img src="/public/money_ex/images/icon04.png"></i><span>广告推广量</span></p>
-				<span class="fr countright">均价<i class="">￥0.3</i></span></div>
+				<span class="fr countright">均价<i class="">￥<?php echo $avgamount;?></i></span></div>
 				<div class="">
 					<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
 				<div id="report-chart" class="report-chart" style="height:400px" data-action="week"></div>
@@ -86,8 +86,17 @@ layui.use('laydate', function(){
   var laydate = layui.laydate;
 //日期范围
   laydate.render({
-    elem: '#test6'
+     elem: '#test6'
     ,range: true
+	,done: function(value, date, endDate) {
+        	var a = value.split('-');
+        	var begin_time = a[0]+"-"+a[1]+"-"+a[2];
+        	var end_time = a[3]+"-"+a[4]+"-"+a[5];
+			window.location.href = '/home/index?begin_time='+begin_time+"&end_time="+end_time;
+        }
+  	,choose: function(dates){
+			alert(dates);
+  	  	}
   });
  });
 // 基于准备好的dom，初始化echarts实例
@@ -97,7 +106,7 @@ var myChart3 = echarts.init(document.getElementById('report-chart3'));
 var myChart4 = echarts.init(document.getElementById('report-chart4'));
 // 指定图表的配置项和数据
 var option = {
-    title : {
+   title : {
        // text: '某楼盘销售情况',
        // subtext: '纯属虚构'
     },
@@ -125,7 +134,20 @@ var option = {
         {
             type : 'category',
             boundaryGap : false,
-            data : ['6.21','6.22','6.23','6.24','6.25','6.26','6.27']
+            data : [<?php echo $section;?>],
+            axisLabel: {
+                interval: 0,
+                formatter:function(value,index)
+                {
+                    debugger
+                    if (index % 2 != 0) {
+                        return '\n\n' + value;
+                    }
+                    else {
+                        return value;
+                    }
+                }
+            }
         }
     ],
     yAxis: {
@@ -155,7 +177,7 @@ var option = {
 								}])
 							},
 							color:'#2cc6ad'}},
-            data:[10, 12, 21, 54, 260, 830, 710]
+            data:[<?php echo $staticesCpm;?>]
         },
         {
             name:'点击',
@@ -177,7 +199,7 @@ var option = {
 								}])
 							},color:'#ffc400'
 			}},
-            data:[30, 182, 434, 791, 390, 30, 10]
+            data:[<?php echo $staticesCpm;?>]
         }
     ]
 };
@@ -213,7 +235,7 @@ var option2 = {
         {
             type : 'category',
             boundaryGap : false,
-            data : ['6.21','6.22','6.23','6.24','6.25','6.26','6.27']
+            data : [<?php echo $section;?>]
         }
     ],
     yAxis: {
@@ -233,7 +255,7 @@ var option2 = {
 					}
 				},
             stack: '总量',
-            data:[120, 132, 201, 134, 190, 230, 210]
+             data:[<?php echo $m2_arr;?>]
 
         },
         {
@@ -248,7 +270,7 @@ var option2 = {
 						}
 					}
 				},
-            data:[30, 182, 34, 91, 30, 30, 10]
+           data:[<?php echo $m1_arr;?>]
         }
     ]
 }; 
@@ -303,7 +325,7 @@ var option3 = {
             },
             data:[
                 {
-					value:335,
+					value:<?php echo $hxiang['maleCount'];?>,
 					name:'男性用户',
 					itemStyle: {
 						normal: {
@@ -315,7 +337,7 @@ var option3 = {
 					}
 				},
                 {
-					value:132, 
+					value:<?php echo $hxiang['femaleCount'];?>,
 					name:'女性用户',
 					itemStyle: {
 						normal: {
@@ -327,7 +349,7 @@ var option3 = {
 					}
 				},
                 {
-					value:93, 
+					value:<?php echo $hxiang['otherCount'];?>,
 					name:'其他',
 					itemStyle: {
 						normal: {
@@ -375,7 +397,7 @@ var option4 = {
         {
             type : 'category',
             boundaryGap : false,
-            data : ['6.21','6.22','6.23','6.24','6.25','6.26','6.27']
+            data : [<?php echo $section;?>]
         }
     ],
     yAxis: {
@@ -407,7 +429,7 @@ var option4 = {
 			areaStyle: {type: 'default'},
 			label : {show:true,position:'top',formatter:'{c}'},color:'#27b6c7'
 			}},
-            data:['30', '182', '434', '291', '390', '30', '10']
+            data:[<?php echo $ad_rr;?>]
         }
     ]
 };        
