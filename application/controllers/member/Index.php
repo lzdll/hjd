@@ -32,6 +32,8 @@ class Index extends MY_Controller {
 
 	public function lists()
 	{
+	    //用于运营查看广告主或者流量主
+	    $user_code = $this->input->get('user_code');
         $urole = $this->user['type']; //0:广告主 1: 流量主
         if($urole == 0){
             $this->data['tips']  = "提交公司资质后才可投放广告";
@@ -117,9 +119,16 @@ class Index extends MY_Controller {
             $_SESSION['email'] = $user['email'];
             ci_redirect('/ad/index/index');
         }
-        $this->data['user'] = $this->user;
-        $this->data['phone'] = $_SESSION['phone'];
-        $this->data['email'] = $_SESSION['email'];
+        if(!empty($user_code) && isset($user_code)){
+            $userinfo = $this->user_model->getInfo($where = array("code"=>$user_code));
+            $this->data['user'] = $userinfo['code'];
+            $this->data['phone'] = $userinfo['phone'];
+            $this->data['email'] = $userinfo['email'];
+        }else{
+            $this->data['user'] = $this->user;
+            $this->data['phone'] = $_SESSION['phone'];
+            $this->data['email'] = $_SESSION['email'];
+        }
         $this->data['company'] = $this->company_model->getInfo($where = array("owner"=>$this->user['code']));
         if(!empty( $this->data['company'])){
             if($this->data['company']['type'] == 1){

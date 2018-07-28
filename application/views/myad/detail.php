@@ -2,7 +2,7 @@
 	<div class="layuibodycont">
 		<div class="clearfix adposbox">
 			<div class="clearfix adpostop">
-				<img src="images/dot003.png" />
+				<img src="<?php echo $info['icon'];?>" />
 				<dl>
 					<dt><?php echo $info['name'];?></dt>
 					<dd>平台类型：<?php if($info['platform'] == 1){

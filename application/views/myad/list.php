@@ -26,7 +26,7 @@
 			  <?php } ?>
 			  </tbody>
 			</table>
-			<div class="pages"><div class="y_tip">共 <?php echo $pager['count'];?> 条 每页 <?php echo $pagesize;?> 条	</div><div class="y_page"><?php echo $pager['links'];?></div></div>
+			<div class="pages" id="demo0"><div class="y_tip">共 <?php echo $pager['count'];?> 条 每页 <?php echo $pagesize;?> 条	</div><div class="y_page"><?php echo $pager['links'];?></div></div>
 		</div>
 	 </div>
   <!--<div class="site-tree-mobile layui-hide">
@@ -49,8 +49,11 @@ layui.use(['laypage', 'layer'], function(){
   //总页数低于页码总数
   laypage.render({
     elem: 'demo0'
-    ,count: 50 //数据总数
-  });
+    ,count: <?php echo $pager['count'];?> //数据总数
+    ,limit:2
+    ,curr: location.hash.replace('#!page=', '?page') //获取起始页
+    ,hash: 'page' //自定义hash值
+	});
   });
 
 // 基于准备好的dom，初始化echarts实例
