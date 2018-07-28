@@ -15,6 +15,7 @@ class Admin extends MY_Controller {
         $this->load->library('session');
         $this->load->model('admins_model');
         $this->load->model('user_model');
+        $this->load->model('account_model');
     }
 
     /**
@@ -24,18 +25,6 @@ class Admin extends MY_Controller {
     {
         $method = $this->router->method;
         $nav = array();
-        if ( $method == 'index' ) // 列表
-        {
-            $nav[] = array('name' => '用户列表', 'url' => '');
-        }
-        else if ( $method == 'add' ) // 添加
-        {
-            $nav[] = array('name' => '用户添加', 'url' => '');
-        }
-        else if ( $method == 'edit' ) // 添加
-        {
-            $nav[] = array('name' => '用户编辑', 'url' => '');
-        }
         $this->data['nav'] = array_merge($this->data['nav'], $nav);
     }
 
@@ -137,7 +126,7 @@ class Admin extends MY_Controller {
 		$this->layout->view('/authority/admin/edit', $this->data);
     }
 
-protected function _save()
+    protected function _save()
     {
         if ( $form = $this->input->post() )
         {
@@ -160,7 +149,7 @@ protected function _save()
 					$type = 1;
 				}
 				$data['type'] = $type;
-				$data['user_code'] = md5($this->getCode().time().rand(0,10000));
+				$data['user_code'] = $this->getCode();
 				$data['login_name'] = $form['login_name'];
 				$data['password'] = gen_pwd($form['password']);
 				$data['status'] = $form['status'];	
@@ -168,6 +157,15 @@ protected function _save()
 				$data['email'] = $form['email'];
 				$data['created_time'] = date("Y-m-d H:i:s");
 				$rs = $this->user_model->add($data) ;
+				if($rs){
+    				$account['account_code'] = $this->getCode();
+    				$account['owner'] = $data['user_code'];
+    				$account['credit'] = 0;
+    				$account['total_money'] = 0;
+    				$account['money'] = 0;
+    				$account['quota'] = 0;
+    				$this->account_model->add($account) ;
+				}
 			}
             return true;
         }
