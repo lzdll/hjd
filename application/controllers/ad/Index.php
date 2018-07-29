@@ -307,16 +307,16 @@ class Index extends MY_Controller
     {
             $type = $_POST['type'];
             $id = $_POST['id'];
-        $price = $_POST['price'] * 100;
+        $price = $_POST['price'];
             if ($type == "delete")
             {
                 //删除广告
-               $res = $this->advertiser_model->edit($id,2);
+               $res = $this->advertiser_model->edit($id,2,0);
                 echo json_encode($res);exit;
             }
             if($type == 'publish'){
                 //发布广告
-                $res = $this->advertiser_model->edit($id,0);
+                $res = $this->advertiser_model->edit($id,0,0);
                 echo json_encode($res);exit;
             }
             if($type == 'price'){
@@ -353,7 +353,7 @@ class Index extends MY_Controller
        $owner = $this->user['user_code'];
 //       var_dump($owner);
 //       var_dump(trim($_POST['quota']));die;
-       $res = $this->account_model->edit($owner,trim($_POST['quota'])*100);
+       $res = $this->account_model->edit($owner,trim($_POST['quota']));
        if($res==1){
            $res= true;
            echo json_encode($res);exit;
