@@ -43,13 +43,7 @@
 			  <?php endforeach;?>
 			  </tbody>
 			</table>
-			<div id="" class="pages">
-			<?php foreach($page as $row): ?>
-				<?php echo $row; ?>
-			<?php endforeach;?>
-			</div>
-
-
+            <div id="demo0" class="pages"><?php echo $pager; ?></div>
 		</div>
    
     </div>
@@ -62,15 +56,15 @@
 <script type="text/javascript" src="layui/layui.js"></script>
 <script type="text/javascript" src="js/global.js"></script>
 <script>
-layui.use(['laypage', 'layer'], function(){
-  var laypage = layui.laypage
-  ,layer = layui.layer;
-  //总页数低于页码总数
-  laypage.render({
-    elem: 'demo0'
-    ,count: 50 //数据总数
-  });
-  });
+//layui.use(['laypage', 'layer'], function(){
+//  var laypage = layui.laypage
+//  ,layer = layui.layer;
+//  //总页数低于页码总数
+//  laypage.render({
+//    elem: 'demo0'
+//    ,count: 50 //数据总数
+//  });
+//  });
 </script>
 </body>
 </html>

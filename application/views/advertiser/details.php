@@ -3,7 +3,7 @@
 		
 		<div class="topblock clearfix">
 			<dl class="topitemdl topitemdlsep25 topitemdlsepfirst">
-				<dd><span class="">账号：</span><?php  echo $user_info['login_name']; ?><a href="/member/index/lists?user_code=<?php  echo $code; ?>">查看资质</a></dd>
+				<dd><span class="">账号：</span><?php  echo $user_info['login_name']; ?><a href="/member/index/lists?type=0&user_code=<?php  echo $code; ?>">查看资质</a></dd>
 				<dd><span class="">邮箱：</span><?php  echo $user_info['email']; ?></dd>
 			</dl>
 			<dl class="topitemdl topitemdlsep25">

@@ -50,13 +50,9 @@
 					<label class="layui-form-label">法人身份证：</label>
 					<div class="layui-input-block">
 					  <div class="file-input-wrapper4 layuiitempic">
-						<input type="button" class="file_btn4" value="身份证正面" />
-						<input type="file" name="imgsrc2" class="file-input4" value="" />
 						<img id="xmTanImg4" src="<?php echo $company['id_card_img_1'];?>" class=""  />
 					  </div>
 					  <div class="file-input-wrapper4 layuiitempic">
-						<input type="button" class="file_btn4" value="身份证反面" />
-						<input type="file" name="imgsrc3" class="file-input4" value="" />
 						<img id="xmTanImg3" src="<?php echo $company['id_card_img_2'];?>" class="" />
 					  </div>
 					</div>
@@ -68,8 +64,6 @@
 					<label class="layui-form-label">身份证：</label>
 					<div class="layui-input-block">
 					  <div class="file-input-wrapper4 layuiitempic">
-						<input type="button" class="file_btn4" value="身份证正面" />
-						<input type="file" name="imgsrc4" class="file-input4" value=""  />
 						<img  id="xmTanImg2" src="<?php echo $company['id_card_img_1'];?>" class=""  />
 					  </div>
 					  <div class="file-input-wrapper4 layuiitempic">

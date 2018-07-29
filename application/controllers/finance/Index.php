@@ -155,16 +155,15 @@ class Index extends MY_Controller {
 		$this->layout->view('/finance/add', $this->data);
     }
 	public function listrecord(){
+        $page = isset($_GET['p'])?$_GET['p']:1;
         $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
-        $offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
+        $offset =intval($page) > 0 ?intval($page-1)*$pagesize:0;
         $info = $this->audit_model->getList(
             $where = array(
                 'owner'=>$this->user['user_code'],
                 'subject'=>1,
             ),
-                $limit = $pagesize,
-                $offset = $offset,
-                $sort = 'created_time');
+            $limit = $pagesize, $offset = $offset, $sort = 'created_time');
         foreach ( $info['list']as &$item) {
             $item['created_time'] = date('Y-m-d',strtotime($item['created_time']));
             $item['money'] = number_format($item['money'],2,'.','');
@@ -180,8 +179,7 @@ class Index extends MY_Controller {
         $this->data['list'] = $info['list'];
         //分页
         if ($total > 0) {
-            $query_str = http_build_query($search);
-            $this->data['page'] = page($query_str, $total, $pagesize);
+            $this->data['pager'] = getPage($total,$pagesize,$page,$page_len=7,"/finance/index/listrecord");
 
         }
         $this->layout->view('/finance/listrecord', $this->data);

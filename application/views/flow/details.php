@@ -15,7 +15,7 @@
 				<dt>￥<?php echo $accountinfo['money'] > 0 ? $accountinfo['money']/100 : 0?></dt>
 			</dl>
 			<dl class="topitemdl topitemdlsep25 topitemdlsepfirst">
-				<dd><span class="">账号：</span><?php echo $userinfo['mobile'];?><a href="/member/index/lists?user_code=<?php echo $user_code;?>">查看资质</a><a class="liuuseropear liuuseropearjs">封号</a></dd>
+				<dd><span class="">账号：</span><?php echo $userinfo['mobile'];?><a href="/member/index/lists?type=1&user_code=<?php echo $user_code;?>">查看资质</a><a class="liuuseropear liuuseropearjs">封号</a></dd>
 				<dd><span class="">邮箱：</span><?php echo $userinfo['email'];?></dd>
 			</dl>
 		</div>
