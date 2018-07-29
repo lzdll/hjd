@@ -115,7 +115,16 @@ class Index extends MY_Controller {
         $urlParam   = $this->_generalUrl($validData);
         $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
 		$offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
-		$where ='1 = 1 ANd id>0';
+		$where ='1 = 1 ANd id>0 AND status=0';
+		$sql="select * from wy_ad_record where ad_code='".$data['code']."'";
+		$query =$this->db->query($sql)->result_array();
+		if($query){
+			foreach($query as $val){
+				$sdk_arr[]=$val['sdk_code'];
+			}
+			$sdk_str = "'" . implode("','",$sdk_arr) . "'";
+			$where .= " AND sdk_code not in ({$sdk_str})";
+		}
         $total = $this->wsdk_model->getCount($where);
         $list = $this->wsdk_model->findAlls($where,$pagesize,$offset);
 		$this->data['list'] = $list;
