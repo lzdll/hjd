@@ -116,12 +116,12 @@ class Advert_model extends MY_Model
     {
 	   $id = $where['id'];
 	   $code = $where['code'];
-	   $sql = "SELECT c.id, c.`code`,c.`name`,c.`image`,c.`link`,c.`platform`,
+	   $sql = "SELECT c.id, c.`ad_code`,c.`name`,c.`image`,c.`link`,c.`platform`,
                 c.owner,c.ws_code,c.appid,c.info,c.status ,c.audit_status ,
-                IF(b.type=0,IF(b.st_price>0,COUNT(1),0),0) cpc,
-                IF(b.type=1,IF(b.st_price>0,COUNT(1),0),0) cpm,
+                IF(b.type=0,IF(b.slot_price>0,COUNT(1),0),0) cpc,
+                IF(b.type=1,IF(b.slot_price>0,COUNT(1),0),0) cpm,
                 IF(b.type=0,COUNT(1),0) totalcpc,
-                IF(b.st_price>0,SUM(b.st_price),0) st_price,
+                IF(b.slot_price>0,SUM(b.slot_price),0) slot_price,
                 IF(b.ad_price>0,SUM(b.ad_price),0) ad_price 
             FROM `wy_ad` AS `c` LEFT JOIN `wy_ad_order` AS `b` ON `c`.`ad_code` = `b`.`ad_code` WHERE 1 = 1 AND c.id > 0 AND c.id=$id AND  c.ad_code='".$code."' limit 1";
        $row = $this->db->query($sql)->result_array();
@@ -170,16 +170,16 @@ class Advert_model extends MY_Model
 	 public function getExtensionStatices($ad_code ,$ad_id,$begin_time,$end_time){
         $where = ' b.ad_code = "'.$ad_code.'" and b.created_time >= "'.$begin_time.'" and b.created_time < "'.$end_time.'" ';
        
-        $data = $this->db->query("SELECT id,`code`,cpc,cpm,totalcpc,totalAd,IF (st_price>0,st_price,0) st_price ,FORMAT((st_price/cpc),2) avg_price FROM(
+        $data = $this->db->query("SELECT id,`slot_code`,cpc,cpm,totalcpc,totalAd,IF (slot_price>0,slot_price,0) slot_price ,FORMAT((slot_price/cpc),2) avg_price FROM(
             SELECT c.id,c.`slot_code`,
             	COUNT(distinct(b.ad_code)) totalAd,
-                IF (b.type = 0,IF (b.st_price > 0, COUNT(1), 0), 0) cpc,
-                IF (b.type = 1,IF (b.st_price > 0, COUNT(1), 0), 0) cpm,
+                IF (b.type = 0,IF (b.slot_price > 0, COUNT(1), 0), 0) cpc,
+                IF (b.type = 1,IF (b.slot_price > 0, COUNT(1), 0), 0) cpm,
                 COUNT(type) totalcpc,
-            	SUM(b.st_price) st_price,
+            	SUM(b.slot_price) slot_price,
                 DATE_FORMAT(b.created_time,'%Y-%m-%d') d
             FROM `wy_slot` AS `c`
-            LEFT JOIN `wy_ad_order` AS `b` ON `c`.`owner` = `b`.`st_owner`
+            LEFT JOIN `wy_ad_order` AS `b` ON `c`.`owner` = `b`.`slot_owner`
             WHERE
             	".$where."
             GROUP BY d
