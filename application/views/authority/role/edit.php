@@ -7,8 +7,6 @@
             <?php $this->load->view('common/menu.php') ?>
         </div>
     </div>
-<link rel="stylesheet" href="/public/static/styles/styles.css">
-<script type="text/javascript" src="/public/static/js/jquery-3.2.0.min.js"></script>
     <div class="t_list1 t_borderB">
     		<form class="form-horizontal" role="form" id ="form" method="post">
             <input type="hidden" id="id" name="id" value="<?=$info['id']?>" />
@@ -19,9 +17,10 @@
                 </li>
             </ul>
             <div class="sBtnBox">
-                 <button class="layui-btn addbtn" type="button" id="submitBtn">
+                 <button class="l_button grn t_mr10" type="button" id="submitBtn">
                     保存
                 </button>
+
                 &nbsp; &nbsp; &nbsp;
                 <button class="l_button" type="reset" onclick="location.href='/authority/role/index'">
                     返回

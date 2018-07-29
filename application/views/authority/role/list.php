@@ -8,11 +8,10 @@
         </div>
     </div>
     <div class="d-topmain">
-    	<a href="/authority/role/add" class="addads">添加</a>
+    	<a href="/authority/role/add" class="l_button ylw">添加</a>
     </div>
     <div class="d_tableBox">
-        <link rel="stylesheet" href="/public/static/styles/styles.css">
-		<script type="text/javascript" src="/public/static/js/jquery-3.2.0.min.js"></script>
+        
         <div class="l_tableBox2">
             <table class="l_table1">
                 <tbody><tr>

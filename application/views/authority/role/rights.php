@@ -10,8 +10,6 @@
             <?php $this->load->view('common/menu.php') ?>
         </div>
     </div>
-	<link rel="stylesheet" href="/public/static/styles/styles.css">
-	<script type="text/javascript" src="/public/static/js/jquery-3.2.0.min.js"></script>
     <div class="d_tableBox">
         
         <div class="l_tableBox2">
@@ -26,7 +24,7 @@
                     </div>
                     <div class="clearfix form-actions">
                         <div class="col-md-offset-4 col-md-9">
-                            <button id="btnSubmit" type="button" class="layui-btn addbtn">
+                            <button id="btnSubmit" type="button" class="l_button ylw">
                                 <i class="ace-icon fa fa-check bigger-110"></i>
                                 保存
                             </button>
@@ -41,7 +39,25 @@
 <script src="/public/libs/jstree/jstree.min.js"></script>
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
-$(function() {	
+$(function() {
+	
+	/* demo
+	$('#jstree2').jstree({'plugins':["wholerow","checkbox"], 'core' : {
+		'data' : [
+			{
+				"text" : "Same but with checkboxes",
+				"children" : [
+					{ "text" : "initially selected", "state" : { "selected" : true } },
+					{ "text" : "custom icon URL", "icon" : "//jstree.com/tree-icon.png" },
+					{ "text" : "initially open", "state" : { "opened" : true }, "children" : [ "Another node" ] },
+					{ "text" : "custom icon class", "icon" : "glyphicon glyphicon-leaf" }
+				]
+			},
+			"And wholerow selection"
+		]
+	}});
+	
+	*/	
 	$('#container').jstree({'plugins':["wholerow","checkbox"], 'core' : {
 		'data' : [
 			<?php foreach($rights as $k=>$v){ ?>
@@ -88,8 +104,9 @@ $(function() {
 		]
 	}});
 	$("#btnSubmit").click(function(){
+		//$('#tree').jstree().get_checked(); //获取所有选中的节点ID
+		//$('#tree').jstree().get_checked(true); //获取所有选中的节点对象
 		var selectKey = $('#container').jstree().get_checked();
-		//alert(<?=$info['id']?>);
 		//alert(selectKey);
 		$.ajax({
 			url: '/authority/role/rights',
