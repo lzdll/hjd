@@ -200,7 +200,7 @@ class Index extends MY_Controller {
 		$where ="1 = 1 ANd id>0 AND owner='".$data['code']."'";
 		$Account = $this->flow_model->getAccountId($where);
         if ($Account['id']) {//存在更新
-            $update['credit']=$data['credit']*100;
+            $update['credit']=$data['credit'];
 			$rUp =$this->db->where(array('owner'=>$data['code']))->update('wy_account', $update);
         }else{//不存在 插入
 			$res['msg'] = "数据不存在";
