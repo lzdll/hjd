@@ -46,9 +46,8 @@
 				  <td><?php echo $v['cpc'];  ?></td>
 				  <td>
 				  <?php 
-					$click = round($v['cpc']/($v['cpc']+$v['cpm']), 2)*100;
-					echo  $click."%" ?>
-					</td>
+				  if(($v['cpc']+$v['cpm'])>0){echo round($v['cpc']/($v['cpc']+$v['cpm']), 2)*100;}else{ echo 0; }?>
+					%</td>
 				  <td>
 					<?php 
 						$totol=$v['cpc']*100;
