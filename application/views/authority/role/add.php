@@ -1,6 +1,8 @@
 <style>
 .l_tableBox2 .l_table1{width:100%;}
 </style>
+<link rel="stylesheet" href="/public/static/styles/styles.css">
+<script type="text/javascript" src="/public/static/js/jquery-3.2.0.min.js"></script>
 <div class="l_p30">
     <div class="l_tit d_tit">
         <div class="clearfix">
@@ -15,13 +17,13 @@
                     <input type="text" placeholder="名称" class="t_input t_mr10"  name="name"  id="name" />
                 </li>
             </ul>
-            <div class="sBtnBox">
-                 <button class="l_button grn t_mr10" type="button" id="submitBtn">
+            <div class="layui-input-block formopearbtn">
+                 <button class="layui-btn addbtn" type="button" id="submitBtn">
                     保存
                 </button>
 
                 &nbsp; &nbsp; &nbsp;
-                <button class="l_button" type="reset" onclick="location.href='/authority/role/index'">
+                <button class="layui-btn layui-btn-primary resetbtn" type="reset" onclick="location.href='/authority/role/index'">
                     返回
                 </button>
             </div>
