@@ -111,8 +111,13 @@ class MY_Controller extends CI_Controller
             $this->_outputJSON($res);
             return false;
         }
-
-        ci_redirect('/home/index', 3, '没有权限');
+		if($this->user['type'] == 0){//广告主
+			ci_redirect('/ad/index/index', 3, '没有权限');
+		}elseif($this->user['type'] == 1){//流量主
+			ci_redirect('/slot/index/index', 3, '没有权限');
+		}elseif($this->user['type'] == 2){//广告运营平台
+			ci_redirect('/home/index', 3, '没有权限');
+		}
     }
 
     /**

@@ -32,7 +32,7 @@ class Advertiser_model extends MY_Model
     /**
      * 编辑
      */
-    function edit($id,$status,$price)
+    function edit($id,$status,$price=0)
     {
         if($price>0){
             $sql = "update wy_ad a LEFT JOIN wy_ad_price b ON a.ad_code = b.ad_code set b.price = {$price} WHERE a.id = {$id}";
