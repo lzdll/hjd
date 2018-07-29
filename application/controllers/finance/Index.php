@@ -136,7 +136,7 @@ class Index extends MY_Controller {
 		    $update['finance_code'] = $this->getCode();
 			$update['operator'] = $this->user['user_code'];
 			$update['owner'] = $input['owner'];
-			$update['money'] =$input['money']*100;//转化分
+			$update['money'] =$input['money'];//转化分
 			$update['subject']=1;
             $update['bank'] = $input['bank'];
             $update['cardid'] = $input['cardid'];

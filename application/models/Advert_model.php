@@ -171,7 +171,7 @@ class Advert_model extends MY_Model
         $where = ' b.ad_code = "'.$ad_code.'" and b.created_time >= "'.$begin_time.'" and b.created_time < "'.$end_time.'" ';
        
         $data = $this->db->query("SELECT id,`code`,cpc,cpm,totalcpc,totalAd,IF (st_price>0,st_price,0) st_price ,FORMAT((st_price/cpc),2) avg_price FROM(
-            SELECT c.id,c.`code`,
+            SELECT c.id,c.`slot_code`,
             	COUNT(distinct(b.ad_code)) totalAd,
                 IF (b.type = 0,IF (b.st_price > 0, COUNT(1), 0), 0) cpc,
                 IF (b.type = 1,IF (b.st_price > 0, COUNT(1), 0), 0) cpm,

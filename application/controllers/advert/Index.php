@@ -183,7 +183,7 @@ class Index extends MY_Controller {
         }
         if ($info)
         {
-            $stInfo = $this->advert_model->getExtensionStatices($info['code'],$id,$begin_time,$end_time);
+            $stInfo = $this->advert_model->getExtensionStatices($info['ad_code'],$id,$begin_time,$end_time);
             $datedata = $this->getDateSection($begin_time, $end_time);
             $sectionCount = count(explode(',', $datedata));
             $staticesCpc = $staticesCpm = array();
