@@ -38,8 +38,9 @@ class Index extends MY_Controller {
         $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
         $offset =intval($page) > 0 ?intval($page-1)*$pagesize:0;
 		//获取流量主 条件
-        $where = $this->flow_model->conditions(array('type'=>1,'role_id'=>3));
-        $total = $this->flow_model->getCount($where);
+        $where = $this->flow_model->conditions(array('a.type'=>1,'a.role_id'=>3));
+        $where = "a.type=1 and a.role_id=3";
+        $total = $this->flow_model->getCount("type=1 and role_id=3");
         $list = $this->flow_model->findAlls($where,$pagesize,$offset);
 		foreach($list as $key=>$val){
 			//获取广告数量
@@ -69,7 +70,8 @@ class Index extends MY_Controller {
         $offset =intval($page) > 0 ?intval($page-1)*$pagesize:0;
 		//获取流量主 条件
         $where = $this->flow_model->conditions(array('type'=>1,'role_id'=>3));
-        $total = $this->flow_model->getCount($where);
+        $total = $this->flow_model->getCount("type=1 and role_id =3");
+        $where = "a.type = 1 and a.role_id=3";
         $list = $this->flow_model->findAlls($where,$pagesize,$offset);
         $where = array('owner'=>$this->input->get('code'));
         //流量主详情页面列表及分页，包含统计部分代码

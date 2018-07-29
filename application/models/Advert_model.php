@@ -145,7 +145,7 @@ class Advert_model extends MY_Model
 			$where=" id=".$data['id'];			
 		}
 		if($data['code']){
-			$where=" code='".$data['code']."'";			
+			$where=" ad_code='".$data['code']."'";
 		}
         $sql = "select * from  ".$this->wy_ad." where $where limit 1";
         $row = $this->db->query($sql)->result_array();

@@ -38,16 +38,16 @@ class Flow_model extends MY_Model
     public function findAlls($where = array(), $limit = 0, $offset = 0, $sort = NULL)
     {
 	   if(isset($limit)){
-			$sql = "select a.*,a.user_code as code,b.credit from ".$this->wy_user." AS a LEFT JOIN wy_account as b on a.user_code= b.owner where 1 = 1 order by a.id desc limit $offset,$limit";
+			$sql = "select a.*,a.user_code as code,b.credit from ".$this->wy_user." AS a LEFT JOIN wy_account as b on a.user_code= b.owner where {$where} order by a.id desc limit $offset,$limit";
 	   }else{
-			$sql = "select * from wy_user AS a LEFT JOIN wy_account as b on a.code= b.owner where 1 = 1 order by a.id desc order by a.id desc";
+			$sql = "select * from wy_user AS a LEFT JOIN wy_account as b on a.user_code= b.owner where {$where} order by a.id desc order by a.id desc";
 	   }
        $row = $this->db->query($sql)->result_array();
 	   return $row;
     }
 	public function getCount($where)
     {
-        $sql = "select count(1) as total from ".$this->wy_user." where $where limit 1";
+        $sql = "select count(1) as total from ".$this->wy_user." where $where";
         $row = $this->db->query($sql)->row();
         return (int)$row->total;
     }

@@ -1,4 +1,5 @@
 <div class="layuibodycont">
+    <link rel="stylesheet" type="text/css" href="/public/money_ex/css/globalforAd.css" media="all"/>
 		<div class="tips"><img src="/public/money_ex/images/lc06.png" /><?php echo $tips;?></div>
 		<div class="clearfix formblock">
 			<form class="layui-form compform" action="lists" method="post" enctype="multipart/form-data">

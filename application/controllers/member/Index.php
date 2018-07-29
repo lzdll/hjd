@@ -42,7 +42,6 @@ class Index extends MY_Controller {
            $urole = $this->user['type']; //0:广告主 1: 流量主
            $user_code = $this->user['user_code'];
        }
-
         if($urole == 0){
             $this->data['tips']  = "提交公司资质后才可投放广告";
             $this->data['companytype'] = "公司企业广告主";
@@ -138,7 +137,11 @@ class Index extends MY_Controller {
             $this->data['email'] = $_SESSION['email'];
         }
         $this->data['company'] = $this->company_model->getInfo($where = array("owner"=>$user_code));
-//        var_dump( $this->data['company']);die;
+        //平台审核
+        if($this->data['company']['audit_status'] ==0 && $this->user['type'] == 2){
+            $id = $this->data['company']['id'];
+            $this->data['button']  = " <button class='layui-btn addbtn'><a href='/member/index/pass?id=$id&user_code=$code' >通过审核</a></button>";
+        }
         if(!empty( $this->data['company'])){
             if($this->data['company']['type'] == 1){
                 $this->data['compaycheack'] = "checked";
@@ -176,7 +179,21 @@ public function edit()
             }
         }
 		$this->layout->view('/member/edit', $this->data);
-	} 
-	
+	}
+    public function pass()
+    {
+        $id = $this->input->get('id');
+        $user_code = $this->input->get('user_code');
+            $data = array(
+                "audit_status" => 2,
+                "updated_time" => date('Y-m-d H:i:s',time())
+            );
+            $res = $this->company_model->edit($id,$data);
+            if($res){
+                ci_redirect('/member/index/lists?user_code='.$user_code, 3, '修改成功');
+            }else{
+                ci_redirect('/member/index/listsuser_code='.$user_code, 3, '修改失败，请重新提交');
+            }
+    }
 
 }

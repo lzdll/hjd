@@ -67,8 +67,6 @@
 						<img  id="xmTanImg2" src="<?php echo $company['id_card_img_1'];?>" class=""  />
 					  </div>
 					  <div class="file-input-wrapper4 layuiitempic">
-						<input type="button" class="file_btn4" value="身份证反面" />
-						<input type="file" name="imgsrc5" class="file-input4" value="" />
 						<img id="xmTanImg1" src="<?php echo $company['id_card_img_2'];?>" class=""  />
 					  </div>
 					</div>
@@ -78,6 +76,7 @@
 				  
 				  <div class="layui-form-item">
 					<div class="layui-input-block formopearbtn">
+                        <?php echo $button;?>
                         <button class="layui-btn addbtn"><a href="/ad/index/index" >返回</a></button>
 					</div>
 				  </div>

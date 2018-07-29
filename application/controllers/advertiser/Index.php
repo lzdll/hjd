@@ -41,7 +41,8 @@ class Index extends MY_Controller {
 		$offset =intval($page) > 0 ?intval($page-1)*$pagesize:0;
 		//获取广告主 条件
         $where = $this->flow_model->conditions(array('type'=>0,'role_id'=>2));
-        $total = $this->flow_model->getCount($where);
+        $where = "a.type=0 and a.role_id=2";
+        $total = $this->flow_model->getCount("type=0 and role_id=2");
         $list = $this->flow_model->findAlls($where,$pagesize,$offset);
 		foreach($list as $key=>$val){
 			//获取广告数量

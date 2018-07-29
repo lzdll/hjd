@@ -83,6 +83,7 @@ $config['rights'] = array(
 		 '4_3' => array('is_menu'=>0, 'name'=>'重置密码', 'url'=>'/advertiser/index/resetpwd'),
 		 '4_4' => array('is_menu'=>0, 'name'=>'修改授信额', 'url'=>'/advertiser/index/credit'),
 		 '4_5' => array('is_menu'=>0, 'name'=>'资质查看', 'url'=>'/member/index/lists'),
+		 '4_6' => array('is_menu'=>0, 'name'=>'资质审核', 'url'=>'/member/index/pass'),
         ),
     ),
     '5' => array(

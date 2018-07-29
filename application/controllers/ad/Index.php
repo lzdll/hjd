@@ -216,7 +216,7 @@ class Index extends MY_Controller
                 $data['created_time'] = date('Y-m-d H:i:s');
                 $data['updated_time'] = date('Y-m-d H:i:s');
                 $price['user_code'] = $this->user['user_code'];
-                $price['ad_code'] = $data['code'];
+                $price['ad_code'] = $data['ad_code'];
                 $price['type'] = 0;
                 $price['ad_price_code'] = $this->getCode();
                 $price['price'] = $form['price'] * 100;
