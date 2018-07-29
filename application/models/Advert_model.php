@@ -129,7 +129,7 @@ class Advert_model extends MY_Model
     }
 	//获取绑定小程序信息
 	public function getBaingInfo($where){
-	  $sql="SELECT *,sdk_code code FROM wy_ad_record AS a 
+	  $sql="SELECT * FROM wy_ad_record AS a 
                 LEFT JOIN wy_wsdk AS b ON a.sdk_code=b.sdk_code 
                 WHERE b.`status`=0 AND a.ad_code='".$where['code']."' ";
 	  $row = $this->db->query($sql)->result_array();
@@ -147,7 +147,7 @@ class Advert_model extends MY_Model
 		if($data['code']){
 			$where=" ad_code='".$data['code']."'";
 		}
-        $sql = "select *,ad_code code from  ".$this->wy_ad." where $where limit 1";
+        $sql = "select * from  ".$this->wy_ad." where $where limit 1";
         $row = $this->db->query($sql)->result_array();
 		return $row[0];
     }
@@ -162,7 +162,7 @@ class Advert_model extends MY_Model
 		if($data['code']){
 			$where=" ad_code='".$data['code']."'";			
 		}
-        $sql = "select * ,ad_code code ad from  ".$this->wy_ad_price." where $where";
+        $sql = "select * from  ".$this->wy_ad_price." where $where";
         $row = $this->db->query($sql)->result_array();
 		return $row;
     }
