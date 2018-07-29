@@ -37,9 +37,9 @@ class Wsdk_model extends MY_Model
     public function findAlls($where = array(), $limit = 0, $offset = 0, $sort = NULL)
     {
 	   if(isset($limit)){
-			$sql = "select *  from ".$this->tablename." where $where AND id>0 order by id desc limit $offset,$limit";
+			$sql = "select * ,sdk_code code  from ".$this->tablename." where $where AND id>0 order by id desc limit $offset,$limit";
 	   }else{
-			$sql = "select *  from ".$this->tablename." where $where AND id>0 order by id desc";
+			$sql = "select * ,sdk_code code  from ".$this->tablename." where $where AND id>0 order by id desc";
 	   }
        $row = $this->db->query($sql)->result_array();
 	   return $row;

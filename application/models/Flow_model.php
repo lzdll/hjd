@@ -40,7 +40,7 @@ class Flow_model extends MY_Model
 	   if(isset($limit)){
 			$sql = "select a.*,a.user_code as code,b.credit from ".$this->wy_user." AS a LEFT JOIN wy_account as b on a.user_code= b.owner where {$where} order by a.id desc limit $offset,$limit";
 	   }else{
-			$sql = "select * from wy_user AS a LEFT JOIN wy_account as b on a.user_code= b.owner where {$where} order by a.id desc order by a.id desc";
+			$sql = "select *,a.user_code code from wy_user AS a LEFT JOIN wy_account as b on a.user_code= b.owner where {$where} order by a.id desc order by a.id desc";
 	   }
        $row = $this->db->query($sql)->result_array();
 	   return $row;
@@ -66,7 +66,7 @@ class Flow_model extends MY_Model
 	}
 	//充值总额 余额总额
 	public function getAccountId($where){
-		$sql = "select * from ".$this->wy_account." where $where limit 1";
+		$sql = "select *,account_code code from ".$this->wy_account." where $where limit 1";
         $row = $this->db->query($sql)->result_array();
         return $row[0];
 	

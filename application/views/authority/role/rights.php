@@ -89,8 +89,6 @@ $(function() {
 	}});
 	$("#btnSubmit").click(function(){
 		var selectKey = $('#container').jstree().get_checked();
-		//alert(<?=$info['id']?>);
-		//alert(selectKey);
 		$.ajax({
 			url: '/authority/role/rights',
 			dataType: 'json',  

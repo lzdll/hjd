@@ -88,9 +88,9 @@ class Audit_model extends MY_Model
 	public function findInvoice($where = array(), $limit = 0, $offset = 0, $sort = NULL)
     {
 	   if(isset($limit)){
-			$sql = "select *  from ".$this->wy_invoice." where $where AND id>0 order by id desc limit $offset,$limit";
+			$sql = "select *,invoice_code as code  from ".$this->wy_invoice." where $where AND id>0 order by id desc limit $offset,$limit";
 	   }else{
-			$sql = "select *  from ".$this->wy_invoice." where $where AND id>0 order by id desc";
+			$sql = "select *,invoice_code as code  from ".$this->wy_invoice." where $where AND id>0 order by id desc";
 	   }
        $row = $this->db->query($sql)->result_array();
 	   return $row;

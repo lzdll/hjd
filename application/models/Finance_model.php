@@ -40,9 +40,9 @@ class Finance_model extends MY_Model
     public function findAlls($where = array(), $limit = 0, $offset = 0, $sort = NULL)
     {
 	   if(isset($limit)){
-			$sql = "select *  from ".$this->tablename." where $where AND id>0 order by id desc limit $offset,$limit";
+			$sql = "select *,finance_code code  from ".$this->tablename." where $where AND id>0 order by id desc limit $offset,$limit";
 	   }else{
-			$sql = "select *  from ".$this->tablename." where $where AND id>0 order by id desc";
+			$sql = "select *,finance_code code   from ".$this->tablename." where $where AND id>0 order by id desc";
 	   }
        $row = $this->db->query($sql)->result_array();
 	   return $row;
@@ -51,7 +51,7 @@ class Finance_model extends MY_Model
 	public function getUserCode($where = array(), $limit = 0, $offset = 0, $sort = NULL)
     {
 	   if(isset($limit)){
-			$sql = "select id,code  from ".$this->_wy_user." where $where AND id>0 order by id desc limit $offset,$limit";
+			$sql = "select id,user_code code  from ".$this->_wy_user." where $where AND id>0 order by id desc limit $offset,$limit";
 	   }else{
 			$sql = "select id,code  from ".$this->_wy_user." where $where AND id>0 order by id desc";
 	   }
@@ -75,9 +75,9 @@ class Finance_model extends MY_Model
 	public function findInvoice($where = array(), $limit = 0, $offset = 0, $sort = NULL)
     {
 	   if(isset($limit)){
-			$sql = "select *  from ".$this->wy_invoice." where $where AND id>0 order by id desc limit $offset,$limit";
+			$sql = "select *,invoice_code code  from ".$this->wy_invoice." where $where AND id>0 order by id desc limit $offset,$limit";
 	   }else{
-			$sql = "select *  from ".$this->wy_invoice." where $where AND id>0 order by id desc";
+			$sql = "select *,invoice_code code  from ".$this->wy_invoice." where $where AND id>0 order by id desc";
 	   }
        $row = $this->db->query($sql)->result_array();
 	   return $row;
