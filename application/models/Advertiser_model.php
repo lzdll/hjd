@@ -139,7 +139,7 @@ class Advertiser_model extends MY_Model
             $where .= ' and c.id= '.$ad_id ;
         }
         $data = $this->db->query("SELECT id,`code`,cpc,cpm,totalcpc,totalAd,IF (ad_price>0,ad_price,0) st_price ,FORMAT((ad_price/cpc),2) avg_price FROM(
-            SELECT c.id,c.`code`,
+            SELECT c.id,c.`ad_code` as code,
             	COUNT(distinct(b.ad_code)) totalAd,
                 IF (b.type = 0,IF (b.ad_price > 0, COUNT(1), 0), 0) cpc,
                 IF (b.type = 1,IF (b.ad_price > 0, COUNT(1), 0), 0) cpm,

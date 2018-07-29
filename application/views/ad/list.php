@@ -21,7 +21,7 @@
 			  <tbody>
               <?php foreach($list as $item):?>
 				<tr>
-				  <td><?php echo $item['name'];?></td>
+				  <td><a href="info?id=<?php echo $item['id'];?>"><?php echo $item['name'];?></a></td>
 				  <td><?php echo $item['pv'];?></td>
 				  <td><?php echo $item['cpc'];?></td>
 				  <td><?php echo $item['rate'];?>%</td>

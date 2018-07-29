@@ -99,8 +99,6 @@ class Index extends MY_Controller
         $offset =intval($page) > 0 ?intval($page-1)*$pagesize:0;
         $info = $this->advertiser_model-> adlist($this->user['user_code'],$limit = $pagesize, $offset);
         foreach ( $info as $key => &$item) {
-            $item['price'] = number_format((floor($item['price'])).".".($item['price']%100),2,'.','');
-            $item['ad_sumprice'] = number_format((floor($item['ad_sumprice'])).".".($item['ad_sumprice']%100),2,'.','');
             $item['cpccpm'] = $item['cpc'] + $item['cpm'];
             $item['pv'] = $item['totalcpc'] + $item['totalcpm'];
             $item['pv'] = $item['totalcpc'] + $item['totalcpm'];
@@ -138,7 +136,58 @@ class Index extends MY_Controller
         $this->layout->view('/ad/list', $this->data);
     }
 
-
+    public function  info(){
+        $id = (int)$this->input->get('id');
+        $begin_time = $this->input->get('begin_time');
+        $end_time = $this->input->get('end_time');
+        $info = $this->advertiser_model->findByPk($id);
+        if(empty($begin_time)){
+            $begin_time = date('Y-m-d', strtotime('-7 days'));
+        }
+        if(empty($end_time)){
+            $end_time = date('Y-m-d', time());
+        }
+        if ($info)
+        {
+            $adInfo = $this->advertiser_model->getExtensionStatices($this->user['user_code'],$id,$begin_time,$end_time);
+            $point =  sprintf("%.2f",$adInfo['cpc']/$adInfo['totalcpc']);
+            $datedata = $this->getDateSection($begin_time, $end_time);
+            $sectionCount = count(explode(',', $datedata));
+            $staticesCpc = $staticesCpm = array();
+            if(!empty($adInfo)){
+                foreach ($adInfo as $key =>$val){
+                    $staticesCpc[] = $val['cpc'] ;
+                    $staticesCpm[] = $val['cpm'] ;
+                }
+            }
+            $st_total = $ad_total = $avgamount = $total_cpc = $st_price = 0;
+            if(count($staticesCpm) < $sectionCount){
+                $max = ($sectionCount-count($staticesCpm));
+                for ($i=0;$i<$max;$i++){
+                    $staticesCpc[] = 0;
+                    $staticesCpm[] = 0;
+                    $st_total += $val['st_total'];
+                    $ad_total += $val['ad_total'];
+                    $avgamount += $val['avgamount'];
+                    $total_cpc += $val['total_cpc'];
+                    $st_price += $val['st_price'];
+                }
+            }
+            $avgamount = sprintf("%.2f",$avgamount/$sectionCount);
+            $this->data['id'] = $id;
+            $this->data['point'] = $point;
+            $this->data['info'] = $info;
+            $this->data['statices'] = $adInfo;
+            $this->data['section'] = $datedata;
+            $this->data['st_price'] = $st_price;
+            $this->data['staticesCpc'] = implode(',',$staticesCpc);
+            $this->data['staticesCpm'] = implode(',',$staticesCpm);
+            $this->data['date'] = $this->getDateTime();
+            $this->layout->view('/ad/ad_info', $this->data);
+        }
+        else
+            ci_redirect('/myad/index/lists', 3, 'ID错误或信息不存在');
+    }
     public function add()
     {
         $method = strtolower($_SERVER['REQUEST_METHOD']);
@@ -219,7 +268,7 @@ class Index extends MY_Controller
                 $price['ad_code'] = $data['ad_code'];
                 $price['type'] = 0;
                 $price['ad_price_code'] = $this->getCode();
-                $price['price'] = $form['price'] * 100;
+                $price['price'] = $form['price'];
                 $price['status'] = 0;
                 $price['created_time'] = date('Y-m-d H:i:s');
                 $res1 = $this->advertiser_model->add($data);
