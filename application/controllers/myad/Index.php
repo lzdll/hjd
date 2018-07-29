@@ -270,7 +270,7 @@ class Index extends MY_Controller
             $this->_save($data);
             ci_redirect('/myad/index/lists');
         }else {
-            $info = $this->slot_model->findByPk($id);
+            $info = $this->slot_model->getNameById($id);
             if(!$info){
                 ci_redirect('/myad/index/lists', 3, 'ID错误或信息不存在');
             }

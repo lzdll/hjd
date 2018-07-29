@@ -58,7 +58,7 @@ class Index extends MY_Controller
           from wy_ad_order
          WHERE '.$where;
         $staticesInfo = $this->db->query($sql)->result_array();
-        if($staticesInfo){
+        if($staticesInfo[0]['slot_price'] > 0){
             $data['ad_user_code'] = $ad_owner;
             $data['st_user_code'] = $st_owner;
             $data['ad_code'] = $ad_owner;
@@ -67,7 +67,7 @@ class Index extends MY_Controller
             $data['statistics_mode'] = 0;
             $data['co_price'] = $staticesInfo['co_price'];
             $data['ad_price'] = $staticesInfo['ad_price'];
-            $data['st_price'] = $staticesInfo['st_price'];
+            $data['slot_price'] = $staticesInfo['slot_price'];
             $data['cpc'] = $staticesInfo['cpc'];
             $data['cmp'] = $staticesInfo['cpm'];
             $data['total_cpc'] = $staticesInfo['total_cpc'];
@@ -80,6 +80,8 @@ class Index extends MY_Controller
                 echo "统计失败";
                 #@todo添加统计每小时日志及结果
             }
+        }else{
+            echo '暂无数据';die;
         }
     }
 

@@ -6,7 +6,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">广告位ID：</label>
 					<div class="layui-input-block">
-					  <p class="fl inputtips"><?php echo $info['code']?></p>
+					  <p class="fl inputtips"><?php echo $info['slot_code']?></p>
 					</div>
 				  </div>
 				  <div class="layui-form-item">
