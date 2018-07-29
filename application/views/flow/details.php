@@ -8,11 +8,11 @@
 			</dl>
 			<dl class="topitemdl topitemdlsep25">
 				<dd>收益总额(元)</dd>
-				<dt>￥<?php echo $accountinfo['total_money'] > 0 ? $accountinfo['total_money']/100 : 0;?></dt>
+				<dt>￥<?php echo $accountinfo['total_money'] > 0 ? $accountinfo['total_money'] : 0;?></dt>
 			</dl>
 			<dl class="topitemdl topitemdlsep25">
 				<dd>可提现金额(元)</dd>
-				<dt>￥<?php echo $accountinfo['money'] > 0 ? $accountinfo['money']/100 : 0?></dt>
+				<dt>￥<?php echo $accountinfo['money'] > 0 ? $accountinfo['money'] : 0?></dt>
 			</dl>
 			<dl class="topitemdl topitemdlsep25 topitemdlsepfirst">
 				<dd><span class="">账号：</span><?php echo $userinfo['mobile'];?><a href="/member/index/lists?type=1&user_code=<?php echo $user_code;?>">查看资质</a><a class="liuuseropear liuuseropearjs">封号</a></dd>

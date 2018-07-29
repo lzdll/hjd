@@ -12,11 +12,11 @@
 			</dl>
 			<dl class="topitemdl topitemdlsep25">
 				<dd>充值总额(元)</dd>
-				<dt>￥<?php echo $list['cz_money']/100; ?></dt>
+				<dt>￥<?php echo $list['cz_money']; ?></dt>
 			</dl>
 			<dl class="topitemdl topitemdlsep25 noborder">
 				<dd>余额总额(元)</dd>
-				<dt>￥<?php echo $list['sy_money']/100; ?></dt>
+				<dt>￥<?php echo $list['sy_money']; ?></dt>
 			</dl>
 		</div>
 		<div class="clearfix" style="margin-top:20px">

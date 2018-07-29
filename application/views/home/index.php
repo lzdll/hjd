@@ -17,11 +17,11 @@
 			</dl>
 			<dl class="topitemdl">
 				<dd>交易流水</dd>
-				<dt>￥<?php echo $other_list['ad_price']/100 ?></dt>
+				<dt>￥<?php echo $other_list['ad_price'] ?></dt>
 			</dl>
 			<dl class="topitemdl noborder">
 				<dd>流量主总收入</dd>
-				<dt>￥<?php echo $other_list['st_price']/100 ?></dt>
+				<dt>￥<?php echo $other_list['st_price'] ?></dt>
 			</dl>
 		</div>
 		<div class="clearfix navtabs">

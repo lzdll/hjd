@@ -40,8 +40,8 @@ class Index extends MY_Controller
     public function index()
     {
         $info = $this->advert_model->getAdMasterCountInfo($this->user['user_code']);
-        $info['totalmoney'] = number_format( $info['totalmoney']/100,2,'.','');
-        $info['account']['quota'] = number_format( $info['account']['quota']/100,2,'.','');
+        $info['totalmoney'] = number_format( $info['totalmoney'],2,'.','');
+        $info['account']['quota'] = number_format( $info['account']['quota'],2,'.','');
         $this->data['countinfo'] = $info['account'];
         $this->data['totalmoney'] = $info['totalmoney'];
         //广告推广量
@@ -99,8 +99,8 @@ class Index extends MY_Controller
         $offset =intval($page) > 0 ?intval($page-1)*$pagesize:0;
         $info = $this->advertiser_model-> adlist($this->user['user_code'],$limit = $pagesize, $offset);
         foreach ( $info as $key => &$item) {
-            $item['price'] = number_format((floor($item['price']/100)).".".($item['price']%100),2,'.','');
-            $item['ad_sumprice'] = number_format((floor($item['ad_sumprice']/100)).".".($item['ad_sumprice']%100),2,'.','');
+            $item['price'] = number_format((floor($item['price'])).".".($item['price']%100),2,'.','');
+            $item['ad_sumprice'] = number_format((floor($item['ad_sumprice'])).".".($item['ad_sumprice']%100),2,'.','');
             $item['cpccpm'] = $item['cpc'] + $item['cpm'];
             $item['pv'] = $item['totalcpc'] + $item['totalcpm'];
             $item['pv'] = $item['totalcpc'] + $item['totalcpm'];
@@ -270,7 +270,7 @@ class Index extends MY_Controller
     }
     public function details(){
         $info = $this->advertiser_model->getInfoIds($_REQUEST['id'],$this->user['user_code']);
-        $info['price'] = number_format((floor( $info['price']/100)).".".( $info['price']%100),2,'.','');
+        $info['price'] = number_format((floor( $info['price'])).".".( $info['price']%100),2,'.','');
 
         switch($info['platform']){
             case "H5":

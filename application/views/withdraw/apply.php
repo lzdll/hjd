@@ -6,7 +6,7 @@
 					<label class="layui-form-label">提现金额：</label>
 					<div class="layui-input-block">
 					  <input type="text" name="money"  placeholder="请输入金额" class="layui-input fl" lay-verify="required|validateMoney" style="width:50%;" />
-					  <p class="fl inputtips">可提现金额 <?php echo $accountinfo['money']/100;?>元</p>
+					  <p class="fl inputtips">可提现金额 <?php echo $accountinfo['money'];?>元</p>
 					</div>
 				  </div>
 				  <div class="layui-form-item">

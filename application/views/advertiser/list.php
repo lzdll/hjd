@@ -8,11 +8,11 @@
 			</dl>
 			<dl class="topitemdl topitemdl25">
 				<dd>充值总额(元)</dd>
-				<dt>￥<?php echo $account['total_money']/100; ?></dt>
+				<dt>￥<?php echo $account['total_money']; ?></dt>
 			</dl>
 			<dl class="topitemdl topitemdl25">
 				<dd>余额总额(元)</dd>
-				<dt>￥<?php echo $account['money']/100; ?></dt>
+				<dt>￥<?php echo $account['money']; ?></dt>
 			</dl>
 			<dl class="topitemdl topitemdl25 noborder">
 				<dd><a href="/authority/admin/add?type=0" class="addads">添加广告主</a></dd>
@@ -45,7 +45,7 @@
 				  <td><?=$v['cz_total']?></td>
 				  <td>￥<?php echo $v['cz_money']; ?></td>
 				  <td>￥<?php echo $v['sy_money']; ?></td>
-				  <td><span class="tdfont01 editjs" onclick="editjs('<?=$v['code']?>')">￥<input type="text" value="<?php echo $v['credit']/100; ?>" class="editput" disabled=""></span></td>
+				  <td><span class="tdfont01 editjs" onclick="editjs('<?=$v['code']?>')">￥<input type="text" value="<?php echo $v['credit']; ?>" class="editput" disabled=""></span></td>
 				  <td><a href="/advertiser/index/resetpwd?code=<?=$v['code']?>&id=<?=$v['id']?>&type=<?=$v['type']?>" class="tdfont01">重置</a></td>
 				  <td><a class="tdfont01" href="/advertiser/index/details?code=<?=$v['code']?>&id=<?=$v['id']?>&type=<?=$v['type']?>">查看详情</a></td>
 				</tr>

@@ -19,7 +19,7 @@
 			  <?php foreach ($list as $v){ ?>
 				<tr>
 				  <td><?php { echo date('Y-m-d H:i', strtotime($v['created_time']));}?></td>
-				  <td><?php echo "￥".$v['money']/100;?></td>
+				  <td><?php echo "￥".$v['money'];?></td>
 				  <td><?=$v['owner']?></td>
 				  <td><?=$v['bank']?></td>
 				  <td><?=$v['tradid']?></td>

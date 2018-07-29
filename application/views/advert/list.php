@@ -7,7 +7,7 @@
 			</dl>
 			<dl class="topitemdl topitemdl25">
 				<dd>消耗金额(元)</dd>
-				<dt><?php echo "￥".$consume['st_price']/100;  ?></dt>
+				<dt><?php echo "￥".$consume['st_price'];  ?></dt>
 			</dl>
 			<dl class="topitemdl topitemdl25">
 				<dd>点击率</dd>
@@ -63,7 +63,7 @@
 				  <td><span class="tdfont01 editjs" onclick="editjs('<?=$v['code']?>','<?=$v['owner']?>')">￥<input type="text" value="<?php echo $v['cmp_price'];  ?>" class="editput" disabled="" id="editput_<?php echo $v['id']; ?>"></span></td>
 
 				  <td><?php echo $v['owner'];  ?></td>
-				  <td><?php echo "￥".$v['ad_price']/100;  ?></td>
+				  <td><?php echo "￥".$v['ad_price'];  ?></td>
 				  <td> <?php if($v['sdk_name'] == '' ){?> <a href="/advert/index/binding?code=<?php echo $v['code']; ?>"><span class="tdobtn01 active">绑定</span></a><?php  }else{ echo $v['sdk_name']; }?>
 				  </td>
 				  <td>

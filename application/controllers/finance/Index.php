@@ -191,7 +191,7 @@ class Index extends MY_Controller {
         $info = $this->invoice_model-> getList($where = array('owner'=>$this->user['user_code']),$limit = $pagesize, $offset = $offset, $sort = 'created_time');
         foreach ( $info['list']as &$item) {
             $item['created_time'] = date('Y-m-d',strtotime($item['created_time']));
-            $item['money'] =number_format((floor($item['money']/100)).".".($item['money']%100),2,'.','');
+            $item['money'] =number_format((floor($item['money'])).".".($item['money']%100),2,'.','');
         }
         $total = $info['cnt'];
         $this->data['list'] = $info['list'];

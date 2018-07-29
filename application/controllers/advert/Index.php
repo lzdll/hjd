@@ -44,7 +44,7 @@ class Index extends MY_Controller {
 		foreach($list as $key=>$val){
 			//获取CPM
 			$cpm = $this->advert_model->getCpm($val);
-			$list[$key]['cmp_price'] = $cpm['cmp_price']?$cpm['cmp_price']/100:0;
+			$list[$key]['cmp_price'] = $cpm['cmp_price']?$cpm['cmp_price']:0;
 			$sdk_info = $this->advert_model->getBaingInfo(array('code'=>$val['code']));
 			$list[$key]['sdk_name'] = $sdk_info[0]['name']?$sdk_info[0]['name']:'';
 		}
@@ -225,9 +225,9 @@ class Index extends MY_Controller {
 		//判断cmp价格
 		foreach($price_list as $val){
 			if($val['type'] == 1){
-				$list['cmp_price'] = $val['price']?$val['price']/100:0;
+				$list['cmp_price'] = $val['price']?$val['price']:0;
 			}else if($val['type'] == 0){
-				$list['price'] = $val['price']?$val['price']/100:0;
+				$list['price'] = $val['price']?$val['price']:0;
 			}
 		}
         $this->data['list'] = $list;

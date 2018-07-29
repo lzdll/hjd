@@ -88,9 +88,9 @@ class Index extends MY_Controller {
 		    if($slotPrice){
 		        foreach ($slotPrice as $pkey => $pval){
 		            if($pval['type'] == 0){
-		                $slotlists[$skey]['cpc_price'] = $pval['price']/100;
+		                $slotlists[$skey]['cpc_price'] = $pval['price'];
     		        }elseif($pval['type'] == 1){
-    		            $slotlists[$skey]['cpm_price'] = $pval['price']/100;
+    		            $slotlists[$skey]['cpm_price'] = $pval['price'];
     		        }
     		    }
 		    }
@@ -238,14 +238,14 @@ class Index extends MY_Controller {
 	    $type = $type == 'cpc'?0:1;
 	    if(!empty($st_code) &&!empty($st_code) && !empty($money)){
 	        $sets = array('status'=>1);
-	        $where = array('type'=>$type,'user_code'=>$user_code,'st_code'=>$st_code);
+	        $where = array('type'=>$type,'user_code'=>$user_code,'slot_code'=>$st_code);
 	        $status = $this->stprice_model->updateslotprice($sets,$where);
 	        if(!$status){
 	            $res['msg'] = "更改失败";
 	            $this->_outputJSON($res);
 	        }
 	        $data['user_code'] = $user_code;
-	        $data['st_code'] = $st_code;
+	        $data['slot_code'] = $st_code;
 	        $data['type'] = $type;
 	        $data['slot_price_code'] = $this->getCode();
 	        $data['price'] = $money;

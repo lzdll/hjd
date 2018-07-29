@@ -72,8 +72,8 @@ class Home extends MY_Controller {
 			$money1 =$money2='';
 			foreach($Finance as $key=>$val2){
 				if($val2['d'] == $val){
-					$money1+=$val2['money1']/100;
-					$money2+=$val2['money2']/100;
+					$money1+=$val2['money1'];
+					$money2+=$val2['money2'];
 				}else{
 					$money1+=0;
 					$money2+=0;
@@ -95,12 +95,12 @@ class Home extends MY_Controller {
 					$ad_price+=0;
 				}
 			}
-			$ad_rr[]=$ad_price/100;
+			$ad_rr[]=$ad_price;
 		}
         $this->data['ad_name'] =$ad_list[0]['name'];
 		$this->data['hxiang'] =$hxiang[0];
 		$this->data['other_list'] =$other_list[0];
-		$this->data['day_money'] =$Mower[0]['day_money']?$Mower[0]['day_money']/100:0;
+		$this->data['day_money'] =$Mower[0]['day_money']?$Mower[0]['day_money']:0;
 		$this->data['m1_arr'] = implode(',',$m1_arr);
         $this->data['m2_arr'] = implode(',',$m2_arr);
 		$this->data['ad_rr'] = implode(',',$ad_rr);

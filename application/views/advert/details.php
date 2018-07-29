@@ -30,7 +30,7 @@
 				</dl>
 				<dl class="topitemdl topitemdl25">
 					<dd>消耗</dd>
-					<dt><?php echo "￥".$list['ad_price']/100;  ?></dt>
+					<dt><?php echo "￥".$list['ad_price'];  ?></dt>
 				</dl>
 				<dl class="topitemdl topitemdl25">
 					<dd>CPM(千人展示价)</dd>

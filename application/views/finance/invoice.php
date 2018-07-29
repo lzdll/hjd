@@ -20,7 +20,7 @@
 					  <td><?php { echo date('Y-m-d H:i', strtotime($v['created_time']));}?></td>
 					  <td><?=$v['title']?></td>
 					  <td><?=$v['taxid']?></td>
-					  <td><?php echo "￥".$v['money']/100;?></td>
+					  <td><?php echo "￥".$v['money'];?></td>
 					  <td><?=$v['owner']?></td>
 					  <td><?=$v['comment']?></td>
 					  <td><?php if($v['status'] == 1 ){?> <span class="viewbtn " onclick="viewimgs('<?=$v['img']?>')">查看发票</span><?php   }else{ ?> <span class="blibtn" data-id="<?=$v['id']?>" onclick="kaipiao('<?=$v['id']?>')">开票</span><?php } ?>

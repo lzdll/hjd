@@ -19,7 +19,7 @@
 				  <td><?php { echo date('Y-m-d H:i', strtotime($v['created_time']));}?></td>
 				  <td><?=$v['bank']?></td>
 				  <td><?=$v['cardid']?></td>
-				  <td><?php echo "￥".$v['money']/100;?></td>
+				  <td><?php echo "￥".$v['money'];?></td>
 				  <td><?=$v['owner']?></td>
 				  <td><?=$v['comment']?></td>
 				  <td>

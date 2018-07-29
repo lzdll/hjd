@@ -2,15 +2,15 @@
 		<div class="topblock clearfix">
 			<dl class="topitemdl topitemdl30">
 				<dd>今日收益</dd>
-				<dt>￥<?php echo $todayProfit['st_price']/100;?></dt>
+				<dt>￥<?php echo $todayProfit['st_price'];?></dt>
 			</dl>
 			<dl class="topitemdl topitemdl30">
 				<dd>总收益金额</dd>
-				<dt>￥<?php echo $accountinfo['total_money']/100;?></dt>
+				<dt>￥<?php echo $accountinfo['total_money'];?></dt>
 			</dl>
 			<dl class="topitemdl topitemdl30 noborder">
 				<dd>可提现金额</dd>
-				<dt>￥<?php echo $accountinfo['money']/100;?></dt>
+				<dt>￥<?php echo $accountinfo['money'];?></dt>
 			</dl>
 		</div>
 		<div class="clearfix navtabs">
