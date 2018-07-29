@@ -37,7 +37,7 @@ class Index extends MY_Controller {
 		$page=intval(trim($_GET['p']))?intval(trim($_GET['p'])):1;
         $urlParam   = $this->_generalUrl($validData);
         $pagesize = isset($input['pagesize']) && (int)$input['pagesize'] > 0 ? (int)$input['pagesize'] : 20;
-		$offset =intval($input['page']) > 0 ?intval($input['page']-1)*$pagesize:0;
+        $offset =intval($page) > 0 ?intval($page-1)*$pagesize:0;
 		$where ='1 = 1 ANd id>0';
         $total = $this->wsdk_model->getCount($where);
         $list = $this->wsdk_model->findAlls($where,$pagesize,$offset);

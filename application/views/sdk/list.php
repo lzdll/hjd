@@ -38,8 +38,6 @@
   <!--<div class="site-tree-mobile layui-hide">
 	  <i class="layui-icon layui-icon01"></i>
   </div>-->
-
-</div>
  <div class="selectgoodsbox tx" id="layer03">
 	<div class="adopearbox">确定后将禁用SDK，您确定要禁用吗？</div>
 </div>

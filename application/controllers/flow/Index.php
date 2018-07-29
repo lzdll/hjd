@@ -247,7 +247,7 @@ class Index extends MY_Controller {
 	        $data['user_code'] = $user_code;
 	        $data['st_code'] = $st_code;
 	        $data['type'] = $type;
-	        $data['code'] = md5($this->getCode().time().rand(0,10000));
+	        $data['slot_price_code'] = $this->getCode();
 	        $data['price'] = $money;
 	        $data['status'] = 0;
 	        $data['created_time'] = date('Y-m-d');

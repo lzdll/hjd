@@ -78,7 +78,7 @@ class Index extends MY_Controller {
 			$update['user_code']=$data['owner'];
 			$update['ad_code']=$data['code'];
 			$update['type']=1;
-			$update['code']=get_code($data['owner']);
+			$update['ad_price_code']=get_code($data['owner']);
 			$update['price']=$data['cmp_price'];
 			$update['status']=0;
 			$update['created_time']=date("Y-m-d H:i:s");

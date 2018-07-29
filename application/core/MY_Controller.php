@@ -230,17 +230,10 @@ class MY_Controller extends CI_Controller
     }
 
     /*输出模式json*/
-    protected function _outputJSON($data, $config)
+    protected function _outputJSON($data)
     {
         header("Content-type: application/json; charset=UTF-8");
-        if ($config['encode'] == 'gbk')
-        {
-            echo "错误编码";
-        }
-        else
-        {
-            echo json_encode($data);
-        }
+        echo json_encode($data);
         exit;
     }
 
