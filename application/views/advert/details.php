@@ -5,7 +5,7 @@
 				<img src="<?php  echo $list['image']; ?>" />
 				<dl>
 					<dt><?php  echo $list['name']; ?><span>广告主：<?php  echo $list['owner']; ?></span></dt>
-					<dd>平台类型：<?php if($list['platform'] == 'H5'){ echo "H5";}else if($list['platform'] == 'ios'){ echo "ios";}else if($list['platform'] == 'android'){ echo "android";}else if($list['wechat'] == '小程序'){ } ?></dd>
+					<dd>平台类型：<?php if($list['platform'] == 'H5'){ echo "H5";}else if($list['platform'] == 'ios'){ echo "ios";}else if($list['platform'] == 'android'){ echo "android";}else if($list['platform'] == 'wechat'){ echo '小程序';} ?></dd>
 					<dd>小程序路径：<?php  echo $list['link']; ?></dd>
 					<dd>广告导语：<?php  echo $list['info']; ?></dd>
 				</dl>

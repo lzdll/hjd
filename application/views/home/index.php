@@ -114,7 +114,7 @@ var option = {
         trigger: 'axis'
     },
     legend: {
-        data:['展示','点击']
+        data:['广告展示总数','广告点击总数']
     },
     toolbox: {
         feature: {
@@ -156,7 +156,7 @@ var option = {
     },
     series : [
         {
-            name:'展示',
+            name:'广告展示总数',
             type:'line',
            // smooth:true,
             itemStyle: {normal: {areaStyle: {type: 'default'},label : {
@@ -180,7 +180,7 @@ var option = {
             data:[<?php echo $staticesCpm;?>]
         },
         {
-            name:'点击',
+            name:'广告点击总数',
             type:'line',
            // smooth:true,
 			itemStyle: {normal: {
@@ -215,7 +215,7 @@ var option2 = {
         trigger: 'axis'
     },
     legend: {
-        data:['充值','消耗']
+        data:['充值金额总数','消耗金额总数']
     },
     toolbox: {
         feature: {
@@ -244,7 +244,7 @@ var option2 = {
     },
     series : [
         {
-            name:'充值',
+            name:'充值金额总数',
             type:'line',
             itemStyle: {
 					normal: {
@@ -259,7 +259,7 @@ var option2 = {
 
         },
         {
-            name:'消耗',
+            name:'消耗金额总数',
             type:'line',
             itemStyle: {
 					normal: {

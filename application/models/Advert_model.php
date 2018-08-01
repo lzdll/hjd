@@ -116,7 +116,7 @@ class Advert_model extends MY_Model
     {
 	   $id = $where['id'];
 	   $code = $where['code'];
-	   $sql = "SELECT c.id, c.`ad_code`,c.`name`,c.`image`,c.`link`,c.`platform`,
+	   $sql = "SELECT c.id, c.`ad_code`,c.`name`,c.`image`,c.`link`,b.`platform`,
                 c.owner,c.ws_code,c.appid,c.info,c.status ,c.audit_status ,
                 IF(b.type=0,IF(b.slot_price>0,COUNT(1),0),0) cpc,
                 IF(b.type=1,IF(b.slot_price>0,COUNT(1),0),0) cpm,

@@ -21,7 +21,7 @@
 		</div>
 		<div class="clearfix" style="margin-top:20px">
 			<div class="countitem fl">
-				<div class="countnav"><p class="fl countleft"><i><img src="images/icon04.png"></i><span>近七天广告推广量</span></p>
+				<div class="countnav"><p class="fl countleft"><i><img src="/public/money_ex/images/icon04.png"></i><span>近七天广告推广量</span></p>
 				<span class="fr countright">平均收益<i class="">￥<?php echo $avgamount;?></i></span></div>
 				
 				<div class="">
@@ -32,7 +32,7 @@
 				</div>
 			</div>
 			<div class="countitem fr">
-				<div class="countnav"><p class="fl countleft"><i><img src="images/icon02.png"></i><span>近七天收益金额</span></p>
+				<div class="countnav"><p class="fl countleft"><i><img src="/public/money_ex/images/icon02.png"></i><span>近七天收益金额</span></p>
 				</div>
 				<div class="">
 					<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
@@ -297,7 +297,7 @@ var option = {
         trigger: 'axis'
     },
     legend: {
-        data:['展示','点击']
+        data:['展示平均收益','点击平均收益']
     },
     toolbox: {
         feature: {
@@ -326,7 +326,7 @@ var option = {
     },
     series : [
         {
-            name:'展示',
+            name:'展示平均收益',
             type:'line',
            // smooth:true,
             itemStyle: {normal: {areaStyle: {type: 'default'},label : {
@@ -350,7 +350,7 @@ var option = {
             data:[<?php echo $staticesCpm;?>]
         },
         {
-            name:'点击',
+            name:'点击平均收益',
             type:'line',
            // smooth:true,
 			itemStyle: {normal: {

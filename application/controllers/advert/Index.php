@@ -78,7 +78,7 @@ class Index extends MY_Controller {
 			$update['user_code']=$data['owner'];
 			$update['ad_code']=$data['code'];
 			$update['type']=1;
-			$update['ad_price_code']=get_code($data['owner']);
+			$update['code']=get_code($data['owner']);
 			$update['price']=$data['cmp_price'];
 			$update['status']=0;
 			$update['created_time']=date("Y-m-d H:i:s");
@@ -95,6 +95,10 @@ class Index extends MY_Controller {
 	public function binding()
 	{
         if ($post = $this->input->post()){
+			if(!$post['sdk_code']){
+				 ci_redirect('/advert/index/binding?code='.$post['ad_code'], 3, '至少选择一个SDK');
+				 exit;
+			}
             $sdk_code_arr = explode(',',$post['sdk_code']);
 			foreach($post['sdk_code'] as $val){
 				$update['ad_code']=$post['ad_code'];
@@ -122,11 +126,18 @@ class Index extends MY_Controller {
 			foreach($query as $val){
 				$sdk_arr[]=$val['sdk_code'];
 			}
-			$sdk_str = "'" . implode("','",$sdk_arr) . "'";
-			$where .= " AND sdk_code not in ({$sdk_str})";
+			//$sdk_str = "'" . implode("','",$sdk_arr) . "'";
+			//echo $where .= " AND sdk_code not in ({$sdk_str})";
 		}
         $total = $this->wsdk_model->getCount($where);
         $list = $this->wsdk_model->findAlls($where,$pagesize,$offset);
+		foreach($list as $key=>$val){
+			if(in_array($val['sdk_code'],$sdk_arr)){
+				$list[$key]['bdflag'] = 1;
+			}else{
+				$list[$key]['bdflag'] = 0;
+			}
+		}
 		$this->data['list'] = $list;
         $this->data['total'] = $total;
         $this->data['search'] = $search;
@@ -183,7 +194,7 @@ class Index extends MY_Controller {
         }
         if ($info)
         {
-            $stInfo = $this->advert_model->getExtensionStatices($info['ad_code'],$id,$begin_time,$end_time);
+            $stInfo = $this->advert_model->getExtensionStatices($info['code'],$id,$begin_time,$end_time);
             $datedata = $this->getDateSection($begin_time, $end_time);
             $sectionCount = count(explode(',', $datedata));
             $staticesCpc = $staticesCpm = array();

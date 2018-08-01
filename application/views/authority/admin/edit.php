@@ -12,6 +12,13 @@
 					</div>
 				  </div>
 				  <div class="layui-form-item">
+					<label class="layui-form-label">用户身份：</label>
+					<select class="t_select" name="type">
+                        <option value="0">广告主</option>
+						<option value="1">流量主</option>
+                    </select>
+				  </div>
+				  <div class="layui-form-item">
 					<label class="layui-form-label">邮箱：</label>
 					<div class="layui-input-block">
 					  <input type="text" placeholder="邮箱" class="layui-input"   name="email"  id="email" value="<?php echo $info['email']; ?>"/>

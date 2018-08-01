@@ -117,6 +117,8 @@ class MY_Controller extends CI_Controller
 			ci_redirect('/slot/index/index', 3, '没有权限');
 		}elseif($this->user['type'] == 2){//广告运营平台
 			ci_redirect('/home/index', 3, '没有权限');
+		}else{
+			ci_redirect('/home/index', 3, '没有权限');
 		}
     }
 

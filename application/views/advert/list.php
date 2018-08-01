@@ -29,8 +29,8 @@
 				  <th>曝光量</th>
 				  <th>点击量</th>
 				  <th>点击率</th>
-				  <th>点击单价</th>
-				  <th>CMP(千人展示价)</th>
+				  <th>CPC单价</th>
+				  <th>CPM(千人展示价)</th>
 				  <th>广告主</th>
 				  <th>消耗</th>
 				  <th>SDK</th>
@@ -46,8 +46,9 @@
 				  <td><?php echo $v['cpc'];  ?></td>
 				  <td>
 				  <?php 
-				  if(($v['cpc']+$v['cpm'])>0){echo round($v['cpc']/($v['cpc']+$v['cpm']), 2)*100;}else{ echo 0; }?>
-					%</td>
+					$click = round($v['cpc']/($v['cpc']+$v['cpm']), 2)*100;
+					echo  $click."%" ?>
+					</td>
 				  <td>
 					<?php 
 						$totol=$v['cpc']*100;
@@ -63,7 +64,9 @@
 
 				  <td><?php echo $v['owner'];  ?></td>
 				  <td><?php echo "￥".$v['ad_price'];  ?></td>
-				  <td> <?php if($v['sdk_name'] == '' ){?> <a href="/advert/index/binding?code=<?php echo $v['code']; ?>"><span class="tdobtn01 active">绑定</span></a><?php  }else{ echo $v['sdk_name']; }?>
+				  <!--<td> <?php if($v['sdk_name'] == '' ){?> <a href="/advert/index/binding?code=<?php echo $v['code']; ?>"><span class="tdobtn01 active">绑定</span></a><?php  }else{ echo $v['sdk_name']; }?>
+				  </td>-->
+				  <td>  <a href="/advert/index/binding?code=<?php echo $v['code']; ?>"><span class="tdobtn01 active">绑定</span></a>
 				  </td>
 				  <td>
 					  <?php if($v['audit_status'] == 0 ){?> 

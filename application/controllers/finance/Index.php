@@ -133,6 +133,13 @@ class Index extends MY_Controller {
     {
         $input = array_merge($this->input->get(), $this->input->post());
 		if($input){
+			//判断充值用户是否存在
+			$sql="select * from wy_account where owner='".$input['owner']."'";
+		    $query =$this->db->query($sql)->result_array();
+			if(!$query){
+				 ci_redirect('/finance/index/add', 3, '广告主不存在,请确认');
+				 exit;
+			}
 		    $update['finance_code'] = $this->getCode();
 			$update['operator'] = $this->user['user_code'];
 			$update['owner'] = $input['owner'];
@@ -146,6 +153,10 @@ class Index extends MY_Controller {
             $update['created_time'] = date("Y-m-d H:i:s");
             $update_info = $this->audit_model->add($update);
             if ($update_info) {
+				//更新用户账号金额
+				$updates['money']=$query[0]['money']+$input['money'];
+				$updates['updated_time']=date("Y-m-d H:i:s");
+				$res =$this->db->where(array('id'=>$query[0]['id']))->update('wy_account', $updates);
                 ci_redirect('/finance/index/lists', 3, '添加成功');
             }
             exit;
@@ -236,12 +247,28 @@ class Index extends MY_Controller {
 		$data = $this->input->post();
         $res = array('status' => false, 'msg' => '');
         $update = array();
+		$sql="select * from wy_finance where id=".$data['id']." limit 1";
+		$query =$this->db->query($sql)->result_array();
+		if(!$query[0]){
+			$res['msg'] = "用户数据不存在";
+            $this->_outputJSON($res);
+		}
+		$sql="select * from wy_account where owner='".$query[0]['owner']."' limit 1";
+		$query2 =$this->db->query($sql)->result_array();
+		if(!$query2[0]){
+			$res['msg'] = "流量主不存在";
+            $this->_outputJSON($res);
+		}
         if ($data) {//存在更新
 			$update['operator']=$this->user['user_code'];
 			$update['comment']=$data['opearea'];
 			$update['status']=0;
 			$update['updated_time']=date("Y-m-d H:i:s");
 			$rUp =$this->db->where(array('id'=>$data['id']))->update('wy_finance', $update);
+			//更新用户账号金额
+			$updates['money']=$query2[0]['money']-$query[0]['money'];
+			$updates['updated_time']=date("Y-m-d H:i:s");
+			$res =$this->db->where(array('id'=>$query2[0]['id']))->update('wy_account', $updates);
         }
         if ($rUp === false) {
             $res['msg'] = "更改失败";

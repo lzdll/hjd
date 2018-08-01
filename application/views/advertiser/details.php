@@ -47,8 +47,8 @@
 				  <th>曝光量</th>
 				  <th>点击量</th>
 				  <th>点击率</th>
-				  <th>点击单价</th>
-				  <th>CMP(千人展示价)</th>
+				  <th>CPC单价</th>
+				  <th>CPM(千人展示价)</th>
 				  <th>广告主</th>
 				  <th>消耗</th>
 				  <th>SDK</th>
@@ -228,7 +228,7 @@ var option = {
         trigger: 'axis'
     },
     legend: {
-        data:['展示','点击']
+        data:['展示均价','点击均价']
     },
     toolbox: {
         feature: {
@@ -257,7 +257,7 @@ var option = {
     },
     series : [
         {
-            name:'展示',
+            name:'展示均价',
             type:'line',
            // smooth:true,
             itemStyle: {normal: {areaStyle: {type: 'default'},label : {
@@ -281,7 +281,7 @@ var option = {
             data:[<?php echo $staticesCpm;?>]
         },
         {
-            name:'点击',
+            name:'点击均价',
             type:'line',
            // smooth:true,
 			itemStyle: {normal: {

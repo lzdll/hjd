@@ -18,7 +18,7 @@
 			  <tbody>
 			   <?php foreach ($list as $v){ ?>
 				<tr>
-				  <td><input type="checkbox" class="checkbox" name="sdk_code[]" lay-skin="primary" value='<?=$v['code']?>'/></td>
+				  <td><input type="checkbox" class="checkbox" name="sdk_code[]" lay-skin="primary" value='<?=$v['code']?>' <?php if($v['bdflag'] == 1){ echo "checked='checked'";} ?>/></td>
 				  <td><?=$v['name']?></td>
 				  <td><?=$v['url']?></td>
 				  <td><?=$v['sappid']?></td>
@@ -48,23 +48,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	$("#submitBtn").click(function(){
-		var spCodesTemp='';
-		$.each($('input:checkbox:checked'),function(){
-				if(spCodesTemp==''){
-					spCodesTemp = $(this).val();
-				}else{
-					spCodesTemp += (","+$(this).val());
-				}
-
-        });
-		$('#sdk_code').val(spCodesTemp);
-		if(spCodesTemp == '')
-			{
-				alert("请至少绑定一个SDK！");
-				return false;
-			} else {
-				$("#form").submit();
-			}
+			$("#form").submit();
 	});
 });
 </script>
